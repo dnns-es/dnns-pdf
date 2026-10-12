@@ -2,6 +2,21 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versionado semántico.
 
+## [0.1.0] - 2026-10-12
+
+### Añadido
+- Fase 1: visor de PDF.
+- Abrir con botón, arrastrar y soltar, y «Abrir con» desde el sistema (PWA instalada).
+- Páginas con carga perezosa: solo se pintan las cercanas y se liberan las lejanas.
+- Panel lateral con miniaturas e índice del documento.
+- Zoom: botones, ajustar al ancho y a la página, Ctrl+rueda y pellizco táctil.
+- Navegación: anterior/siguiente, ir a página, flechas, Inicio y Fin.
+- Búsqueda de texto con resaltado y salto entre resultados.
+- Selección y copia de texto.
+- Contraseña para PDFs protegidos.
+- Imprimir (con barra de progreso) y descargar.
+- Modo claro y oscuro.
+
 ## [0.0.1] - 2026-10-12
 
 ### Añadido

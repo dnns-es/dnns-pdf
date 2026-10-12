@@ -30,18 +30,18 @@ Cada fase se trabaja en su propia rama y termina con un PR y una versión public
 
 **Objetivo:** abrir y leer cualquier PDF con soltura.
 
-- [ ] Abrir PDF con botón, arrastrar y soltar, y "Abrir con" en la PWA (`file_handlers`)
-- [ ] Renderizado de páginas desde el worker con carga perezosa (solo las visibles)
-- [ ] Panel lateral de miniaturas con navegación
-- [ ] Zoom: más, menos, ajustar a ancho, ajustar a página, pellizcar en móvil
-- [ ] Navegación: página anterior/siguiente, ir a página, teclado
-- [ ] Índice/marcadores del PDF (outline)
-- [ ] Búsqueda de texto con resaltado y saltar entre resultados
-- [ ] Seleccionar y copiar texto
-- [ ] Modo oscuro y modo claro
-- [ ] Imprimir y descargar
-- [ ] Pedir contraseña al abrir PDFs protegidos
-- [ ] Rendimiento aceptable con un PDF de 300+ páginas
+- [x] Abrir PDF con botón, arrastrar y soltar, y "Abrir con" en la PWA (`file_handlers`)
+- [x] Renderizado de páginas desde el worker con carga perezosa (solo las visibles)
+- [x] Panel lateral de miniaturas con navegación
+- [x] Zoom: más, menos, ajustar a ancho, ajustar a página, pellizcar en móvil
+- [x] Navegación: página anterior/siguiente, ir a página, teclado
+- [x] Índice/marcadores del PDF (outline)
+- [x] Búsqueda de texto con resaltado y saltar entre resultados
+- [x] Seleccionar y copiar texto
+- [x] Modo oscuro y modo claro
+- [x] Imprimir y descargar
+- [x] Pedir contraseña al abrir PDFs protegidos
+- [x] Rendimiento aceptable con un PDF de 300+ páginas
 
 ---
 

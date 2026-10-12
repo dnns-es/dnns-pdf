@@ -1,7 +1,63 @@
 {
-    "bienvenida": {
+    "portada": {
         "titulo": "Free and open PDF editor",
-        "texto": "Your documents never leave your device: everything is processed here, in your browser."
+        "texto": "Your documents never leave your device: everything is processed here, in your browser.",
+        "abrir": "Open PDF",
+        "soltar": "or drag a PDF file onto this window",
+        "sueltaAqui": "Drop the PDF to open it"
+    },
+    "barra": {
+        "panel": "Show or hide the side panel",
+        "abrir": "Open PDF (Ctrl+O)",
+        "anterior": "Previous page",
+        "siguiente": "Next page",
+        "irA": "Go to page",
+        "de": "of {total}",
+        "alejar": "Zoom out (Ctrl+-)",
+        "acercar": "Zoom in (Ctrl++)",
+        "zoom": "Zoom",
+        "buscar": "Search (Ctrl+F)",
+        "imprimir": "Print (Ctrl+P)",
+        "descargar": "Download (Ctrl+S)",
+        "tema": "Switch between light and dark mode"
+    },
+    "zoom": {
+        "ancho": "Fit width",
+        "pagina": "Fit page"
+    },
+    "panel": {
+        "miniaturas": "Thumbnails",
+        "indice": "Outline",
+        "sinIndice": "This document has no outline.",
+        "pagina": "Page {numero}"
+    },
+    "busqueda": {
+        "placeholder": "Search in document",
+        "anterior": "Previous result (Shift+Enter)",
+        "siguiente": "Next result (Enter)",
+        "cerrar": "Close search (Esc)",
+        "buscando": "Searching…",
+        "sinResultados": "No results",
+        "contador": "{actual} of {total}",
+        "limitado": "{actual} of over {total}"
+    },
+    "clave": {
+        "titulo": "Protected document",
+        "texto": "This PDF is password protected. Enter the password to open it.",
+        "error": "Wrong password. Please try again."
+    },
+    "imprimir": {
+        "preparando": "Preparing page {actual} of {total}…"
+    },
+    "errores": {
+        "noEsPdf": "That file is not a PDF.",
+        "abrir": "The document could not be opened. It may be damaged.",
+        "imprimir": "Printing could not be prepared.",
+        "motor": "The PDF engine is not available."
+    },
+    "comun": {
+        "aceptar": "OK",
+        "cancelar": "Cancel"
     },
     "motor": {
         "etiqueta": "PDF engine:",

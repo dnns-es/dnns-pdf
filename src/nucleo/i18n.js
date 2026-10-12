@@ -58,4 +58,13 @@ export function traducirPagina(raiz = document) {
         const parametros = elemento.dataset.i18nParam ? JSON.parse(elemento.dataset.i18nParam) : {};
         elemento.textContent = t(elemento.dataset.i18n, parametros);
     }
+    // Botones con solo icono: el texto va en title y aria-label para ratón y lector de pantalla
+    for (const elemento of raiz.querySelectorAll('[data-i18n-titulo]')) {
+        const texto = t(elemento.dataset.i18nTitulo);
+        elemento.title = texto;
+        elemento.setAttribute('aria-label', texto);
+    }
+    for (const elemento of raiz.querySelectorAll('[data-i18n-placeholder]')) {
+        elemento.placeholder = t(elemento.dataset.i18nPlaceholder);
+    }
 }

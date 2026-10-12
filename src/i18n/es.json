@@ -1,7 +1,63 @@
 {
-    "bienvenida": {
+    "portada": {
         "titulo": "Editor de PDF libre y gratuito",
-        "texto": "Tus documentos nunca salen de tu dispositivo: todo se procesa aquí, en tu navegador."
+        "texto": "Tus documentos nunca salen de tu dispositivo: todo se procesa aquí, en tu navegador.",
+        "abrir": "Abrir PDF",
+        "soltar": "o arrastra un archivo PDF a esta ventana",
+        "sueltaAqui": "Suelta el PDF para abrirlo"
+    },
+    "barra": {
+        "panel": "Mostrar u ocultar el panel lateral",
+        "abrir": "Abrir PDF (Ctrl+O)",
+        "anterior": "Página anterior",
+        "siguiente": "Página siguiente",
+        "irA": "Ir a la página",
+        "de": "de {total}",
+        "alejar": "Alejar (Ctrl+-)",
+        "acercar": "Acercar (Ctrl++)",
+        "zoom": "Zoom",
+        "buscar": "Buscar (Ctrl+F)",
+        "imprimir": "Imprimir (Ctrl+P)",
+        "descargar": "Descargar (Ctrl+S)",
+        "tema": "Cambiar entre modo claro y oscuro"
+    },
+    "zoom": {
+        "ancho": "Ajustar al ancho",
+        "pagina": "Ajustar a la página"
+    },
+    "panel": {
+        "miniaturas": "Miniaturas",
+        "indice": "Índice",
+        "sinIndice": "Este documento no tiene índice.",
+        "pagina": "Página {numero}"
+    },
+    "busqueda": {
+        "placeholder": "Buscar en el documento",
+        "anterior": "Resultado anterior (Mayús+Intro)",
+        "siguiente": "Resultado siguiente (Intro)",
+        "cerrar": "Cerrar búsqueda (Esc)",
+        "buscando": "Buscando…",
+        "sinResultados": "Sin resultados",
+        "contador": "{actual} de {total}",
+        "limitado": "{actual} de más de {total}"
+    },
+    "clave": {
+        "titulo": "Documento protegido",
+        "texto": "Este PDF tiene contraseña. Escríbela para abrirlo.",
+        "error": "Contraseña incorrecta. Prueba otra vez."
+    },
+    "imprimir": {
+        "preparando": "Preparando página {actual} de {total}…"
+    },
+    "errores": {
+        "noEsPdf": "Ese archivo no es un PDF.",
+        "abrir": "No se pudo abrir el documento. Puede que esté dañado.",
+        "imprimir": "No se pudo preparar la impresión.",
+        "motor": "El motor PDF no está disponible."
+    },
+    "comun": {
+        "aceptar": "Aceptar",
+        "cancelar": "Cancelar"
     },
     "motor": {
         "etiqueta": "Motor PDF:",

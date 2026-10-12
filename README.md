@@ -12,9 +12,19 @@ Todo se procesa en tu dispositivo. Tus PDF nunca salen de tu navegador. La únic
 
 ## Funciones
 
-El proyecto está empezando. Mira [ROADMAP.md](ROADMAP.md) para ver qué hay hecho y qué viene:
+Mira [ROADMAP.md](ROADMAP.md) para ver qué hay hecho y qué viene.
 
-- Visor: abrir, buscar, miniaturas, zoom, índice
+**Ya disponible (visor):**
+
+- Abrir PDF con botón, arrastrando o con «Abrir con» desde el sistema (PWA instalada)
+- Miniaturas, índice del documento, ir a página y atajos de teclado
+- Zoom: ajustar al ancho o a la página, Ctrl+rueda y pellizco en el móvil
+- Búsqueda de texto con resaltado, seleccionar y copiar texto
+- PDFs protegidos con contraseña, imprimir y descargar
+- Modo claro y oscuro, y fluido con documentos de cientos de páginas
+
+**En camino:**
+
 - App de Windows con actualización automática
 - Anotar: resaltar, notas, dibujo, sellos
 - Organizar páginas: unir, dividir, rotar, reordenar
@@ -55,7 +65,9 @@ Everything is processed on your device. Your PDFs never leave your browser. The 
 
 ### Features
 
-The project is just starting. See [ROADMAP.md](ROADMAP.md) (in Spanish) for progress: viewer, Windows app with auto-update, annotations, page organisation, forms and signatures, content editing, security tools and OCR.
+**Available now (viewer):** open PDFs (button, drag and drop, or "Open with" from the OS when installed), thumbnails, outline, go to page and keyboard shortcuts, zoom (fit width/page, Ctrl+wheel, pinch on mobile), text search with highlights, text selection and copy, password-protected PDFs, print and download, light and dark mode, and smooth with documents of hundreds of pages.
+
+**Coming next** (see [ROADMAP.md](ROADMAP.md), in Spanish): Windows app with auto-update, annotations, page organisation, forms and signatures, content editing, security tools and OCR.
 
 It can be installed as an app (PWA) and works offline.
 

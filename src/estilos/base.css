@@ -2,130 +2,90 @@
 Fecha: 2026-10-12
 Ruta: /src/estilos/base.css
 Estilos base de DNNS PDF
-Variables de color (claro y oscuro), estructura de página y banner de actualización
+Variables de color para modo claro y oscuro, tipografía y estructura general de la página
+Notas: el tema lo marca el atributo data-tema de <html> (claro por defecto, lo cambia src/ui/tema.js)
 */
 
 :root {
-    --fondo: #f6f7f9;
+    --fondo: #eef0f3;
     --superficie: #ffffff;
+    --superficie-2: #f6f7f9;
     --texto: #1c2128;
     --texto-suave: #57606a;
     --borde: #d0d7de;
     --acento: #1f6feb;
     --acento-texto: #ffffff;
-    --ok: #1a7f37;
+    --acento-suave: rgb(31 111 235 / 0.12);
     --error: #cf222e;
-    color-scheme: light dark;
+    --resaltado: rgb(255 200 0 / 0.4);
+    --resaltado-actual: rgb(255 120 0 / 0.55);
+    --sombra-pagina: 0 1px 4px rgb(0 0 0 / 0.18);
+    --alto-barra: 48px;
+    color-scheme: light;
 }
 
-@media (prefers-color-scheme: dark) {
-    :root {
-        --fondo: #0d1117;
-        --superficie: #161b22;
-        --texto: #e6edf3;
-        --texto-suave: #8d96a0;
-        --borde: #30363d;
-        --acento: #4493f8;
-        --ok: #3fb950;
-        --error: #f85149;
-    }
+:root[data-tema="oscuro"] {
+    --fondo: #0d1117;
+    --superficie: #161b22;
+    --superficie-2: #1c2128;
+    --texto: #e6edf3;
+    --texto-suave: #8d96a0;
+    --borde: #30363d;
+    --acento: #4493f8;
+    --acento-suave: rgb(68 147 248 / 0.18);
+    --error: #f85149;
+    --sombra-pagina: 0 1px 6px rgb(0 0 0 / 0.6);
+    color-scheme: dark;
 }
 
 * {
     box-sizing: border-box;
 }
 
+html,
+body {
+    height: 100%;
+}
+
 body {
     margin: 0;
-    min-height: 100dvh;
     display: flex;
     flex-direction: column;
+    overflow: hidden;
     font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    font-size: 14px;
     background: var(--fondo);
     color: var(--texto);
 }
 
-.barra {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 10px 16px;
-    background: var(--superficie);
-    border-bottom: 1px solid var(--borde);
+button,
+input,
+select {
+    font: inherit;
+    color: inherit;
 }
 
-.barra__titulo {
-    margin: 0;
-    font-size: 1.1rem;
+[hidden] {
+    display: none !important;
 }
 
-.barra__idioma {
-    padding: 4px 8px;
-    border: 1px solid var(--borde);
-    border-radius: 6px;
-    background: var(--superficie);
-    color: var(--texto);
-}
-
-.principal {
+.cuerpo {
     flex: 1;
-    display: grid;
-    place-items: center;
-    padding: 24px 16px;
-}
-
-.bienvenida {
-    max-width: 560px;
-    text-align: center;
-}
-
-.bienvenida p {
-    color: var(--texto-suave);
-    line-height: 1.5;
-}
-
-.estado-motor strong {
-    color: var(--texto);
-}
-
-.pie {
     display: flex;
-    justify-content: space-between;
-    flex-wrap: wrap;
-    gap: 8px;
-    padding: 8px 16px;
-    font-size: 0.8rem;
-    color: var(--texto-suave);
-    border-top: 1px solid var(--borde);
+    min-height: 0;
+    position: relative;
 }
 
-.banner {
-    position: fixed;
-    left: 50%;
-    bottom: 16px;
-    transform: translateX(-50%);
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    max-width: calc(100% - 32px);
-    padding: 10px 14px;
-    background: var(--superficie);
-    border: 1px solid var(--acento);
-    border-radius: 10px;
-    box-shadow: 0 6px 20px rgb(0 0 0 / 0.2);
-}
-
-.banner[hidden] {
-    display: none;
-}
-
-.banner button {
-    padding: 6px 14px;
+.boton-principal {
+    padding: 8px 18px;
     border: 0;
-    border-radius: 6px;
+    border-radius: 8px;
     background: var(--acento);
     color: var(--acento-texto);
     font-weight: 600;
     cursor: pointer;
+}
+
+.boton-principal:hover {
+    filter: brightness(1.08);
 }
