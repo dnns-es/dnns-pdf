@@ -105,6 +105,19 @@ avisa y se actualiza sola sin desinstalar nada.
 
 ---
 
+## Fase 3b — App de Android (prioridad alta, pedida por Antonio el 12-10-2026)
+
+**Objetivo:** APK nativa con Tauri v2 (mismo código web) en descargas.dnns.es y, más adelante, Google Play.
+Mientras tanto, la PWA ya se instala en Android desde Chrome.
+
+- [ ] Inicializar Tauri Android en `desktop/` (SDK/NDK ya instalados con Android Studio)
+- [ ] Abrir PDF desde «Compartir» / «Abrir con» en Android
+- [ ] Firma con clave propia (guardada con `proteger-llaves.sh`) y publicación en descargas.dnns.es + `latest.json`
+- [ ] Actualización desde la app (como OberDomo/BovedaDnns)
+- [ ] Ficha en dnns.es/apps.html y alta en apps.json
+
+---
+
 ## Fase 4 — Organizar páginas
 
 - [ ] Reordenar páginas arrastrando miniaturas
