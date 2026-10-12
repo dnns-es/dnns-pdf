@@ -16,6 +16,7 @@ import { iniciarTema } from './ui/tema.js';
 import { iniciarBarra } from './ui/barra.js';
 import { iniciarPanelLateral } from './ui/panelLateral.js';
 import { iniciarVisor } from './modulos/visor/visor.js';
+import { iniciarActualizador } from './modulos/actualizador/actualizador.js';
 
 function prepararIdioma() {
     const selector = document.getElementById('selector-idioma');
@@ -49,5 +50,6 @@ iniciarTema();
 iniciarPanelLateral();
 iniciarVisor();
 iniciarBarra();
+iniciarActualizador();
 arrancarMotor();
 registrarServiceWorker().catch((error) => console.error('Service worker no registrado:', error));

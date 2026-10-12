@@ -1,0 +1,66 @@
+# Fecha: 2026-10-12
+# Ruta: /.github/workflows/release.yml
+# Publicación de la app de Windows
+# Con una etiqueta vX.Y.Z compila con Tauri, firma la actualización y crea la Release
+# con el instalador .exe y el latest.json que lee el actualizador de las apps instaladas.
+# Notas: las notas de la versión salen de la sección [X.Y.Z] de CHANGELOG.md.
+#        La clave de firma viene de los secretos del repo; sin ella el build falla a propósito.
+
+name: Publicar app de Windows
+
+on:
+  push:
+    tags: ['v*.*.*']
+
+permissions:
+  contents: write
+
+jobs:
+  windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: dtolnay/rust-toolchain@stable
+
+      - uses: swatinem/rust-cache@v2
+        with:
+          workspaces: desktop/src-tauri
+
+      - run: npm ci
+
+      - name: Notas de la versión desde CHANGELOG.md
+        id: notas
+        shell: bash
+        run: |
+          VERSION="${GITHUB_REF_NAME#v}"
+          NOTAS=$(awk -v v="$VERSION" '
+              /^## \[/ { dentro = ($0 ~ "^## \\[" v "\\]") ; next }
+              dentro { print }
+          ' CHANGELOG.md | sed -e '/^### /d' -e '/^$/d')
+          if [ -z "$NOTAS" ]; then NOTAS="Versión $VERSION"; fi
+          {
+            echo "cuerpo<<FIN_NOTAS"
+            echo "$NOTAS"
+            echo "FIN_NOTAS"
+          } >> "$GITHUB_OUTPUT"
+
+      - uses: tauri-apps/tauri-action@v0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAURI_SIGNING_PRIVATE_KEY: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
+          TAURI_SIGNING_PRIVATE_KEY_PASSWORD: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
+        with:
+          projectPath: desktop
+          tauriScript: npx tauri
+          tagName: ${{ github.ref_name }}
+          releaseName: DNNS PDF ${{ github.ref_name }}
+          releaseBody: ${{ steps.notas.outputs.cuerpo }}
+          releaseDraft: false
+          prerelease: false
+          includeUpdaterJson: true

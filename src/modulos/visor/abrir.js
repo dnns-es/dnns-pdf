@@ -11,6 +11,7 @@ import { t } from '../../nucleo/i18n.js';
 import { pedir } from '../../motor/cliente.js';
 import { mostrarAviso } from '../../ui/dialogos.js';
 import { pedirContrasena } from './contrasena.js';
+import { archivoInicial, alRecibirArchivo, ponerTitulo } from '../../plataforma/index.js';
 
 const BYTES_CABECERA = 1024;
 
@@ -54,7 +55,7 @@ export async function abrirArchivo(archivo) {
         return;
     }
     cambiar('documento', null);
-    document.title = 'DNNS PDF';
+    ponerTitulo('DNNS PDF');
     try {
         const datos = await abrirEnMotor(archivo);
         if (!datos) {
@@ -67,7 +68,7 @@ export async function abrirArchivo(archivo) {
             tamanos: datos.tamanos,
             titulo: datos.titulo
         });
-        document.title = `${datos.titulo || archivo.name} · DNNS PDF`;
+        ponerTitulo(`${datos.titulo || archivo.name} · DNNS PDF`);
     } catch (error) {
         console.error('No se pudo abrir el documento:', error);
         mostrarAviso(t('errores.abrir'));
@@ -120,17 +121,19 @@ function prepararArrastrar() {
     });
 }
 
-// "Abrir con DNNS PDF" en el sistema: solo existe con la PWA instalada en Chrome/Edge
+// "Abrir con DNNS PDF" en el sistema: PWA instalada en Chrome/Edge, o la app de escritorio
 function prepararAbrirCon() {
-    if (!('launchQueue' in window)) {
-        return;
+    if ('launchQueue' in window) {
+        window.launchQueue.setConsumer(async (parametros) => {
+            const [manejador] = parametros.files ?? [];
+            if (manejador) {
+                abrirArchivo(await manejador.getFile());
+            }
+        });
     }
-    window.launchQueue.setConsumer(async (parametros) => {
-        const [manejador] = parametros.files ?? [];
-        if (manejador) {
-            abrirArchivo(await manejador.getFile());
-        }
-    });
+    // Escritorio: PDF del doble clic con el que arrancó, y los que lleguen con la app ya abierta
+    archivoInicial().then(abrirArchivo).catch((error) => console.error('No se pudo abrir el archivo inicial:', error));
+    alRecibirArchivo(abrirArchivo);
 }
 
 export function iniciarAbrir() {

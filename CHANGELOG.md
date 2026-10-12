@@ -2,6 +2,17 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versionado semántico.
 
+## [0.2.0] - 2026-10-12
+
+### Añadido
+- Fase 2: app de Windows (Tauri) con instalador y actualización automática.
+- Instalador por usuario, sin pedir administrador; acceso directo en Inicio y escritorio.
+- Asociación con los archivos .pdf: «Abrir con DNNS PDF» y doble clic.
+- Una sola ventana: abrir otro PDF desde el sistema lo carga en la app ya abierta.
+- Aviso de versión nueva al arrancar con las novedades; descarga e instalación en segundo plano y reinicio.
+- Ajustes (solo escritorio): buscar actualizaciones a mano y activar o desactivar el aviso.
+- Publicación automática en GitHub Releases al crear una etiqueta, con `npm run release`.
+
 ## [0.1.0] - 2026-10-12
 
 ### Añadido
