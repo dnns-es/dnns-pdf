@@ -2,6 +2,12 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versionado semántico.
 
+## [0.2.1] - 2026-10-12
+
+### Cambiado
+- Hoja de ruta al día con la Fase 2 terminada.
+- Primera versión que llega a las instalaciones de Windows por el actualizador automático.
+
 ## [0.2.0] - 2026-10-12
 
 ### Añadido

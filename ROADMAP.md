@@ -53,35 +53,35 @@ A partir de aquí, cada fase nueva llega automáticamente a todos los usuarios.
 **Herramienta:** Tauri v2 (usa el WebView2 que ya trae Windows 10/11; instalador de pocos MB).
 
 ### Empaquetado
-- [ ] Inicializar Tauri v2 en `/desktop` apuntando al build de Vite (`dist/`)
-- [ ] Nombre, identificador (`es.dnns.pdf`), icono y versión en `tauri.conf.json`
-- [ ] Instalador NSIS (`.exe`) para Windows 10 y 11, instalación por usuario (sin pedir administrador)
-- [ ] Asociar la extensión `.pdf`: "Abrir con DNNS PDF" y opción de programa predeterminado
-- [ ] Abrir el PDF recibido por línea de comandos o doble clic
-- [ ] Acceso directo en menú Inicio y escritorio
-- [ ] Desinstalador limpio
+- [x] Inicializar Tauri v2 en `/desktop` apuntando al build de Vite (`dist/`)
+- [x] Nombre, identificador (`es.dnns.pdf`), icono y versión en `tauri.conf.json`
+- [x] Instalador NSIS (`.exe`) para Windows 10 y 11, instalación por usuario (sin pedir administrador)
+- [x] Asociar la extensión `.pdf`: "Abrir con DNNS PDF" y opción de programa predeterminado
+- [x] Abrir el PDF recibido por línea de comandos o doble clic
+- [x] Acceso directo en menú Inicio y escritorio
+- [x] Desinstalador limpio
 
 ### Actualización automática
-- [ ] Plugin `tauri-plugin-updater`
-- [ ] Generar par de claves de firma de actualizaciones (`tauri signer generate`)
-- [ ] Guardar la clave privada y su contraseña como secretos del repo
+- [x] Plugin `tauri-plugin-updater`
+- [x] Generar par de claves de firma de actualizaciones (`tauri signer generate`)
+- [x] Guardar la clave privada y su contraseña como secretos del repo
       (`TAURI_SIGNING_PRIVATE_KEY`, `TAURI_SIGNING_PRIVATE_KEY_PASSWORD`)
-- [ ] **Copia de seguridad de la clave privada fuera de GitHub** (si se pierde, las instalaciones existentes no podrán actualizarse nunca más)
-- [ ] Endpoint de actualizaciones: `latest.json` en la última GitHub Release
-- [ ] Al arrancar, comprobar si hay versión nueva y mostrar aviso
+- [x] **Copia de seguridad de la clave privada fuera de GitHub** (si se pierde, las instalaciones existentes no podrán actualizarse nunca más)
+- [x] Endpoint de actualizaciones: `latest.json` en la última GitHub Release
+- [x] Al arrancar, comprobar si hay versión nueva y mostrar aviso
       "Nueva versión disponible — Actualizar ahora / Más tarde" con las novedades
-- [ ] Descarga e instalación en segundo plano y reinicio de la app
-- [ ] Opción en Ajustes: buscar actualizaciones manualmente y activar/desactivar el aviso
+- [x] Descarga e instalación en segundo plano y reinicio de la app
+- [x] Opción en Ajustes: buscar actualizaciones manualmente y activar/desactivar el aviso
 
 ### Publicación automática
-- [ ] Workflow de GitHub Actions con `tauri-action` en `windows-latest`
-- [ ] Se dispara al crear una etiqueta `vX.Y.Z`: compila, firma, crea la Release con el instalador y `latest.json`
-- [ ] Notas de la versión a partir de los commits o del `CHANGELOG.md`
-- [ ] Script `npm run release` que sube la versión en `package.json`, `tauri.conf.json`
+- [x] Workflow de GitHub Actions con `tauri-action` en `windows-latest`
+- [x] Se dispara al crear una etiqueta `vX.Y.Z`: compila, firma, crea la Release con el instalador y `latest.json`
+- [x] Notas de la versión a partir de los commits o del `CHANGELOG.md`
+- [x] Script `npm run release` que sube la versión en `package.json`, `tauri.conf.json`
       y `CACHE_VERSION` de `sw.js` a la vez, crea la etiqueta y la sube
 
 ### Firma del instalador (SmartScreen)
-- [ ] Sin firma, Windows mostrará "Windows protegió su PC" la primera vez. Funciona, pero asusta.
+- [x] Sin firma, Windows mostrará "Windows protegió su PC" la primera vez. Funciona, pero asusta.
 - [ ] Solicitar firma de código gratuita para proyectos de código abierto (SignPath Foundation)
       o valorar Azure Trusted Signing (de pago, bajo coste)
 - [ ] Integrar la firma en el workflow de publicación
