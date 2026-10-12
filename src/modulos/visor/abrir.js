@@ -6,10 +6,10 @@
 //        Se conserva el File original para poder descargarlo tal cual.
 
 import { escuchar } from '../../nucleo/eventos.js';
-import { cambiar } from '../../nucleo/estado.js';
+import { cambiar, leer } from '../../nucleo/estado.js';
 import { t } from '../../nucleo/i18n.js';
 import { pedir } from '../../motor/cliente.js';
-import { mostrarAviso } from '../../ui/dialogos.js';
+import { mostrarAviso, confirmar } from '../../ui/dialogos.js';
 import { pedirContrasena } from './contrasena.js';
 import { archivoInicial, alRecibirArchivo, ponerTitulo } from '../../plataforma/index.js';
 
@@ -52,6 +52,10 @@ export async function abrirArchivo(archivo) {
     }
     if (!(await pareceUnPdf(archivo))) {
         mostrarAviso(t('errores.noEsPdf'));
+        return;
+    }
+    // Abrir otro documento descarta las anotaciones que no se hayan descargado
+    if (leer('documento') && (await pedir('hayCambios')) && !(await confirmar('anotar.descartar', 'anotar.descartarBoton'))) {
         return;
     }
     cambiar('documento', null);

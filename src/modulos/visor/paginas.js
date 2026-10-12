@@ -7,7 +7,7 @@
 //        El zoom cambia la variable CSS --escala; mientras se repinta, se ve la imagen anterior
 //        estirada, así el cambio es inmediato.
 
-import { escuchar } from '../../nucleo/eventos.js';
+import { escuchar, emitir } from '../../nucleo/eventos.js';
 import { leer, cambiar } from '../../nucleo/estado.js';
 import { retrasar, limitar } from '../../nucleo/utilidades.js';
 import { pedir } from '../../motor/cliente.js';
@@ -92,6 +92,7 @@ async function pintar(numero, generacion) {
     }
     elementos[numero].querySelector('.pagina__lienzo').getContext('bitmaprenderer').transferFromImageBitmap(bitmap);
     estados[numero].escalaPintada = escala;
+    emitir('pagina:pintada', numero);
 
     if (!estados[numero].conTexto) {
         estados[numero].conTexto = true;
@@ -130,6 +131,23 @@ function liberar(numero) {
     elementos[numero].querySelector('.capa-texto').replaceChildren();
     estado.escalaPintada = 0;
     estado.conTexto = false;
+}
+
+// Tras anotar, deshacer o rehacer: la imagen anterior sigue a la vista hasta que llega la nueva
+function repintar(numero) {
+    if (estados[numero]) {
+        estados[numero].escalaPintada = -1;
+        programarPintado();
+    }
+}
+
+function repintarTodo() {
+    for (const estado of estados) {
+        if (estado.escalaPintada > 0) {
+            estado.escalaPintada = -1;
+        }
+    }
+    programarPintado();
 }
 
 // Búsqueda binaria: con cientos de páginas recorrerlas todas en cada scroll se notaría
@@ -250,4 +268,6 @@ export function iniciarPaginas() {
     });
     escuchar('pagina:ir', irAPagina);
     escuchar('visor:mostrarRect', mostrarRect);
+    escuchar('visor:repintar', repintar);
+    escuchar('visor:repintarTodo', repintarTodo);
 }
