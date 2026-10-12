@@ -81,21 +81,19 @@ async function comprobar(silencioso) {
     }
 }
 
+// En las apps, Ajustes enseña además las opciones de actualización (la web se actualiza sola)
 function prepararAjustes() {
-    const boton = $('boton-ajustes');
-    const dialogo = $('dialogo-ajustes');
     const casilla = $('ajuste-avisar');
-    boton.hidden = false;
-    boton.addEventListener('click', () => {
+    $('ajustes-actualizar').hidden = false;
+    $('ajustes-buscar').hidden = false;
+    escuchar('ajustes:abiertos', () => {
         casilla.checked = avisarAlArrancar();
-        dialogo.showModal();
     });
     casilla.addEventListener('change', () => guardarAvisar(casilla.checked));
     $('ajustes-buscar').addEventListener('click', () => {
-        dialogo.close();
+        $('dialogo-ajustes').close();
         comprobar(false);
     });
-    $('ajustes-cerrar').addEventListener('click', () => dialogo.close());
 }
 
 export function iniciarActualizador() {

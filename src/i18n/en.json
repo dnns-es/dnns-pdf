@@ -136,7 +136,7 @@
     },
     "ajustes": {
         "titulo": "Settings",
-        "boton": "Settings",
+        "boton": "Settings and about DNNS PDF",
         "avisar": "Notify on startup when a new version is available",
         "buscar": "Check for updates",
         "cerrar": "Close"
@@ -519,5 +519,17 @@
         "descartar": "This document has unsaved changes. Close it and lose them?",
         "demasiadas": "Too many documents are open: close one before opening another.",
         "error": "Could not switch documents."
+    },
+    "acerca": {
+        "version": "Version {version} · {plataforma}",
+        "windows": "Windows app",
+        "android": "Android app",
+        "navegador": "in the browser",
+        "motor": "Engine",
+        "licencia": "Licence",
+        "licenciaTexto": "AGPL-3.0: free and open, no ads or sign-up",
+        "codigo": "Source code",
+        "web": "Website",
+        "privacidad": "Your documents are processed on your device and are never uploaded to any server."
     }
 }

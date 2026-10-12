@@ -171,7 +171,7 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
                     </button>
                 </div>
             </div>
-            <button id="boton-ajustes" class="boton-icono" type="button" data-i18n-titulo="ajustes.boton" hidden>
+            <button id="boton-ajustes" class="boton-icono" type="button" data-i18n-titulo="ajustes.boton">
                 <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
             </button>
             <button id="boton-tema" class="boton-icono" type="button" data-i18n-titulo="barra.tema">
@@ -494,13 +494,33 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
 
     <dialog id="dialogo-ajustes" class="dialogo">
         <h2 data-i18n="ajustes.titulo"></h2>
-        <label class="dialogo__opcion">
-            <input id="ajuste-avisar" type="checkbox" checked>
-            <span data-i18n="ajustes.avisar"></span>
-        </label>
+        <section class="acerca">
+            <img class="acerca__icono" src="./icons/icon-192.png" alt="" width="48" height="48">
+            <div>
+                <p class="acerca__nombre">DNNS PDF</p>
+                <p id="acerca-version" class="acerca__version"></p>
+            </div>
+        </section>
+        <dl class="acerca__datos">
+            <dt data-i18n="acerca.motor"></dt>
+            <dd id="acerca-motor"></dd>
+            <dt data-i18n="acerca.licencia"></dt>
+            <dd data-i18n="acerca.licenciaTexto"></dd>
+            <dt data-i18n="acerca.codigo"></dt>
+            <dd id="acerca-codigo"></dd>
+            <dt data-i18n="acerca.web"></dt>
+            <dd id="acerca-web"></dd>
+        </dl>
+        <p class="firma__pista" data-i18n="acerca.privacidad"></p>
+        <div id="ajustes-actualizar" hidden>
+            <label class="dialogo__opcion">
+                <input id="ajuste-avisar" type="checkbox" checked>
+                <span data-i18n="ajustes.avisar"></span>
+            </label>
+        </div>
         <div class="dialogo__botones">
             <button id="ajustes-cerrar" type="button" data-i18n="ajustes.cerrar"></button>
-            <button id="ajustes-buscar" class="boton-principal" type="button" data-i18n="ajustes.buscar"></button>
+            <button id="ajustes-buscar" class="boton-principal" type="button" data-i18n="ajustes.buscar" hidden></button>
         </div>
     </dialog>
 

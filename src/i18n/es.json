@@ -136,7 +136,7 @@
     },
     "ajustes": {
         "titulo": "Ajustes",
-        "boton": "Ajustes",
+        "boton": "Ajustes y acerca de DNNS PDF",
         "avisar": "Avisar al arrancar si hay una versión nueva",
         "buscar": "Buscar actualizaciones",
         "cerrar": "Cerrar"
@@ -519,5 +519,17 @@
         "descartar": "Este documento tiene cambios sin guardar. ¿Cerrarlo y perderlos?",
         "demasiadas": "Hay demasiados documentos abiertos: cierra alguno antes de abrir otro.",
         "error": "No se ha podido cambiar de documento."
+    },
+    "acerca": {
+        "version": "Versión {version} · {plataforma}",
+        "windows": "app de Windows",
+        "android": "app de Android",
+        "navegador": "en el navegador",
+        "motor": "Motor",
+        "licencia": "Licencia",
+        "licenciaTexto": "AGPL-3.0: libre y gratuito, sin anuncios ni registro",
+        "codigo": "Código fuente",
+        "web": "Web",
+        "privacidad": "Tus documentos se procesan en tu dispositivo y nunca se suben a ningún servidor."
     }
 }
