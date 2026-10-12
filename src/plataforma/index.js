@@ -59,6 +59,12 @@ export async function archivoInicial() {
     return (await app())?.archivoInicial() ?? null;
 }
 
+// Vuelve a leer un archivo por su ruta (archivos recientes del escritorio). null si no es el escritorio
+export async function abrirRuta(ruta) {
+    const leerRuta = (await app())?.archivoDesdeRuta;
+    return leerRuta ? leerRuta(ruta) : null;
+}
+
 // Llama a callback(File) cada vez que el sistema manda otro PDF a la app ya abierta
 export async function alRecibirArchivo(callback) {
     (await app())?.alRecibirArchivo(callback);

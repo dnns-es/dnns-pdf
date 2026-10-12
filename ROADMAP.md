@@ -43,6 +43,10 @@ Cada fase se trabaja en su propia rama y termina con un PR y una versión public
 - [x] Guardar y Guardar como de verdad (sobrescribir el archivo abierto en Windows y en Chrome/Edge; diálogo del sistema) (pedido por Antonio el 12-10-2026)
 - [x] Pedir contraseña al abrir PDFs protegidos
 - [x] Rendimiento aceptable con un PDF de 300+ páginas
+- [x] Abiertos hace poco en la portada (escritorio, y Chrome/Edge con permiso del navegador)
+- [x] Recordar la página y el zoom de cada documento
+- [x] Modo presentación a pantalla completa, con girar la vista
+- [ ] Pestañas para tener varios documentos abiertos a la vez (el motor solo tiene uno abierto: requiere rehacer cómo se guarda el documento en el worker)
 
 ---
 

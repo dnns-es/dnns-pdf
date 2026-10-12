@@ -421,5 +421,17 @@
         "nombre": "scanned.pdf",
         "error": "The scanned page could not be processed.",
         "errorFoto": "The photo could not be read."
+    },
+    "recientes": {
+        "titulo": "Recently opened",
+        "borrar": "Clear list",
+        "quitar": "Remove from list",
+        "noEncontrado": "“{nombre}” cannot be found: removed from the list."
+    },
+    "presentacion": {
+        "boton": "Full-screen presentation (F5)",
+        "pagina": "{n} / {total}",
+        "girar": "Rotate view (R)",
+        "salir": "Exit (Esc)"
     }
 }

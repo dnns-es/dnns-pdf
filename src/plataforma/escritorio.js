@@ -32,7 +32,7 @@ function carpetaDeRuta(ruta) {
     return corte > 0 ? ruta.slice(0, corte + 1) : '';
 }
 
-async function archivoDesdeRuta(ruta) {
+export async function archivoDesdeRuta(ruta) {
     const bytes = await invoke('leer_archivo', { ruta });
     const archivo = new File([bytes], nombreDeRuta(ruta), { type: 'application/pdf' });
     archivo.ruta = ruta;

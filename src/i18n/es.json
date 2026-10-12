@@ -421,5 +421,17 @@
         "nombre": "escaneado.pdf",
         "error": "No se pudo tratar la página escaneada.",
         "errorFoto": "No se pudo leer la foto."
+    },
+    "recientes": {
+        "titulo": "Abiertos hace poco",
+        "borrar": "Vaciar lista",
+        "quitar": "Quitar de la lista",
+        "noEncontrado": "No se encuentra «{nombre}»: se quita de la lista."
+    },
+    "presentacion": {
+        "boton": "Presentación a pantalla completa (F5)",
+        "pagina": "{n} / {total}",
+        "girar": "Girar la vista (R)",
+        "salir": "Salir (Esc)"
     }
 }

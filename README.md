@@ -22,6 +22,8 @@ Mira [ROADMAP.md](ROADMAP.md) para ver qué hay hecho y qué viene.
 - Búsqueda de texto con resaltado, seleccionar y copiar texto
 - PDFs protegidos con contraseña, imprimir, guardar (Ctrl+S, encima del archivo abierto cuando el sistema lo permite) y guardar como (Ctrl+Mayús+S)
 - Modo claro y oscuro, y fluido con documentos de cientos de páginas
+- Abiertos hace poco en la portada, y cada documento se reabre en la página y con el zoom en que se dejó
+- Modo presentación a pantalla completa (F5), con girar la vista
 
 **Anotar:**
 
@@ -81,9 +83,9 @@ El motivo está en [docs/firma-smartscreen.md](docs/firma-smartscreen.md).
 Se registra para «Abrir con» y «Compartir» PDF, y avisa e instala las versiones nuevas desde la propia app.
 
 **En camino:**
-- Formularios: rellenar, crear campos y aplanar
-- Edición de texto e imágenes, redacción
-- Contraseñas, compresión, OCR
+- Editar texto e imágenes del PDF
+- Comparar dos PDF
+- Exportar páginas a imagen y extraer texto e imágenes
 
 Se puede instalar como app (PWA) desde el navegador y funciona sin conexión.
 
@@ -138,7 +140,7 @@ Everything is processed on your device. Your PDFs never leave your browser; neit
 
 ### Features
 
-**Available now (viewer):** open PDFs (button, drag and drop, or "Open with" from the OS when installed), thumbnails, outline, go to page and keyboard shortcuts, zoom (fit width/page, Ctrl+wheel, pinch on mobile), text search with highlights, text selection and copy, password-protected PDFs, print, save (Ctrl+S, over the open file when the system allows it) and save as (Ctrl+Shift+S), light and dark mode, and smooth with documents of hundreds of pages.
+**Available now (viewer):** open PDFs (button, drag and drop, or "Open with" from the OS when installed), thumbnails, outline, go to page and keyboard shortcuts, zoom (fit width/page, Ctrl+wheel, pinch on mobile), text search with highlights, text selection and copy, password-protected PDFs, print, save (Ctrl+S, over the open file when the system allows it) and save as (Ctrl+Shift+S), light and dark mode, smooth with documents of hundreds of pages, recently opened files on the start screen, each document reopens at the page and zoom where you left it, and a full-screen presentation mode (F5) with view rotation.
 
 **Annotate:** highlight, underline and strike out text, sticky notes, text boxes, pen, rectangle, circle, line and arrow (colour, thickness, opacity), stamps (including custom ones), move and delete annotations, annotation list in the side panel, undo and redo. Annotations are saved inside the PDF in the standard format, so any reader shows them.
 
@@ -158,7 +160,7 @@ Everything is processed on your device. Your PDFs never leave your browser; neit
 
 **Android app:** download the APK from [dnns.es/apps](https://dnns.es/apps.html#dnns-pdf). It handles "Open with" and "Share" for PDFs and updates itself from inside the app.
 
-**Coming next** (see [ROADMAP.md](ROADMAP.md), in Spanish): forms, content editing, security tools and OCR.
+**Coming next** (see [ROADMAP.md](ROADMAP.md), in Spanish): editing text and images, comparing two PDFs, exporting pages as images and extracting text and images.
 
 It can be installed as an app (PWA) and works offline.
 

@@ -14,6 +14,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). V
 - Numerar páginas, encabezado y pie (menú Herramientas): «1», «Página 1», «Página 1 de 10», «1 / 10» o texto propio con {n}, {total}, {fecha} y {nombre}; seis posiciones, tamaño, color, número inicial y páginas elegidas. Sale derecho también en páginas giradas.
 - Marca de agua (menú Herramientas): texto o imagen (logo), en diagonal, horizontal o vertical, con color, tamaño y opacidad; encima o detrás del contenido.
 - Ocultar datos de verdad (redacción): herramienta «Ocultar» en Anotar para marcar zonas, y en Herramientas buscar y marcar un texto en todo el documento (un DNI, un nombre) y aplicarlo: el texto, las imágenes y los dibujos de debajo se borran del archivo y queda un recuadro negro.
+- Abiertos hace poco: la portada lista los últimos documentos para reabrirlos con un clic (app de Windows; en Chrome y Edge, con permiso del navegador). Se pueden quitar de uno en uno o vaciar la lista.
+- Cada documento se vuelve a abrir en la página y con el zoom en que se dejó.
+- Modo presentación (botón de la barra o F5): una página cada vez a pantalla completa; se pasa con las flechas, el espacio, un clic o deslizando, R gira la vista y Esc sale dejando el visor en la misma página.
 - Pruebas automáticas de formularios, seguridad, compresión, OCR, marcas y redacción (`npm test`).
 
 ## [0.8.0] - 2026-10-12

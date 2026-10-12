@@ -133,6 +133,9 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
             <button id="boton-buscar" class="boton-icono" type="button" data-i18n-titulo="barra.buscar" data-requiere-doc>
                 <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
             </button>
+            <button id="boton-presentacion" class="boton-icono" type="button" data-i18n-titulo="presentacion.boton" data-requiere-doc>
+                <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="1"/><path d="M12 16v4M8 20h8M10 8l4 2-4 2z"/></svg>
+            </button>
             <button id="boton-imprimir" class="boton-icono" type="button" data-i18n-titulo="barra.imprimir" data-requiere-doc>
                 <svg viewBox="0 0 24 24"><path d="M7 9V3h10v6M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"/><rect x="7" y="14" width="10" height="7"/></svg>
             </button>
@@ -303,6 +306,13 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
                     <button id="portada-imagenes" class="boton-secundario" type="button" data-i18n="organizar.imagenesAPdf"></button>
                     <button id="portada-escanear" class="boton-secundario" type="button" data-i18n="escanear.boton"></button>
                 </div>
+                <section id="portada-recientes" class="recientes" hidden>
+                    <div class="recientes__cabecera">
+                        <h2 data-i18n="recientes.titulo"></h2>
+                        <button id="recientes-borrar" class="boton-enlace" type="button" data-i18n="recientes.borrar"></button>
+                    </div>
+                    <ul id="recientes-lista" class="recientes__lista"></ul>
+                </section>
                 <p class="portada__estado">
                     <span data-i18n="motor.etiqueta"></span>
                     <strong id="estado-motor" data-i18n="motor.cargando"></strong>
@@ -313,6 +323,25 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
             </section>
             <div id="paginas" class="paginas" hidden></div>
         </main>
+
+        <div id="presentacion" class="presentacion" tabindex="-1" hidden>
+            <canvas id="presentacion-lienzo" class="presentacion__lienzo"></canvas>
+            <div class="presentacion__controles" role="toolbar">
+                <button id="presentacion-anterior" class="boton-icono" type="button" data-i18n-titulo="barra.anterior">
+                    <svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+                </button>
+                <span id="presentacion-pagina" class="presentacion__pagina"></span>
+                <button id="presentacion-siguiente" class="boton-icono" type="button" data-i18n-titulo="barra.siguiente">
+                    <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+                </button>
+                <button id="presentacion-girar" class="boton-icono" type="button" data-i18n-titulo="presentacion.girar">
+                    <svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/></svg>
+                </button>
+                <button id="presentacion-salir" class="boton-icono" type="button" data-i18n-titulo="presentacion.salir">
+                    <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+                </button>
+            </div>
+        </div>
 
         <section id="vista-organizar" class="organizar" hidden>
             <div class="organizar__barra" role="toolbar">

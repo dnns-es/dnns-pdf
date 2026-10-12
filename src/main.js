@@ -33,6 +33,8 @@ import { iniciarComprimir } from './modulos/comprimir/comprimir.js';
 import { iniciarOcr } from './modulos/ocr/ocr.js';
 import { iniciarMarcas } from './modulos/marcas/marcas.js';
 import { iniciarRedactar } from './modulos/redactar/redactar.js';
+import { iniciarRecientes } from './modulos/recientes/recientes.js';
+import { iniciarPresentacion } from './modulos/presentacion/presentacion.js';
 import { iniciarHistorial } from './nucleo/historial.js';
 
 function prepararIdioma() {
@@ -79,6 +81,8 @@ iniciarComprimir();
 iniciarOcr();
 iniciarMarcas();
 iniciarRedactar();
+iniciarRecientes();
+iniciarPresentacion();
 iniciarBarra();
 iniciarActualizador();
 arrancarMotor();
