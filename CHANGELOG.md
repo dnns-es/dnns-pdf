@@ -19,9 +19,14 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). V
 - Comparar con otro PDF (menú Herramientas): panel con los cambios de cada página, palabra a palabra, en rojo lo que solo está en este y en verde lo que añade el otro, marcados también sobre las páginas; un clic lleva a cada cambio. Las páginas escaneadas se comparan por imagen y se marca la zona que cambia. Avisa de páginas que sobran o faltan.
 - Propiedades del documento (menú Herramientas): título, autor, asunto y palabras clave.
 - Abiertos hace poco: la portada lista los últimos documentos para reabrirlos con un clic (app de Windows; en Chrome y Edge, con permiso del navegador). Se pueden quitar de uno en uno o vaciar la lista.
+- Pestañas: varios documentos abiertos a la vez. Cada archivo se abre en su pestaña (si ya está abierto, se va a ella); un clic cambia de documento y vuelve a su página y zoom; la × o el clic con la rueda lo cierran, preguntando si tiene cambios sin guardar, que se marcan con un punto. Ctrl+Alt+Av Pág / Re Pág pasan de una a otra. Deshacer y rehacer van por documento.
 - Cada documento se vuelve a abrir en la página y con el zoom en que se dejó.
 - Modo presentación (botón de la barra o F5): una página cada vez a pantalla completa; se pasa con las flechas, el espacio, un clic o deslizando, R gira la vista y Esc sale dejando el visor en la misma página.
 - Pruebas automáticas de formularios, seguridad, compresión, OCR, marcas, redacción, edición, comparación y exportación (`npm test`).
+
+### Cambiado
+- Abrir otro documento ya no cierra el que estaba abierto: se abre en otra pestaña.
+- Los avisos de «tiene formulario» y «está firmado» salen al abrir el documento, no cada vez que se vuelve a su pestaña.
 
 ## [0.8.0] - 2026-10-12
 
