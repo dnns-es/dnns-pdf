@@ -2,6 +2,17 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versionado semántico.
 
+## [0.4.0] - 2026-10-12
+
+### Añadido
+- App de Android: se instala con un APK desde dnns.es y se actualiza sola desde la propia app.
+- En Android, «Abrir con» y «Compartir» llevan los PDF directamente a la app.
+- En Android, Guardar deja elegir carpeta y nombre, e Imprimir manda el PDF tal cual al sistema de impresión.
+- Las actualizaciones de Android solo se aceptan si vienen de descargas.dnns.es, con la huella correcta y la misma firma.
+
+### Cambiado
+- Guardar ya no da el documento por guardado si se cancela.
+
 ## [0.3.0] - 2026-10-12
 
 ### Añadido

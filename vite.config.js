@@ -26,11 +26,12 @@ function versionPublicada() {
     };
 }
 
-// Tauri sirve la web desde la raíz; GitHub Pages desde /dnns-pdf/. El CLI de Tauri marca su build con TAURI_ENV_PLATFORM
-const paraEscritorio = Boolean(process.env.TAURI_ENV_PLATFORM);
+// Las apps (Tauri y Android) sirven la web desde la raíz; GitHub Pages desde /dnns-pdf/.
+// El CLI de Tauri marca su build con TAURI_ENV_PLATFORM y scripts/apk.js con DNNS_APP
+const paraApp = Boolean(process.env.TAURI_ENV_PLATFORM || process.env.DNNS_APP);
 
 export default defineConfig({
-    base: paraEscritorio ? './' : '/dnns-pdf/',
+    base: paraApp ? './' : '/dnns-pdf/',
     plugins: [versionPublicada()],
     define: {
         __VERSION_APP__: JSON.stringify(paquete.version),

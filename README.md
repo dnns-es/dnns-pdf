@@ -36,8 +36,11 @@ Mira [ROADMAP.md](ROADMAP.md) para ver qué hay hecho y qué viene.
 Windows puede avisar la primera vez («Windows protegió su PC»): pulsa «Más información» → «Ejecutar de todas formas».
 El motivo está en [docs/firma-smartscreen.md](docs/firma-smartscreen.md).
 
+**App de Android:** descarga el APK desde [dnns.es/apps](https://dnns.es/apps.html#dnns-pdf)
+(siempre la última: `dnnspdf_ultima.apk`). Android pedirá permiso para instalar apps de fuera de la tienda.
+Se registra para «Abrir con» y «Compartir» PDF, y avisa e instala las versiones nuevas desde la propia app.
+
 **En camino:**
-- App de Android
 - Organizar páginas: unir, dividir, rotar, reordenar
 - Formularios y firma
 - Edición de texto e imágenes, redacción
@@ -60,8 +63,16 @@ npx tauri dev          # app de escritorio en desarrollo
 npx tauri build        # instalador en desktop/src-tauri/target/release/bundle/nsis/
 ```
 
-Publicar una versión (web + Windows a la vez): `npm run release -- 0.2.0`. Sube el número en todos
-los sitios, crea la etiqueta `v0.2.0` y GitHub Actions compila, firma y publica la Release.
+App de Android (necesita JDK 21 y el SDK de Android; [Capacitor](https://capacitorjs.com) empaqueta la web):
+
+```bash
+npm run apk            # APK firmado en salida/ (la llave de firma no está en el repo)
+npx cap open android   # abrir el proyecto en Android Studio
+```
+
+Publicar una versión (web, Windows y Android a la vez): `npm run release -- 0.2.0`. Sube el número en todos
+los sitios, crea la etiqueta `v0.2.0`, GitHub Actions compila, firma y publica la Release de Windows, y el
+APK se compila y sube a descargas.dnns.es desde el equipo que tiene la llave.
 
 Motor PDF: [MuPDF.js](https://mupdf.readthedocs.io/) (WebAssembly) dentro de un Web Worker. Interfaz en JavaScript vanilla con Vite.
 
@@ -93,7 +104,9 @@ Everything is processed on your device. Your PDFs never leave your browser. The 
 
 **Windows app:** installer in the [latest Release](https://github.com/dnns-es/dnns-pdf/releases/latest). Installs per user, associates `.pdf` files and updates itself. Windows may show a SmartScreen warning the first time: "More info" → "Run anyway" (see [docs/firma-smartscreen.md](docs/firma-smartscreen.md)).
 
-**Coming next** (see [ROADMAP.md](ROADMAP.md), in Spanish): Android app, page organisation, forms and signatures, content editing, security tools and OCR.
+**Android app:** download the APK from [dnns.es/apps](https://dnns.es/apps.html#dnns-pdf). It handles "Open with" and "Share" for PDFs and updates itself from inside the app.
+
+**Coming next** (see [ROADMAP.md](ROADMAP.md), in Spanish): page organisation, forms and signatures, content editing, security tools and OCR.
 
 It can be installed as an app (PWA) and works offline.
 

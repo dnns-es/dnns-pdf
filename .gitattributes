@@ -3,3 +3,5 @@
 *.pdf binary
 *.png binary
 *.wasm binary
+*.bat text eol=crlf
+*.jar binary

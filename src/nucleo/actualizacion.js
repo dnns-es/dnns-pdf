@@ -5,13 +5,13 @@
 // Notas: solo en producción; en desarrollo el service worker estorbaría a la recarga de Vite
 
 import { emitir } from './eventos.js';
-import { esEscritorio } from '../plataforma/index.js';
+import { esApp } from '../plataforma/index.js';
 
 const UNA_HORA = 60 * 60 * 1000;
 
 export async function registrarServiceWorker() {
     // En escritorio actualiza Tauri desde GitHub Releases; el service worker solo estorbaría
-    if (!import.meta.env.PROD || !('serviceWorker' in navigator) || esEscritorio()) {
+    if (!import.meta.env.PROD || !('serviceWorker' in navigator) || esApp()) {
         return;
     }
     const registro = await navigator.serviceWorker.register('./sw.js');

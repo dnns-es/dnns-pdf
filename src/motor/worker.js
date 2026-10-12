@@ -211,7 +211,8 @@ const acciones = {
     'historial:rehacer': () => anotaciones.rehacer(),
     hayCambios: () => anotaciones.hayCambios(),
     modificado: () => anotaciones.modificado(),
-    guardar: () => anotaciones.guardar(),
+    exportar: () => anotaciones.exportar(),
+    marcarGuardado: () => anotaciones.marcarGuardado(),
 
     cerrar() {
         cerrarDocumento();

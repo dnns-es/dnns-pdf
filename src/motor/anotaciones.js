@@ -271,8 +271,9 @@ export function crearModuloAnotaciones(exigirDocumento) {
             return { puedeDeshacer: doc.canUndo(), puedeRehacer: doc.canRedo() };
         },
 
+        // Los bytes del PDF con los cambios, sin darlo por guardado (imprimir, o guardar si el usuario no cancela)
         // Guardado incremental: añade los cambios al final del PDF original, rápido y compatible
-        guardar() {
+        exportar() {
             const doc = exigirDocumento();
             let buffer;
             try {
@@ -282,8 +283,12 @@ export function crearModuloAnotaciones(exigirDocumento) {
             }
             const bytes = buffer.asUint8Array().slice();
             buffer.destroy();
-            hayCambios = false;
             return { bytes, _transferir: [bytes.buffer] };
+        },
+
+        marcarGuardado() {
+            hayCambios = false;
+            return true;
         }
     };
 }

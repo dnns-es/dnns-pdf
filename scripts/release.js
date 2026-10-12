@@ -1,13 +1,16 @@
 // Fecha: 2026-10-12
 // Ruta: /scripts/release.js
 // Publica una versión: sube el número en todos los sitios a la vez, crea la etiqueta y la empuja
-// La etiqueta dispara release.yml (instalador de Windows) y el push a main actualiza la web
+// La etiqueta dispara release.yml (instalador de Windows), el push a main actualiza la web
+// y al final se compila y sube el APK de Android (scripts/apk.js)
 // Notas: uso: npm run release -- 0.2.0   (o patch | minor | major). Exige estar en main y sin cambios.
 //        Los sitios con versión: package.json, package-lock.json, desktop/src-tauri/tauri.conf.json,
 //        desktop/src-tauri/Cargo.toml y CACHE_VERSION de public/sw.js. CHANGELOG.md debe tener la sección.
 
 import { execSync } from 'node:child_process';
-import { readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { homedir } from 'node:os';
+import { join } from 'node:path';
 import { createInterface } from 'node:readline/promises';
 
 const raiz = new URL('../', import.meta.url);
@@ -86,13 +89,29 @@ async function principal() {
     }
     aplicarVersion(nueva);
     // Cargo.lock debe reflejar la versión nueva del paquete para que el build no lo modifique
-    execSync('cargo update -p dnns-pdf --offline', { cwd: ruta('desktop/src-tauri/'), stdio: 'ignore' });
+    execSync(`"${cargo()}" update -p dnns-pdf --offline`, { cwd: ruta('desktop/src-tauri/'), stdio: 'ignore' });
     git('add -A');
     git(`commit -q -m "Versión ${nueva}"`);
     git(`tag -a v${nueva} -m "Versión ${nueva}"`);
     git('push -q origin main');
     git(`push -q origin v${nueva}`);
     console.log(`\n✔ Publicada v${nueva}. Sigue el progreso en https://github.com/dnns-es/dnns-pdf/actions`);
+    publicarAndroid();
+}
+
+// cargo no siempre está en el PATH de la consola (p. ej. el bash de Git): se busca donde lo deja rustup
+function cargo() {
+    const enRustup = join(homedir(), '.cargo', 'bin', process.platform === 'win32' ? 'cargo.exe' : 'cargo');
+    return existsSync(enRustup) ? enRustup : 'cargo';
+}
+
+// El APK se firma en este equipo (la llave no está en GitHub), así que se compila y sube desde aquí
+function publicarAndroid() {
+    if (!existsSync(ruta('desktop/.keys/android-firma.properties'))) {
+        console.log('\n! Sin la llave de Android en este equipo: el APK no se ha publicado (npm run apk -- --publicar)');
+        return;
+    }
+    execSync('node scripts/apk.js --publicar', { cwd: raiz, stdio: 'inherit' });
 }
 
 principal().catch((error) => fallar(error.message));

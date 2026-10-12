@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Solo se comparte con el instalador del sistema la carpeta de la actualización descargada -->
+<paths xmlns:android="http://schemas.android.com/apk/res/android">
+    <cache-path name="actualizacion" path="actualizacion/" />
+</paths>
