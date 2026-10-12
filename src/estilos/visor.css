@@ -143,8 +143,14 @@ Notas: el tamaño de cada página sale de --ancho/--alto (puntos PDF) por --esca
     cursor: crosshair;
 }
 
+/* Con Seleccionar el dedo sigue desplazando la página; solo se arrastra una anotación tocada */
 .anotando--capa[data-herramienta="seleccionar"] .capa-anotar {
     cursor: default;
+    touch-action: pan-x pan-y;
+}
+
+.anotando--capa[data-herramienta="seleccionar"] .anotacion-hit--seleccionada {
+    touch-action: none;
 }
 
 .anotacion-hit {

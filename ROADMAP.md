@@ -93,15 +93,15 @@ avisa y se actualiza sola sin desinstalar nada.
 
 ## Fase 3 — Anotar
 
-- [ ] Resaltar, subrayar y tachar texto
-- [ ] Notas adhesivas y comentarios
-- [ ] Dibujo libre (lápiz) con color y grosor
-- [ ] Formas: rectángulo, círculo, línea, flecha
-- [ ] Cuadros de texto libres
-- [ ] Sellos (Aprobado, Revisado, Borrador, personalizados)
-- [ ] Panel de lista de anotaciones (ir a, editar, borrar)
-- [ ] Deshacer / rehacer
-- [ ] Guardar las anotaciones dentro del PDF (compatibles con otros lectores)
+- [x] Resaltar, subrayar y tachar texto
+- [x] Notas adhesivas y comentarios
+- [x] Dibujo libre (lápiz) con color y grosor
+- [x] Formas: rectángulo, círculo, línea, flecha
+- [x] Cuadros de texto libres
+- [x] Sellos (Aprobado, Revisado, Borrador, personalizados)
+- [x] Panel de lista de anotaciones (ir a, editar, borrar)
+- [x] Deshacer / rehacer
+- [x] Guardar las anotaciones dentro del PDF (compatibles con otros lectores)
 
 ---
 

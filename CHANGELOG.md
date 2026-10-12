@@ -2,6 +2,19 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versionado semántico.
 
+## [0.3.0] - 2026-10-12
+
+### Añadido
+- Fase 3: anotar. Botón del lápiz en la barra para abrir las herramientas.
+- Resaltar, subrayar y tachar texto seleccionándolo.
+- Notas adhesivas, cuadros de texto, lápiz, rectángulo, círculo, línea y flecha, con color, grosor y opacidad.
+- Sellos: Aprobado, Revisado, Borrador, Confidencial, Urgente y personalizados.
+- Seleccionar, mover y borrar anotaciones (tecla Supr); doble clic para editar el texto de una nota.
+- Pestaña «Notas» en el panel lateral con todas las anotaciones: ir a ella, editar y borrar.
+- Deshacer y rehacer (Ctrl+Z, Ctrl+Y).
+- Guardar: descarga el PDF con las anotaciones dentro, en formato estándar que abren otros lectores.
+- Aviso antes de abrir otro documento o cerrar si hay anotaciones sin guardar.
+
 ## [0.2.1] - 2026-10-12
 
 ### Cambiado
