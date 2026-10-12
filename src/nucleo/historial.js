@@ -9,6 +9,7 @@ import { escuchar, emitir } from './eventos.js';
 import { leer } from './estado.js';
 import { escribiendoEnCampo } from './utilidades.js';
 import { pedir } from '../motor/cliente.js';
+import { aplicarEstructura } from './estructura.js';
 
 let estado = { puedeDeshacer: false, puedeRehacer: false };
 
@@ -26,18 +27,31 @@ export async function registrarCambio() {
     publicar(await pedir('historial:estado'), false);
 }
 
+// Tras una operación de páginas (rotar, borrar, mover...): recolocar las vistas y refrescar botones
+export function registrarCambioDePaginas(respuesta) {
+    aplicarEstructura(respuesta.estructura, true);
+    publicar({ puedeDeshacer: respuesta.puedeDeshacer, puedeRehacer: respuesta.puedeRehacer }, true);
+}
+
+// Deshacer/rehacer pueden devolver páginas cambiadas: primero se recolocan las vistas y luego se repinta
+async function moverEnHistorial(accion) {
+    const { estructura, ...botones } = await pedir(accion);
+    aplicarEstructura(estructura);
+    publicar(botones, true);
+}
+
 export async function deshacer() {
     if (!leer('documento') || !estado.puedeDeshacer) {
         return;
     }
-    publicar(await pedir('historial:deshacer'), true);
+    await moverEnHistorial('historial:deshacer');
 }
 
 export async function rehacer() {
     if (!leer('documento') || !estado.puedeRehacer) {
         return;
     }
-    publicar(await pedir('historial:rehacer'), true);
+    await moverEnHistorial('historial:rehacer');
 }
 
 export function iniciarHistorial() {

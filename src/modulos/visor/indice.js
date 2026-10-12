@@ -73,4 +73,6 @@ async function construir(documento) {
 
 export function iniciarIndice() {
     escuchar('estado:documento', construir);
+    // Los enlaces del índice apuntan a páginas: al moverlas cambian de número
+    escuchar('documento:estructura', construir);
 }

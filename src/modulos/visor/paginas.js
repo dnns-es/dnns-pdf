@@ -74,6 +74,13 @@ function construir(documento) {
     visor.focus({ preventScroll: true });
 }
 
+// Mismo documento con otras páginas (rotar, borrar, mover...): se rehace sin volver al principio
+function reconstruir(documento) {
+    const actual = leer('paginaActual');
+    construir(documento);
+    irAPagina(Math.min(actual, documento.paginas - 1));
+}
+
 // Resolución de pintado: la del zoom por la densidad de la pantalla, con un tope de memoria
 function escalaDePintado(numero) {
     const [ancho, alto] = leer('documento').tamanos[numero];
@@ -262,6 +269,7 @@ export function iniciarPaginas() {
     }, { passive: true });
 
     escuchar('estado:documento', construir);
+    escuchar('documento:estructura', reconstruir);
     escuchar('estado:escala', aplicarEscala);
     escuchar('zoom:ancla', (ancla) => {
         anclaPendiente = ancla;

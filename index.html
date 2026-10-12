@@ -67,6 +67,9 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
             <button id="boton-anotar" class="boton-icono" type="button" aria-pressed="false" data-i18n-titulo="anotar.boton" data-requiere-doc>
                 <svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg>
             </button>
+            <button id="boton-organizar" class="boton-icono" type="button" aria-pressed="false" data-i18n-titulo="organizar.boton" data-requiere-doc>
+                <svg viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/></svg>
+            </button>
         </div>
 
         <div class="barra__grupo barra__grupo--final">
@@ -213,6 +216,10 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
                 <p data-i18n="portada.texto"></p>
                 <button id="portada-abrir" class="boton-principal" type="button" data-i18n="portada.abrir"></button>
                 <p class="portada__pista" data-i18n="portada.soltar"></p>
+                <div class="portada__extra">
+                    <button id="portada-unir" class="boton-secundario" type="button" data-i18n="organizar.unirPdf"></button>
+                    <button id="portada-imagenes" class="boton-secundario" type="button" data-i18n="organizar.imagenesAPdf"></button>
+                </div>
                 <p class="portada__estado">
                     <span data-i18n="motor.etiqueta"></span>
                     <strong id="estado-motor" data-i18n="motor.cargando"></strong>
@@ -223,6 +230,58 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
             </section>
             <div id="paginas" class="paginas" hidden></div>
         </main>
+
+        <section id="vista-organizar" class="organizar" hidden>
+            <div class="organizar__barra" role="toolbar">
+                <div class="barra__grupo">
+                    <button id="organizar-cerrar" class="boton-icono" type="button" data-i18n-titulo="organizar.cerrar">
+                        <svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+                    </button>
+                    <span id="organizar-seleccion" class="organizar__seleccion" aria-live="polite"></span>
+                </div>
+                <div class="barra__grupo">
+                    <button class="boton-icono" type="button" data-organizar="girarIzquierda" data-requiere-seleccion data-i18n-titulo="organizar.girarIzquierda">
+                        <svg viewBox="0 0 24 24"><path d="M4 4v6h6"/><path d="M4.5 10A8 8 0 1 1 6 16"/></svg>
+                    </button>
+                    <button class="boton-icono" type="button" data-organizar="girarDerecha" data-requiere-seleccion data-i18n-titulo="organizar.girarDerecha">
+                        <svg viewBox="0 0 24 24"><path d="M20 4v6h-6"/><path d="M19.5 10A8 8 0 1 0 18 16"/></svg>
+                    </button>
+                    <button class="boton-icono" type="button" data-organizar="duplicar" data-requiere-seleccion data-i18n-titulo="organizar.duplicar">
+                        <svg viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></svg>
+                    </button>
+                    <button class="boton-icono" type="button" data-organizar="borrar" data-requiere-seleccion data-i18n-titulo="organizar.borrar">
+                        <svg viewBox="0 0 24 24"><path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/></svg>
+                    </button>
+                    <button class="boton-icono" type="button" data-organizar="recortar" data-requiere-seleccion data-i18n-titulo="organizar.recortar">
+                        <svg viewBox="0 0 24 24"><path d="M6 2v14a2 2 0 0 0 2 2h14"/><path d="M18 22V8a2 2 0 0 0-2-2H2"/></svg>
+                    </button>
+                </div>
+                <div class="barra__grupo">
+                    <button class="boton-icono" type="button" data-organizar="insertarBlanco" data-i18n-titulo="organizar.insertarBlanco">
+                        <svg viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M12 12v6M9 15h6"/></svg>
+                    </button>
+                    <button class="boton-icono" type="button" data-organizar="insertarArchivo" data-i18n-titulo="organizar.insertarArchivo">
+                        <svg viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M12 10v6M9 13h6"/></svg>
+                    </button>
+                    <button class="boton-icono" type="button" data-organizar="extraer" data-requiere-seleccion data-i18n-titulo="organizar.extraer">
+                        <svg viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M12 11v7M9 15l3 3 3-3"/></svg>
+                    </button>
+                    <button class="boton-icono" type="button" data-organizar="dividir" data-i18n-titulo="organizar.dividir">
+                        <svg viewBox="0 0 24 24"><path d="M12 3v18M5 7l-3 5 3 5M19 7l3 5-3 5"/></svg>
+                    </button>
+                </div>
+                <div class="barra__grupo barra__grupo--final">
+                    <button class="boton-icono" type="button" data-organizar="deshacer" data-i18n-titulo="anotar.deshacer">
+                        <svg viewBox="0 0 24 24"><path d="M9 14L4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-3"/></svg>
+                    </button>
+                    <button class="boton-icono" type="button" data-organizar="rehacer" data-i18n-titulo="anotar.rehacer">
+                        <svg viewBox="0 0 24 24"><path d="M15 14l5-5-5-5"/><path d="M20 9H9a5 5 0 0 0 0 10h3"/></svg>
+                    </button>
+                </div>
+            </div>
+            <p class="organizar__pista" data-i18n="organizar.pista"></p>
+            <div id="organizar-cuadricula" class="organizar__cuadricula" role="listbox" aria-multiselectable="true"></div>
+        </section>
     </div>
 
     <div id="zona-soltar" class="zona-soltar" hidden>
@@ -287,6 +346,67 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
             </div>
         </form>
     </dialog>
+
+    <dialog id="dialogo-crear" class="dialogo dialogo--ancho">
+        <h2 data-i18n="organizar.crearTitulo"></h2>
+        <p data-i18n="organizar.crearTexto"></p>
+        <ol id="crear-lista" class="crear__lista"></ol>
+        <div class="crear__pie">
+            <button id="crear-anadir" type="button" data-i18n="organizar.anadirArchivos"></button>
+            <label id="crear-modo-etiqueta" class="crear__modo">
+                <span data-i18n="organizar.tamanoImagenes"></span>
+                <select id="crear-modo">
+                    <option value="a4" data-i18n="organizar.modoA4"></option>
+                    <option value="imagen" data-i18n="organizar.modoImagen"></option>
+                </select>
+            </label>
+        </div>
+        <div class="dialogo__botones">
+            <button id="crear-cancelar" type="button" data-i18n="comun.cancelar"></button>
+            <button id="crear-aceptar" class="boton-principal" type="button" data-i18n="organizar.crear"></button>
+        </div>
+    </dialog>
+
+    <dialog id="dialogo-dividir" class="dialogo">
+        <form id="formulario-dividir" method="dialog">
+            <h2 data-i18n="organizar.dividirTitulo"></h2>
+            <label class="dialogo__opcion">
+                <input type="radio" name="modo-dividir" value="rangos" checked>
+                <span data-i18n="organizar.porRangos"></span>
+            </label>
+            <input id="dividir-rangos" class="dialogo__campo" type="text" inputmode="numeric" data-i18n-placeholder="organizar.ejemploRangos">
+            <label class="dialogo__opcion">
+                <input type="radio" name="modo-dividir" value="cada">
+                <span data-i18n="organizar.cadaN"></span>
+            </label>
+            <input id="dividir-cada" class="dialogo__campo" type="number" min="1" value="1">
+            <p id="dividir-error" class="dialogo__error" hidden></p>
+            <div class="dialogo__botones">
+                <button id="dividir-cancelar" type="button" data-i18n="comun.cancelar"></button>
+                <button class="boton-principal" type="submit" data-i18n="organizar.dividir"></button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="dialogo-recortar" class="dialogo dialogo--ancho">
+        <h2 data-i18n="organizar.recortarTitulo"></h2>
+        <p data-i18n="organizar.recortarTexto"></p>
+        <div id="recortar-lienzo" class="recortar__lienzo">
+            <canvas id="recortar-imagen"></canvas>
+            <div id="recortar-marco" class="recortar__marco" hidden></div>
+        </div>
+        <label class="dialogo__opcion">
+            <input id="recortar-todas" type="checkbox">
+            <span data-i18n="organizar.recortarTodas"></span>
+        </label>
+        <div class="dialogo__botones">
+            <button id="recortar-quitar" type="button" data-i18n="organizar.quitarRecorte"></button>
+            <button id="recortar-cancelar" type="button" data-i18n="comun.cancelar"></button>
+            <button id="recortar-aceptar" class="boton-principal" type="button" data-i18n="organizar.recortar"></button>
+        </div>
+    </dialog>
+
+    <input id="entrada-varios" type="file" accept="application/pdf,.pdf,image/jpeg,image/png" multiple hidden>
 
     <dialog id="dialogo-confirmar" class="dialogo">
         <p id="texto-confirmar"></p>

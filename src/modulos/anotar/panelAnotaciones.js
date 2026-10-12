@@ -108,5 +108,6 @@ export function iniciarPanelAnotaciones() {
         reconstruir();
     });
     escuchar('anotaciones:cambiadas', reconstruir);
+    escuchar('documento:estructura', reconstruir);
     escuchar('estado:idioma', reconstruir);
 }

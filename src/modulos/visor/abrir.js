@@ -5,7 +5,7 @@
 // Notas: el archivo se lee en local y se cede al worker; nunca sale del dispositivo.
 //        Se conserva el File original para poder descargarlo tal cual.
 
-import { escuchar } from '../../nucleo/eventos.js';
+import { escuchar, emitir } from '../../nucleo/eventos.js';
 import { cambiar, leer } from '../../nucleo/estado.js';
 import { t } from '../../nucleo/i18n.js';
 import { pedir } from '../../motor/cliente.js';
@@ -84,6 +84,8 @@ function prepararSelector() {
     const elegir = () => entrada.click();
     document.getElementById('portada-abrir').addEventListener('click', elegir);
     escuchar('archivo:elegir', elegir);
+    // Otros módulos que crean un PDF nuevo (unir, imágenes a PDF) lo abren por aquí
+    escuchar('archivo:abrir', abrirArchivo);
     entrada.addEventListener('change', () => {
         abrirArchivo(entrada.files[0]);
         // Vaciar permite volver a elegir el mismo archivo
@@ -121,7 +123,13 @@ function prepararArrastrar() {
         evento.preventDefault();
         profundidad = 0;
         zona.hidden = true;
-        abrirArchivo(evento.dataTransfer.files[0]);
+        const archivos = [...evento.dataTransfer.files];
+        // Un solo PDF se abre; varios archivos o imágenes van a «Crear PDF» (unir / imágenes a PDF)
+        if (archivos.length === 1 && !/^image\//.test(archivos[0].type)) {
+            abrirArchivo(archivos[0]);
+        } else if (archivos.length) {
+            emitir('organizar:crearCon', archivos);
+        }
     });
 }
 

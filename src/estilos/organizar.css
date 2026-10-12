@@ -1,0 +1,262 @@
+/*
+Fecha: 2026-10-12
+Ruta: /src/estilos/organizar.css
+Estilos de la vista Organizar (cuadrícula de páginas) y de los diálogos Crear PDF, Dividir y Recortar
+Notas: la vista ocupa el sitio del visor; el panel lateral se oculta mientras está abierta
+*/
+
+.organizar {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    background: var(--fondo);
+}
+
+.organizando .panel {
+    display: none;
+}
+
+.organizar__barra {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    background: var(--superficie);
+    border-bottom: 1px solid var(--borde);
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.organizar__seleccion {
+    min-width: 110px;
+    padding: 0 6px;
+    color: var(--texto-suave);
+    white-space: nowrap;
+}
+
+.organizar__pista {
+    margin: 10px 16px 0;
+    color: var(--texto-suave);
+    font-size: 0.85em;
+}
+
+.organizar__cuadricula {
+    position: relative;
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(170px, 1fr));
+    align-content: start;
+    gap: 18px;
+    padding: 16px;
+    overflow-y: auto;
+    touch-action: pan-y;
+}
+
+@media (max-width: 600px) {
+    .organizar__cuadricula {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        gap: 12px;
+        padding: 12px;
+    }
+}
+
+.tarjeta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    padding: 8px;
+    border-radius: 10px;
+    cursor: pointer;
+    user-select: none;
+    -webkit-user-select: none;
+    -webkit-touch-callout: none;
+    outline: none;
+}
+
+.tarjeta:hover {
+    background: var(--acento-suave);
+}
+
+.tarjeta:focus-visible {
+    box-shadow: 0 0 0 2px var(--acento);
+}
+
+.tarjeta__hoja {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    aspect-ratio: 1;
+}
+
+.tarjeta__hoja canvas {
+    display: block;
+    max-width: 100%;
+    max-height: 100%;
+    background: #ffffff;
+    box-shadow: var(--sombra-pagina);
+    border: 3px solid transparent;
+}
+
+.tarjeta--seleccionada {
+    background: var(--acento-suave);
+}
+
+.tarjeta--seleccionada .tarjeta__hoja canvas {
+    border-color: var(--acento);
+}
+
+.tarjeta__numero {
+    font-size: 0.85em;
+    color: var(--texto-suave);
+}
+
+.tarjeta--seleccionada .tarjeta__numero {
+    color: var(--acento);
+    font-weight: 600;
+}
+
+.organizar__cuadricula--arrastrando .tarjeta--seleccionada {
+    opacity: 0.45;
+}
+
+.organizar__indicador {
+    position: absolute;
+    width: 4px;
+    border-radius: 2px;
+    background: var(--acento);
+    pointer-events: none;
+}
+
+/* Portada: accesos a Unir e Imágenes a PDF */
+
+.portada__extra {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.boton-secundario {
+    padding: 7px 14px;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    background: var(--superficie);
+    cursor: pointer;
+}
+
+.boton-secundario:hover {
+    border-color: var(--acento);
+    color: var(--acento);
+}
+
+/* Diálogos */
+
+.dialogo--ancho {
+    width: min(560px, calc(100vw - 32px));
+}
+
+.crear__lista {
+    max-height: 45vh;
+    margin: 8px 0;
+    padding: 0;
+    overflow-y: auto;
+    list-style: none;
+    counter-reset: pieza;
+}
+
+.crear__fila {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 4px;
+    border-bottom: 1px solid var(--borde);
+    counter-increment: pieza;
+}
+
+.crear__fila::before {
+    content: counter(pieza);
+    min-width: 20px;
+    color: var(--texto-suave);
+    font-size: 0.85em;
+}
+
+.crear__tipo {
+    padding: 1px 6px;
+    border-radius: 4px;
+    background: var(--acento-suave);
+    color: var(--acento);
+    font-size: 0.75em;
+    font-weight: 600;
+}
+
+.crear__nombre {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.crear__accion {
+    width: 30px;
+    height: 30px;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    cursor: pointer;
+}
+
+.crear__accion:hover:not(:disabled) {
+    background: var(--acento-suave);
+}
+
+.crear__accion:disabled {
+    opacity: 0.3;
+    cursor: default;
+}
+
+.crear__pie {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+}
+
+.crear__modo {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.recortar__lienzo {
+    position: relative;
+    width: fit-content;
+    margin: 12px auto;
+    /* Recorta la sombra del marco para que no tape el resto del diálogo */
+    overflow: hidden;
+    touch-action: none;
+}
+
+.recortar__lienzo canvas {
+    display: block;
+    background: #ffffff;
+    box-shadow: var(--sombra-pagina);
+    cursor: crosshair;
+}
+
+/* Lo que queda fuera del recuadro se oscurece con una sombra enorme */
+.recortar__marco {
+    position: absolute;
+    border: 2px dashed var(--acento);
+    box-shadow: 0 0 0 9999px rgb(0 0 0 / 0.35);
+    pointer-events: none;
+}
+
+#dialogo-dividir .dialogo__campo {
+    margin: 4px 0 10px 26px;
+    width: calc(100% - 26px);
+}

@@ -302,10 +302,12 @@ export function iniciarCapas() {
     document.addEventListener('keydown', alTecla);
     escuchar('anotar:modo', aplicarModo);
     escuchar('anotar:herramienta', aplicarModo);
-    escuchar('estado:documento', () => {
+    const soltarSeleccion = () => {
         seleccion = null;
         emitir('anotar:seleccion', null);
-    });
+    };
+    escuchar('estado:documento', soltarSeleccion);
+    escuchar('documento:estructura', soltarSeleccion);
     escuchar('pagina:pintada', (pagina) => refrescarCapa(pagina));
     escuchar('historial:cambiado', ({ repintar }) => {
         if (repintar) {
