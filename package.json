@@ -16,7 +16,8 @@
         "preview": "vite preview",
         "tauri": "tauri",
         "release": "node scripts/release.js",
-        "apk": "node scripts/apk.js"
+        "apk": "node scripts/apk.js",
+        "test": "node --test \"tests/*.test.js\""
     },
     "dependencies": {
         "@capacitor/android": "^8.5.3",

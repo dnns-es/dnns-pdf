@@ -31,6 +31,15 @@ Mira [ROADMAP.md](ROADMAP.md) para ver qué hay hecho y qué viene.
 - Mover y borrar anotaciones, lista de anotaciones en el panel, deshacer y rehacer
 - Las anotaciones se guardan dentro del PDF en formato estándar: se ven en cualquier lector
 
+**Organizar páginas:**
+
+- Vista de cuadrícula: reordenar arrastrando (también en el móvil, manteniendo pulsado)
+- Girar, borrar, duplicar y recortar márgenes de una o varias páginas
+- Insertar páginas en blanco, de otro PDF o desde imágenes
+- Extraer páginas o dividir el PDF por rangos («1-3, 5») o cada N páginas
+- Unir varios PDF e imágenes en uno, y pasar fotos (JPG/PNG) a PDF, desde la portada o soltando varios archivos
+- Todo se puede deshacer, igual que las anotaciones
+
 **App de Windows:** instalador en la [última Release](https://github.com/dnns-es/dnns-pdf/releases/latest)
 (`DNNS.PDF_x.y.z_x64-setup.exe`). Se instala sin administrador, asocia los `.pdf` y se actualiza sola.
 Windows puede avisar la primera vez («Windows protegió su PC»): pulsa «Más información» → «Ejecutar de todas formas».
@@ -41,8 +50,8 @@ El motivo está en [docs/firma-smartscreen.md](docs/firma-smartscreen.md).
 Se registra para «Abrir con» y «Compartir» PDF, y avisa e instala las versiones nuevas desde la propia app.
 
 **En camino:**
-- Organizar páginas: unir, dividir, rotar, reordenar
 - Formularios y firma
+- Escanear documentos con la cámara del móvil
 - Edición de texto e imágenes, redacción
 - Contraseñas, compresión, OCR
 
@@ -53,6 +62,7 @@ Se puede instalar como app (PWA) desde el navegador y funciona sin conexión.
 ```bash
 npm install
 npm run dev            # web en http://localhost:5173/dnns-pdf/
+npm test               # pruebas del motor con los PDF de tests/pdfs
 ```
 
 App de Windows (necesita [Rust](https://rustup.rs) y las Build Tools de Visual Studio con C++):
@@ -102,11 +112,13 @@ Everything is processed on your device. Your PDFs never leave your browser. The 
 
 **Annotate:** highlight, underline and strike out text, sticky notes, text boxes, pen, rectangle, circle, line and arrow (colour, thickness, opacity), stamps (including custom ones), move and delete annotations, annotation list in the side panel, undo and redo. Annotations are saved inside the PDF in the standard format, so any reader shows them.
 
+**Organise pages:** grid view with drag-and-drop reordering (long press on mobile), rotate, delete, duplicate and crop pages, insert blank pages, pages from another PDF or from images, extract pages or split by ranges or every N pages, merge several PDFs and images into one, and turn photos (JPG/PNG) into a PDF. Everything can be undone.
+
 **Windows app:** installer in the [latest Release](https://github.com/dnns-es/dnns-pdf/releases/latest). Installs per user, associates `.pdf` files and updates itself. Windows may show a SmartScreen warning the first time: "More info" → "Run anyway" (see [docs/firma-smartscreen.md](docs/firma-smartscreen.md)).
 
 **Android app:** download the APK from [dnns.es/apps](https://dnns.es/apps.html#dnns-pdf). It handles "Open with" and "Share" for PDFs and updates itself from inside the app.
 
-**Coming next** (see [ROADMAP.md](ROADMAP.md), in Spanish): page organisation, forms and signatures, content editing, security tools and OCR.
+**Coming next** (see [ROADMAP.md](ROADMAP.md), in Spanish): forms and signatures, document scanning with the phone camera, content editing, security tools and OCR.
 
 It can be installed as an app (PWA) and works offline.
 

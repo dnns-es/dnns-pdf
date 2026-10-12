@@ -94,6 +94,8 @@ async function elegirSello(valor) {
 
 function prepararBarra() {
     $('boton-anotar').addEventListener('click', () => activarModo(!ajustes.activo));
+    // Otra vista que no admite anotar (Organizar) pide cerrar las herramientas
+    escuchar('anotar:salir', () => ajustes.activo && activarModo(false));
     for (const boton of document.querySelectorAll('[data-herramienta]')) {
         boton.addEventListener('click', () => elegirHerramienta(boton.dataset.herramienta));
     }

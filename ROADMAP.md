@@ -122,13 +122,13 @@ Se eligió Capacitor en vez de Tauri porque el actualizador de Tauri no funciona
 
 ## Fase 4 — Organizar páginas
 
-- [ ] Reordenar páginas arrastrando miniaturas
-- [ ] Rotar, borrar y duplicar páginas
-- [ ] Insertar páginas en blanco o de otro PDF
-- [ ] Unir varios PDF
-- [ ] Dividir por rangos, por cada N páginas o extraer páginas sueltas
-- [ ] Recortar márgenes
-- [ ] Imágenes (JPG/PNG) a PDF
+- [x] Reordenar páginas arrastrando miniaturas
+- [x] Rotar, borrar y duplicar páginas
+- [x] Insertar páginas en blanco o de otro PDF
+- [x] Unir varios PDF
+- [x] Dividir por rangos, por cada N páginas o extraer páginas sueltas
+- [x] Recortar márgenes
+- [x] Imágenes (JPG/PNG) a PDF
 
 ---
 
@@ -140,6 +140,7 @@ Se eligió Capacitor en vez de Tauri porque el actualizador de Tauri no funciona
 - [ ] Firma manuscrita: dibujar, escribir o subir imagen, y guardarla para reutilizar
 - [ ] Firma digital con certificado (.p12/.pfx, p. ej. FNMT) — **verificar soporte en MuPDF.js antes de empezar**; en la versión de escritorio se puede resolver con Rust si el navegador no basta
 - [ ] Verificar firmas digitales de PDFs recibidos
+- [ ] Escanear documentos con la cámara (sobre todo en el móvil): recortar y enderezar la hoja y guardarla como PDF (pedido por Antonio el 12-10-2026, tras las firmas)
 
 ---
 

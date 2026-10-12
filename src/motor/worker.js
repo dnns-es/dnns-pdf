@@ -3,17 +3,19 @@
 // Web Worker que aloja MuPDF.js
 // Abre el documento, pinta páginas, extrae texto e índice y busca, todo fuera del hilo principal
 // Notas: protocolo { id, accion, datos } -> { id, ok, resultado | error }.
-//        Las anotaciones y el historial viven en anotaciones.js.
+//        Las anotaciones y el historial viven en anotaciones.js; las operaciones de páginas, en paginas.js.
 //        Una acción puede devolver { _transferir: [...] } para ceder buffers/bitmaps sin copiarlos.
 //        Solo hay un documento abierto a la vez.
 
 import * as mupdf from 'mupdf';
 import { crearModuloAnotaciones } from './anotaciones.js';
+import { crearModuloPaginas } from './paginas.js';
 
 const MAX_RESULTADOS_BUSQUEDA = 2000;
 
 let documento = null;
 const anotaciones = crearModuloAnotaciones(() => exigirDocumento());
+const paginas = crearModuloPaginas(() => exigirDocumento(), () => anotaciones.marcarCambio());
 
 function exigirDocumento() {
     if (!documento) {
@@ -37,15 +39,31 @@ function conPagina(numero, trabajo) {
     }
 }
 
-function datosDocumento() {
+// Número de páginas, tamaños y la identidad de cada página (su número de objeto PDF): con la
+// identidad la interfaz sabe si un Deshacer cambió el orden aunque los tamaños sean iguales
+function estructura() {
     const doc = exigirDocumento();
     const total = doc.countPages();
     const tamanos = [];
+    const ids = [];
     for (let n = 0; n < total; n++) {
         const [x0, y0, x1, y1] = conPagina(n, (pagina) => pagina.getBounds());
         tamanos.push([x1 - x0, y1 - y0]);
+        ids.push(doc instanceof mupdf.PDFDocument ? doc.findPage(n).asIndirect() : n);
     }
-    return { paginas: total, tamanos, titulo: doc.getMetaData('info:Title') || '' };
+    return { paginas: total, tamanos, ids };
+}
+
+function datosDocumento() {
+    return { ...estructura(), titulo: exigirDocumento().getMetaData('info:Title') || '' };
+}
+
+// Operación de páginas: devuelve la estructura nueva junto con el estado del historial
+function cambiarPaginas(trabajo) {
+    return (datos) => {
+        const resultado = trabajo(datos);
+        return { resultado, estructura: estructura(), ...anotaciones.historial() };
+    };
 }
 
 // MuPDF da RGB sin alfa; ImageData necesita RGBA
@@ -207,8 +225,21 @@ const acciones = {
     'anotaciones:borrar': (datos) => anotaciones.borrar(datos),
     'anotaciones:quadsEntre': (datos) => anotaciones.quadsEntre(datos),
     'historial:estado': () => anotaciones.historial(),
-    'historial:deshacer': () => anotaciones.deshacer(),
-    'historial:rehacer': () => anotaciones.rehacer(),
+    // Deshacer puede afectar a páginas: siempre se manda la estructura para que la interfaz compare
+    'historial:deshacer': () => ({ ...anotaciones.deshacer(), estructura: estructura() }),
+    'historial:rehacer': () => ({ ...anotaciones.rehacer(), estructura: estructura() }),
+
+    // Páginas (ver paginas.js)
+    'paginas:rotar': cambiarPaginas((datos) => paginas.rotar(datos)),
+    'paginas:borrar': cambiarPaginas((datos) => paginas.borrar(datos)),
+    'paginas:duplicar': cambiarPaginas((datos) => paginas.duplicar(datos)),
+    'paginas:reordenar': cambiarPaginas((datos) => paginas.reordenar(datos)),
+    'paginas:insertarBlanco': cambiarPaginas((datos) => paginas.insertarBlanco(datos)),
+    'paginas:insertarPdf': cambiarPaginas((datos) => paginas.insertarPdf(datos)),
+    'paginas:insertarImagenes': cambiarPaginas((datos) => paginas.insertarImagenes(datos)),
+    'paginas:recortar': cambiarPaginas((datos) => paginas.recortar(datos)),
+    'paginas:extraer': (datos) => paginas.extraer(datos),
+    'paginas:unir': (datos) => paginas.unir(datos),
     hayCambios: () => anotaciones.hayCambios(),
     modificado: () => anotaciones.modificado(),
     exportar: () => anotaciones.exportar(),

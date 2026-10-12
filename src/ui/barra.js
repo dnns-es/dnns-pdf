@@ -98,6 +98,8 @@ export function iniciarBarra() {
         activarControles(Boolean(documento));
         mostrarTotal(documento);
     });
+    // Rotar, borrar o insertar cambian el total
+    escuchar('documento:estructura', mostrarTotal);
     escuchar('estado:escala', mostrarZoom);
     escuchar('estado:modoZoom', mostrarZoom);
 }

@@ -286,6 +286,9 @@ export function crearModuloAnotaciones(exigirDocumento) {
             return { bytes, _transferir: [bytes.buffer] };
         },
 
+        // Para otros módulos del worker que cambian el documento (páginas)
+        marcarCambio,
+
         marcarGuardado() {
             hayCambios = false;
             return true;

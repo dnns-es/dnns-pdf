@@ -2,6 +2,19 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versionado semántico.
 
+## [0.5.0] - 2026-10-12
+
+### Añadido
+- Fase 4: organizar páginas. Botón «Organizar» en la barra: el documento se ve en cuadrícula.
+- Reordenar páginas arrastrando (con el ratón, o manteniendo pulsado en el móvil); selección con clic, Ctrl, Mayús y Ctrl+A.
+- Girar a izquierda y derecha, borrar (Supr) y duplicar una o varias páginas.
+- Recortar márgenes dibujando un recuadro, en una página o en todas; y quitar el recorte.
+- Insertar páginas en blanco, todas las de otro PDF o imágenes JPG/PNG detrás de la selección.
+- Extraer las páginas seleccionadas a un PDF nuevo, y dividir por rangos («1-3, 5») o cada N páginas.
+- Unir varios PDF e imágenes en uno, eligiendo el orden; pasar fotos a PDF en A4 o a su tamaño. Desde la portada o soltando varios archivos a la vez.
+- Todos los cambios de páginas entran en Deshacer/Rehacer junto con las anotaciones.
+- Pruebas automáticas del motor de páginas (`npm test`).
+
 ## [0.4.0] - 2026-10-12
 
 ### Añadido

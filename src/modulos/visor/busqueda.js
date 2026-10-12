@@ -157,5 +157,11 @@ export function iniciarBusqueda() {
             cerrarBarra();
         }
     });
+    // Con páginas movidas o borradas los resultados ya no apuntan bien
+    escuchar('documento:estructura', () => {
+        if (!$('barra-busqueda').hidden) {
+            cerrarBarra();
+        }
+    });
     escuchar('estado:idioma', actualizarContador);
 }

@@ -71,7 +71,7 @@ function construir(documento) {
     botones = documento ? documento.tamanos.map((tamano, numero) => crearMiniatura(numero, tamano)) : [];
     lista.replaceChildren(...botones);
     botones.forEach((boton) => observador.observe(boton));
-    marcarActual(0);
+    marcarActual(leer('paginaActual') ?? 0);
 }
 
 function marcarActual(numero) {
@@ -90,5 +90,8 @@ export function iniciarMiniaturas() {
     lista = document.getElementById('lista-miniaturas');
     observador = new IntersectionObserver(alVerse, { root: lista, rootMargin: '300px 0px' });
     escuchar('estado:documento', construir);
+    escuchar('documento:estructura', construir);
+    // Tras deshacer o rehacer el contenido de cualquier página puede haber cambiado
+    escuchar('historial:cambiado', ({ repintar }) => repintar && construir(leer('documento')));
     escuchar('estado:paginaActual', marcarActual);
 }
