@@ -10,7 +10,7 @@ Cada fase se trabaja en su propia rama y termina con un PR y una versión public
 **Objetivo:** repo funcionando, app vacía publicada en GitHub Pages e instalable como PWA.
 
 - [x] Crear el repositorio público `dnns-pdf` en GitHub
-- [x] Copiar `CLAUDE.md` y `ROADMAP.md` a la raíz
+- [x] Copiar `ROADMAP.md` a la raíz
 - [x] `LICENSE` con el texto completo de AGPL-3.0
 - [x] `README.md` en español e inglés (qué es, funciones, privacidad, cómo contribuir)
 - [x] `CONTRIBUTING.md` (ramas, convenciones, cabecera de archivos)

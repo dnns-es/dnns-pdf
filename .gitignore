@@ -8,3 +8,5 @@ Thumbs.db
 .vscode/
 .idea/
 desktop/src-tauri/target/
+# Contexto local del asistente de desarrollo: no se publica
+CLAUDE.md
