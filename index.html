@@ -70,6 +70,9 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
             <button id="boton-organizar" class="boton-icono" type="button" aria-pressed="false" data-i18n-titulo="organizar.boton" data-requiere-doc>
                 <svg viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/></svg>
             </button>
+            <button id="boton-firmar" class="boton-icono" type="button" data-i18n-titulo="firmar.boton" data-requiere-doc>
+                <svg viewBox="0 0 24 24"><path d="M3 17c2-1 3-5 5-5s0 5 2 5 3-6 5-6 1 4 3 4 2-1 3-2"/><path d="M3 21h18"/></svg>
+            </button>
         </div>
 
         <div class="barra__grupo barra__grupo--final">
@@ -406,6 +409,53 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
         </div>
     </dialog>
 
+    <dialog id="dialogo-firma" class="dialogo dialogo--ancho">
+        <h2 data-i18n="firmar.titulo"></h2>
+        <section id="firma-guardadas" class="firma__seccion" hidden>
+            <p class="firma__subtitulo" data-i18n="firmar.guardadas"></p>
+            <ul id="firma-lista" class="firma__lista"></ul>
+            <p class="firma__subtitulo" data-i18n="firmar.nueva"></p>
+        </section>
+        <div class="panel__pestanas firma__pestanas" role="tablist">
+            <button class="panel__pestana" type="button" role="tab" data-firma-modo="dibujar" data-i18n="firmar.dibujar"></button>
+            <button class="panel__pestana" type="button" role="tab" data-firma-modo="escribir" data-i18n="firmar.escribir"></button>
+            <button class="panel__pestana" type="button" role="tab" data-firma-modo="subir" data-i18n="firmar.subir"></button>
+        </div>
+        <div data-firma-panel="dibujar">
+            <canvas id="firma-lienzo" class="firma__lienzo"></canvas>
+            <p class="firma__pista" data-i18n="firmar.pistaDibujar"></p>
+        </div>
+        <div data-firma-panel="escribir" hidden>
+            <input id="firma-nombre" class="dialogo__campo" type="text" maxlength="60" autocomplete="name" data-i18n-placeholder="firmar.tuNombre">
+            <div class="firma__letras">
+                <button class="firma__letra" type="button" data-letra="DNNS Dancing"></button>
+                <button class="firma__letra" type="button" data-letra="DNNS Great Vibes"></button>
+                <button class="firma__letra" type="button" data-letra="DNNS Allura"></button>
+            </div>
+        </div>
+        <div data-firma-panel="subir" hidden>
+            <button id="firma-elegir" class="boton-secundario" type="button" data-i18n="firmar.elegirFoto"></button>
+            <img id="firma-vista" class="firma__vista" alt="" hidden>
+            <p class="firma__pista" data-i18n="firmar.pistaSubir"></p>
+        </div>
+        <div class="firma__pie">
+            <div class="firma__tintas">
+                <button class="firma__tinta firma__tinta--negra" type="button" data-tinta="#000000" data-i18n-titulo="firmar.tintaNegra"></button>
+                <button class="firma__tinta firma__tinta--azul" type="button" data-tinta="#1a3a9e" data-i18n-titulo="firmar.tintaAzul"></button>
+                <button id="firma-borrar" type="button" data-i18n="firmar.borrar"></button>
+            </div>
+            <label class="crear__modo">
+                <input id="firma-recordar" type="checkbox" checked>
+                <span data-i18n="firmar.recordar"></span>
+            </label>
+        </div>
+        <div class="dialogo__botones">
+            <button id="firma-cancelar" type="button" data-i18n="comun.cancelar"></button>
+            <button id="firma-aceptar" class="boton-principal" type="button" data-i18n="firmar.colocar"></button>
+        </div>
+    </dialog>
+
+    <input id="entrada-firma" type="file" accept="image/png,image/jpeg,image/webp" hidden>
     <input id="entrada-varios" type="file" accept="application/pdf,.pdf,image/jpeg,image/png" multiple hidden>
 
     <dialog id="dialogo-confirmar" class="dialogo">

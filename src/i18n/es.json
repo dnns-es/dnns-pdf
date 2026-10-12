@@ -179,5 +179,29 @@
         "recortarTexto": "Arrastra sobre la página para marcar lo que quieres conservar.",
         "recortarTodas": "Aplicar a todas las páginas",
         "quitarRecorte": "Quitar recorte"
+    },
+    "firmar": {
+        "boton": "Firmar el documento",
+        "titulo": "Firma",
+        "guardadas": "Tus firmas guardadas (toca una para usarla)",
+        "nueva": "O crea una nueva",
+        "dibujar": "Dibujar",
+        "escribir": "Escribir",
+        "subir": "Subir foto",
+        "pistaDibujar": "Firma con el dedo, el lápiz o el ratón.",
+        "pistaSubir": "Haz una foto de tu firma en papel blanco: el fondo se quita solo.",
+        "tuNombre": "Tu nombre",
+        "elegirFoto": "Elegir foto…",
+        "tintaNegra": "Tinta negra",
+        "tintaAzul": "Tinta azul",
+        "borrar": "Borrar",
+        "recordar": "Guardar en este dispositivo",
+        "colocar": "Colocar",
+        "usarGuardada": "Usar esta firma",
+        "borrarGuardada": "Olvidar esta firma",
+        "vacia": "La firma está vacía.",
+        "fotoVacia": "No se ve ninguna firma en la foto. Prueba con más luz y papel blanco.",
+        "errorFoto": "No se pudo leer la imagen.",
+        "tocaParaColocar": "Toca la página donde quieras poner la firma."
     }
 }

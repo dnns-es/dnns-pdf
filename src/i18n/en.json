@@ -179,5 +179,29 @@
         "recortarTexto": "Drag over the page to mark what you want to keep.",
         "recortarTodas": "Apply to every page",
         "quitarRecorte": "Remove crop"
+    },
+    "firmar": {
+        "boton": "Sign the document",
+        "titulo": "Signature",
+        "guardadas": "Your saved signatures (tap one to use it)",
+        "nueva": "Or create a new one",
+        "dibujar": "Draw",
+        "escribir": "Type",
+        "subir": "Upload photo",
+        "pistaDibujar": "Sign with your finger, pen or mouse.",
+        "pistaSubir": "Take a photo of your signature on white paper: the background is removed automatically.",
+        "tuNombre": "Your name",
+        "elegirFoto": "Choose photo…",
+        "tintaNegra": "Black ink",
+        "tintaAzul": "Blue ink",
+        "borrar": "Clear",
+        "recordar": "Save on this device",
+        "colocar": "Place",
+        "usarGuardada": "Use this signature",
+        "borrarGuardada": "Forget this signature",
+        "vacia": "The signature is empty.",
+        "fotoVacia": "No signature found in the photo. Try with more light and white paper.",
+        "errorFoto": "The image could not be read.",
+        "tocaParaColocar": "Tap the page where you want to place the signature."
     }
 }

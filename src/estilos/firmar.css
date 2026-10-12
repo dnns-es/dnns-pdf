@@ -1,0 +1,180 @@
+/*
+Fecha: 2026-10-12
+Ruta: /src/estilos/firmar.css
+Estilos del módulo Firmar
+Diálogo de firma (dibujar, escribir, subir), firmas guardadas y asa para cambiar el tamaño
+*/
+
+.firma__subtitulo {
+    margin: 8px 0 4px;
+    color: var(--texto-suave);
+    font-size: 0.85em;
+}
+
+.firma__lista {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 0 0 4px;
+    padding: 0;
+    list-style: none;
+}
+
+.firma__guardada {
+    position: relative;
+}
+
+.firma__usar {
+    display: grid;
+    place-items: center;
+    width: 130px;
+    height: 56px;
+    padding: 4px;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    background: #ffffff;
+    cursor: pointer;
+}
+
+.firma__usar:hover {
+    border-color: var(--acento);
+}
+
+.firma__usar img {
+    max-width: 100%;
+    max-height: 100%;
+}
+
+.firma__quitar {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    width: 22px;
+    height: 22px;
+    border: 1px solid var(--borde);
+    border-radius: 50%;
+    background: var(--superficie);
+    line-height: 1;
+    cursor: pointer;
+}
+
+.firma__pestanas {
+    margin-bottom: 12px;
+}
+
+/* El fondo blanco es solo para ver la tinta: el lienzo es transparente */
+.firma__lienzo {
+    display: block;
+    width: 100%;
+    height: 200px;
+    border: 1px dashed var(--borde);
+    border-radius: 8px;
+    background: #ffffff;
+    cursor: crosshair;
+    touch-action: none;
+}
+
+.firma__pista {
+    margin: 6px 0 0;
+    color: var(--texto-suave);
+    font-size: 0.85em;
+}
+
+.firma__letras {
+    display: grid;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.firma__letra {
+    min-height: 64px;
+    overflow: hidden;
+    padding: 4px 12px;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    background: #ffffff;
+    font-size: 34px;
+    text-align: left;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    cursor: pointer;
+}
+
+.firma__letra[aria-pressed="true"] {
+    border-color: var(--acento);
+    box-shadow: 0 0 0 2px var(--acento-suave);
+}
+
+.firma__vista {
+    display: block;
+    max-width: 100%;
+    max-height: 160px;
+    margin: 12px auto 0;
+    padding: 8px;
+    border: 1px dashed var(--borde);
+    border-radius: 8px;
+    background: #ffffff;
+}
+
+.firma__pie {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.firma__tintas {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.firma__tinta {
+    width: 26px;
+    height: 26px;
+    border: 2px solid var(--superficie);
+    border-radius: 50%;
+    box-shadow: 0 0 0 1px var(--borde);
+    cursor: pointer;
+}
+
+.firma__tinta[aria-pressed="true"] {
+    box-shadow: 0 0 0 2px var(--acento);
+}
+
+.firma__tinta--negra {
+    background: #000000;
+}
+
+.firma__tinta--azul {
+    background: #1a3a9e;
+}
+
+#firma-borrar {
+    padding: 4px 10px;
+    border: 1px solid var(--borde);
+    border-radius: 6px;
+    background: transparent;
+    cursor: pointer;
+}
+
+/* Colocar la firma con un toque */
+.anotando[data-herramienta="firma"] .capa-anotar {
+    cursor: copy;
+}
+
+/* Asa de la esquina para cambiar el tamaño de la anotación seleccionada */
+.asa-tamano {
+    fill: var(--superficie);
+    stroke: var(--acento);
+    stroke-width: 2;
+    vector-effect: non-scaling-stroke;
+    cursor: nwse-resize;
+    touch-action: none;
+}
+
+.anotando:not([data-herramienta="seleccionar"]) .asa-tamano {
+    display: none;
+}
