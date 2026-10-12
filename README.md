@@ -91,8 +91,17 @@ El motivo está en [docs/firma-smartscreen.md](docs/firma-smartscreen.md).
 (siempre la última: `dnnspdf_ultima.apk`). Android pedirá permiso para instalar apps de fuera de la tienda.
 Se registra para «Abrir con» y «Compartir» PDF, y avisa e instala las versiones nuevas desde la propia app.
 
+**App de Mac:** `.dmg` en la [última Release](https://github.com/dnns-es/dnns-pdf/releases/latest)
+(`DNNS.PDF_x.y.z_universal.dmg`, para Mac con Intel y con Apple Silicon). Arrastra la app a Aplicaciones;
+abre los PDF desde el Finder y se actualiza sola. Mientras no esté firmada con certificado de Apple, la
+primera vez macOS no la deja abrir: Ajustes del Sistema → Privacidad y seguridad → «Abrir igualmente».
+
+**App de iPhone y iPad:** en preparación para la App Store. Recibe PDF y documentos con «Abrir en» y
+«Compartir», guarda en Archivos e imprime con AirPrint. Mientras tanto, la web se instala desde Safari con
+«Compartir» → «Añadir a pantalla de inicio».
+
 **En camino:**
-- Publicar en Google Play
+- Publicar en Google Play y en la App Store
 
 Se puede instalar como app (PWA) desde el navegador y funciona sin conexión.
 
@@ -119,9 +128,13 @@ npm run apk            # APK firmado en salida/ (la llave de firma no está en e
 npx cap open android   # abrir el proyecto en Android Studio
 ```
 
-Publicar una versión (web, Windows y Android a la vez): `npm run release -- 0.2.0`. Sube el número en todos
-los sitios, crea la etiqueta `v0.2.0`, GitHub Actions compila, firma y publica la Release de Windows, y el
-APK se compila y sube a descargas.dnns.es desde el equipo que tiene la llave.
+Apps de Mac y de iPhone: se compilan en los Mac de GitHub Actions (no hace falta un Mac). Para probar en local
+con un Mac: `cd desktop && npx tauri build --bundles dmg` y `npx cap open ios` (Xcode).
+
+Publicar una versión (web, Windows, Mac, Android e iPhone a la vez): `npm run release -- 0.2.0`. Sube el número
+en todos los sitios, crea la etiqueta `v0.2.0`, GitHub Actions compila, firma y publica la Release de Windows y
+Mac y sube la de iPhone a TestFlight, y el APK se compila y sube a descargas.dnns.es desde el equipo que tiene
+la llave. Los secretos de Apple se ponen con `scripts/secretos-apple.ps1`.
 
 Motor PDF: [MuPDF.js](https://mupdf.readthedocs.io/) (WebAssembly) dentro de un Web Worker. Interfaz en JavaScript vanilla con Vite.
 
@@ -169,7 +182,11 @@ Everything is processed on your device. Your PDFs never leave your browser; neit
 
 **Android app:** download the APK from [dnns.es/apps](https://dnns.es/apps.html#dnns-pdf). It handles "Open with" and "Share" for PDFs and updates itself from inside the app.
 
-**Coming next** (see [ROADMAP.md](ROADMAP.md), in Spanish): Google Play.
+**Mac app:** universal `.dmg` (Intel and Apple Silicon) in the [latest Release](https://github.com/dnns-es/dnns-pdf/releases/latest). Opens PDFs from Finder and updates itself. Until it is signed with an Apple certificate, macOS blocks the first launch: System Settings → Privacy & Security → "Open Anyway".
+
+**iPhone and iPad app:** being prepared for the App Store ("Open in" and "Share", save to Files, AirPrint). Meanwhile, install the web app from Safari: Share → "Add to Home Screen".
+
+**Coming next** (see [ROADMAP.md](ROADMAP.md), in Spanish): Google Play and the App Store.
 
 It can be installed as an app (PWA) and works offline.
 

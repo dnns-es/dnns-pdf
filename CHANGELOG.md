@@ -2,6 +2,16 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versionado semántico.
 
+## [Sin publicar]
+
+### Añadido
+- App de Mac: `.dmg` universal (Intel y Apple Silicon) en cada versión, con actualización automática y apertura de documentos desde el Finder.
+- App de iPhone y iPad (en preparación para TestFlight y la App Store): «Abrir en» y «Compartir», guardar en Archivos e imprimir con AirPrint.
+- Ajustes → Acerca de dice también «app de Mac» y «app de iPhone».
+
+### Cambiado
+- La interfaz respeta la zona de la muesca o la isla del iPhone, también en la web instalada.
+
 ## [0.9.1] - 2026-10-12
 
 ### Añadido

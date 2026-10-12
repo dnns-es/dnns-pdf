@@ -123,6 +123,22 @@ Se eligió Capacitor en vez de Tauri porque el actualizador de Tauri no funciona
 - [x] Guardar con el selector del sistema e imprimir el PDF con la impresión de Android
 - [ ] Publicar en Google Play
 
+## Fase 3c — Apps de Mac y de iPhone (pedida por Antonio el 12-10-2026)
+
+**Objetivo:** las mismas apps en Apple, compiladas en los Mac de GitHub Actions (sin Mac en casa).
+Mac con Tauri (igual que Windows); iPhone con Capacitor (igual que Android).
+
+- [x] Mac: `.dmg` universal (Intel y Apple Silicon) en la publicación automática, junto al de Windows
+- [x] Mac: actualización automática con el mismo `latest.json` firmado
+- [x] Mac: abrir documentos desde el Finder (evento `Opened` de macOS)
+- [ ] Mac: firma con certificado Developer ID y notarización (preparado en el workflow; falta el certificado)
+- [x] iPhone: proyecto de Capacitor en `ios/` con icono, pantalla de arranque y zona segura (muesca/isla)
+- [x] iPhone: «Abrir en» / «Compartir», guardar en Archivos e imprimir con AirPrint (`Archivos.swift`)
+- [x] iPhone: compilación y arranque en el simulador en cada PR; subida a TestFlight con cada versión
+- [ ] iPhone: alta de la app en App Store Connect, perfil «DNNS PDF App Store» y secretos (`scripts/secretos-apple.ps1`)
+- [ ] iPhone: probar en un iPhone real desde TestFlight (abrir, guardar, imprimir, escanear con la cámara)
+- [ ] Publicar en la App Store
+
 ---
 
 ## Fase 4 — Organizar páginas
