@@ -3,13 +3,15 @@
 // Web Worker que aloja MuPDF.js
 // Abre el documento, pinta páginas, extrae texto e índice y busca, todo fuera del hilo principal
 // Notas: protocolo { id, accion, datos } -> { id, ok, resultado | error }.
-//        Las anotaciones y el historial viven en anotaciones.js; las operaciones de páginas, en paginas.js.
+//        Las anotaciones y el historial viven en anotaciones.js; las operaciones de páginas, en paginas.js;
+//        los formularios, en formularios.js.
 //        Una acción puede devolver { _transferir: [...] } para ceder buffers/bitmaps sin copiarlos.
 //        Solo hay un documento abierto a la vez.
 
 import * as mupdf from 'mupdf';
 import { crearModuloAnotaciones } from './anotaciones.js';
 import { crearModuloPaginas } from './paginas.js';
+import { crearModuloFormularios } from './formularios.js';
 import * as firmaDigital from './firmaDigital.js';
 import { convertirOficina } from './oficina/oficina.js';
 
@@ -18,6 +20,7 @@ const MAX_RESULTADOS_BUSQUEDA = 2000;
 let documento = null;
 const anotaciones = crearModuloAnotaciones(() => exigirDocumento());
 const paginas = crearModuloPaginas(() => exigirDocumento(), () => anotaciones.marcarCambio());
+const formularios = crearModuloFormularios(() => exigirDocumento(), () => anotaciones.marcarCambio());
 
 function exigirDocumento() {
     if (!documento) {
@@ -246,6 +249,14 @@ const acciones = {
     modificado: () => anotaciones.modificado(),
     exportar: () => anotaciones.exportar(),
     marcarGuardado: () => anotaciones.marcarGuardado(),
+
+    // Formularios (ver formularios.js)
+    'formularios:hay': () => formularios.hay(),
+    'formularios:listar': (datos) => formularios.listar(datos),
+    'formularios:cambiar': (datos) => formularios.cambiar(datos),
+    'formularios:crear': (datos) => formularios.crear(datos),
+    'formularios:borrar': (datos) => formularios.borrar(datos),
+    'formularios:aplanar': () => formularios.aplanar(),
 
     // Firma digital con certificado (ver firmaDigital.js)
     'firma:leerCertificado': (datos) => firmaDigital.leerCertificado(datos),

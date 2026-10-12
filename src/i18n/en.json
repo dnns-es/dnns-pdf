@@ -263,6 +263,21 @@
         "verdadero": "TRUE",
         "falso": "FALSE"
     },
+    "formularios": {
+        "boton": "Fill in the form and add fields",
+        "aviso": "This document has a form: press “Fill in” to complete it.",
+        "pista": "Type in the fields; Save keeps them inside the PDF.",
+        "pistaTexto": "Draw a box where you want the text field (or tap for a regular one). Esc to finish.",
+        "pistaCasilla": "Tap where you want the checkbox. Esc to finish.",
+        "anadirTexto": "Add text field",
+        "anadirCasilla": "Add checkbox",
+        "aplanar": "Flatten",
+        "confirmarAplanar": "Turn the form into fixed content? The fields will no longer be fillable (can be undone).",
+        "aplanado": "Form flattened: the fields are now part of the page.",
+        "cerrar": "Done",
+        "borrarCampo": "Delete this field",
+        "error": "The form could not be changed."
+    },
     "escanear": {
         "boton": "Scan with the camera",
         "insertar": "Scan pages with the camera",

@@ -135,9 +135,9 @@ Se eligió Capacitor en vez de Tauri porque el actualizador de Tauri no funciona
 
 ## Fase 5 — Formularios y firma
 
-- [ ] Detectar y rellenar formularios existentes (texto, casillas, radio, listas)
-- [ ] Crear campos de formulario nuevos
-- [ ] Aplanar formulario (convertir en contenido fijo)
+- [x] Detectar y rellenar formularios existentes (texto, casillas, radio, listas)
+- [x] Crear campos de formulario nuevos (texto y casilla; MuPDF.js no crea widgets: se montan con la API de objetos y apariencias propias)
+- [x] Aplanar formulario (convertir en contenido fijo), con deshacer
 - [x] Firma manuscrita: dibujar, escribir o subir imagen, y guardarla para reutilizar
 - [x] Firma digital con certificado (.p12/.pfx, p. ej. FNMT) — MuPDF.js no firma: se hace con node-forge (PKCS#7 separado, guardado incremental), comprobado con OpenSSL y pyHanko
 - [x] Verificar firmas digitales de PDFs recibidos (integridad, firmante, fecha y confianza FNMT/DNIe; sin consultar revocación)

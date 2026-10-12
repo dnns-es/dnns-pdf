@@ -263,6 +263,21 @@
         "verdadero": "VERDADERO",
         "falso": "FALSO"
     },
+    "formularios": {
+        "boton": "Rellenar formulario y añadir campos",
+        "aviso": "Este documento tiene un formulario: pulsa «Rellenar» para completarlo.",
+        "pista": "Escribe en los campos; con Guardar quedan dentro del PDF.",
+        "pistaTexto": "Dibuja un recuadro donde quieras el campo de texto (o toca para uno normal). Esc para terminar.",
+        "pistaCasilla": "Toca donde quieras la casilla. Esc para terminar.",
+        "anadirTexto": "Añadir campo de texto",
+        "anadirCasilla": "Añadir casilla",
+        "aplanar": "Aplanar",
+        "confirmarAplanar": "¿Convertir el formulario en contenido fijo? Los campos dejarán de poder rellenarse (se puede deshacer).",
+        "aplanado": "Formulario aplanado: los campos ya son parte de la página.",
+        "cerrar": "Terminar",
+        "borrarCampo": "Borrar este campo",
+        "error": "No se pudo cambiar el formulario."
+    },
     "escanear": {
         "boton": "Escanear con la cámara",
         "insertar": "Escanear páginas con la cámara",

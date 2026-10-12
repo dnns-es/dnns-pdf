@@ -2,6 +2,14 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versionado semántico.
 
+## [0.9.0] - 2026-10-12
+
+### Añadido
+- Fase 5 (segunda parte): formularios. Botón «Rellenar» en la barra: los campos del PDF (texto, casillas, opciones, desplegables y listas) se rellenan encima de la página y quedan dentro del PDF al guardar. Al abrir un PDF con formulario, aviso.
+- Añadir campos nuevos a cualquier PDF: campo de texto (dibujando un recuadro; los altos admiten varias líneas) y casilla; cada campo se puede borrar.
+- Aplanar: los campos pasan a ser contenido fijo de la página. Todo (rellenar, crear, borrar, aplanar) se puede deshacer.
+- Pruebas automáticas de formularios (`npm test`).
+
 ## [0.8.0] - 2026-10-12
 
 ### Añadido

@@ -40,6 +40,11 @@ Mira [ROADMAP.md](ROADMAP.md) para ver qué hay hecho y qué viene.
 - Unir varios PDF e imágenes en uno, y pasar fotos (JPG/PNG/BMP) a PDF, desde la portada o soltando varios archivos
 - Todo se puede deshacer, igual que las anotaciones
 
+**Formularios:**
+
+- Rellenar los campos de un PDF (texto, casillas, opciones, desplegables y listas) escribiendo encima de la página; al guardar quedan dentro del PDF en formato estándar
+- Añadir campos de texto y casillas a cualquier PDF, borrarlos y aplanar el formulario (convertirlo en contenido fijo); todo se puede deshacer
+
 **Firmar:**
 
 - Firma manuscrita: dibújala con el dedo o el ratón, escribe tu nombre con letra manuscrita o sube una foto de tu firma (el fondo se quita solo). Se guarda en el dispositivo para reutilizarla, y se coloca con un toque, se mueve y se cambia de tamaño
@@ -129,6 +134,8 @@ Everything is processed on your device. Your PDFs never leave your browser; neit
 **Annotate:** highlight, underline and strike out text, sticky notes, text boxes, pen, rectangle, circle, line and arrow (colour, thickness, opacity), stamps (including custom ones), move and delete annotations, annotation list in the side panel, undo and redo. Annotations are saved inside the PDF in the standard format, so any reader shows them.
 
 **Organise pages:** grid view with drag-and-drop reordering (long press on mobile), rotate, delete, duplicate and crop pages, insert blank pages, pages from another PDF or from images, extract pages or split by ranges or every N pages, merge several PDFs and images into one, and turn photos (JPG/PNG/BMP) into a PDF. Everything can be undone.
+
+**Forms:** fill in the fields of a PDF (text, checkboxes, radio buttons, drop-downs and lists) right on the page; Save keeps them inside the PDF in the standard format. Add text fields and checkboxes to any PDF, delete them and flatten the form (turn it into fixed content); everything can be undone.
 
 **Sign:** handwritten signature (draw it, type your name in a handwriting font or upload a photo with the background removed; saved on your device for reuse; place, move and resize it), digital signature with your .p12/.pfx certificate (for example the Spanish FNMT one) with an optional visible box, and signature checking of received PDFs (signer, date, whether the file is intact and whether the certificate chains to a recognised Spanish authority). The certificate and its password never leave your device.
 

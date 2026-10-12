@@ -1,0 +1,133 @@
+/*
+Fecha: 2026-10-12
+Ruta: /src/estilos/formularios.css
+Estilos del módulo Formularios
+Barra de relleno, capa de campos sobre cada página y recuadro de diseño de campos nuevos
+*/
+
+/* Barra de relleno (segunda fila, como la de anotar) */
+.barra-formularios {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 4px 8px;
+    background: var(--superficie);
+    border-bottom: 1px solid var(--borde);
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.barra-formularios__pista {
+    flex: 1;
+    min-width: 120px;
+    color: var(--texto-suave);
+    font-size: 0.9em;
+    white-space: nowrap;
+}
+
+.barra-formularios .boton-secundario,
+.barra-formularios .boton-principal {
+    white-space: nowrap;
+}
+
+.barra-formularios [aria-pressed="true"] {
+    background: var(--acento-suave);
+    border-color: var(--acento);
+}
+
+/* Capa de campos: solo existe mientras se rellena */
+.capa-formularios {
+    position: absolute;
+    inset: 0;
+    display: none;
+    z-index: 3;
+}
+
+body.rellenando .capa-formularios {
+    display: block;
+}
+
+body.formularios--diseno .capa-formularios {
+    cursor: crosshair;
+    touch-action: none;
+}
+
+.campo {
+    position: absolute;
+}
+
+.campo input,
+.campo textarea,
+.campo select {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0 2px;
+    border: 1px solid rgb(31 111 235 / 0.55);
+    border-radius: 2px;
+    background: rgb(31 111 235 / 0.12);
+    color: #000000;
+    font-family: sans-serif;
+    font-size: calc(var(--escala) * var(--letra) * 1px);
+    line-height: 1.2;
+    resize: none;
+}
+
+.campo textarea {
+    padding: 1px 2px;
+}
+
+.campo input:focus,
+.campo textarea:focus,
+.campo select:focus {
+    outline: 2px solid var(--acento);
+    outline-offset: 0;
+    background: rgb(255 255 255 / 0.95);
+}
+
+.campo input:disabled,
+.campo textarea:disabled,
+.campo select:disabled {
+    background: rgb(128 128 128 / 0.12);
+    border-style: dashed;
+}
+
+.campo--casilla input,
+.campo--opcion input {
+    padding: 0;
+    accent-color: var(--acento);
+    cursor: pointer;
+}
+
+/* Botón de borrar: solo mientras se añaden campos */
+.campo__borrar {
+    display: none;
+    position: absolute;
+    top: -9px;
+    right: -9px;
+    width: 18px;
+    height: 18px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: #d93025;
+    color: #ffffff;
+    font-size: 13px;
+    line-height: 1;
+    cursor: pointer;
+    z-index: 1;
+}
+
+body.formularios--diseno .campo__borrar {
+    display: block;
+}
+
+.campo-dibujo {
+    position: absolute;
+    border: 1px dashed var(--acento);
+    background: rgb(31 111 235 / 0.1);
+    pointer-events: none;
+}
