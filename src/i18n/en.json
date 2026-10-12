@@ -71,5 +71,22 @@
     "actualizacion": {
         "texto": "New version available",
         "boton": "Update"
+    },
+    "actualizador": {
+        "titulo": "New version {version}",
+        "novedades": "What's new:",
+        "ahora": "Update now",
+        "luego": "Later",
+        "descargando": "Downloading and installing… the app will restart by itself.",
+        "alDia": "You already have the latest version.",
+        "errorComprobar": "Could not check for a new version. Is there an internet connection?",
+        "errorInstalar": "The update could not be installed. Please try again later."
+    },
+    "ajustes": {
+        "titulo": "Settings",
+        "boton": "Settings",
+        "avisar": "Notify on startup when a new version is available",
+        "buscar": "Check for updates",
+        "cerrar": "Close"
     }
 }

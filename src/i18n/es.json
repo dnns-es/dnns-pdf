@@ -71,5 +71,22 @@
     "actualizacion": {
         "texto": "Nueva versión disponible",
         "boton": "Actualizar"
+    },
+    "actualizador": {
+        "titulo": "Nueva versión {version}",
+        "novedades": "Novedades:",
+        "ahora": "Actualizar ahora",
+        "luego": "Más tarde",
+        "descargando": "Descargando e instalando… la app se reiniciará sola.",
+        "alDia": "Ya tienes la última versión.",
+        "errorComprobar": "No se pudo comprobar si hay versión nueva. ¿Hay conexión a internet?",
+        "errorInstalar": "No se pudo instalar la actualización. Prueba más tarde."
+    },
+    "ajustes": {
+        "titulo": "Ajustes",
+        "boton": "Ajustes",
+        "avisar": "Avisar al arrancar si hay una versión nueva",
+        "buscar": "Buscar actualizaciones",
+        "cerrar": "Cerrar"
     }
 }

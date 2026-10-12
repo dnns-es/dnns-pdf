@@ -73,6 +73,9 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
             <button id="boton-descargar" class="boton-icono" type="button" data-i18n-titulo="barra.descargar" data-requiere-doc>
                 <svg viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>
             </button>
+            <button id="boton-ajustes" class="boton-icono" type="button" data-i18n-titulo="ajustes.boton" hidden>
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
+            </button>
             <button id="boton-tema" class="boton-icono" type="button" data-i18n-titulo="barra.tema">
                 <svg viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></svg>
             </button>
@@ -151,6 +154,32 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
         <progress id="barra-progreso" max="1" value="0"></progress>
         <div class="dialogo__botones">
             <button id="progreso-cancelar" type="button" data-i18n="comun.cancelar"></button>
+        </div>
+    </dialog>
+
+    <dialog id="dialogo-actualizacion" class="dialogo">
+        <h2 id="titulo-actualizacion" data-i18n="actualizador.titulo"></h2>
+        <p data-i18n="actualizador.novedades"></p>
+        <pre id="notas-actualizacion" class="dialogo__notas"></pre>
+        <div id="progreso-actualizacion" hidden>
+            <p data-i18n="actualizador.descargando"></p>
+            <progress id="barra-actualizacion" max="1" value="0"></progress>
+        </div>
+        <div id="botones-actualizacion" class="dialogo__botones">
+            <button id="actualizar-luego" type="button" data-i18n="actualizador.luego"></button>
+            <button id="actualizar-ahora" class="boton-principal" type="button" data-i18n="actualizador.ahora"></button>
+        </div>
+    </dialog>
+
+    <dialog id="dialogo-ajustes" class="dialogo">
+        <h2 data-i18n="ajustes.titulo"></h2>
+        <label class="dialogo__opcion">
+            <input id="ajuste-avisar" type="checkbox" checked>
+            <span data-i18n="ajustes.avisar"></span>
+        </label>
+        <div class="dialogo__botones">
+            <button id="ajustes-cerrar" type="button" data-i18n="ajustes.cerrar"></button>
+            <button id="ajustes-buscar" class="boton-principal" type="button" data-i18n="ajustes.buscar"></button>
         </div>
     </dialog>
 
