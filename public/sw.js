@@ -7,7 +7,7 @@
 //        Navegación: red primero (para enterarse de versiones nuevas). Estáticos: caché primero
 //        (Vite les pone hash, así que una URL nunca cambia de contenido; incluye el .wasm de MuPDF).
 
-const CACHE_VERSION = 'v0.3.0';
+const CACHE_VERSION = 'v0.4.0';
 const NOMBRE_CACHE = `dnns-pdf-${CACHE_VERSION}`;
 const PRECARGA = ['./', './index.html', './manifest.json', './icons/icon-192.png', './icons/icon-512.png'];
 
