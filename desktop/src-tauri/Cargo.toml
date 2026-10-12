@@ -1,6 +1,6 @@
 [package]
 name = "dnns-pdf"
-version = "0.2.0"
+version = "0.2.1"
 description = "Editor de PDF libre y gratuito. Todo se procesa en tu equipo."
 authors = ["DNNS.es"]
 license = "AGPL-3.0-or-later"
