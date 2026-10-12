@@ -254,5 +254,27 @@
         "filasOmitidas": "… and {total} more rows that do not fit in the PDF",
         "verdadero": "TRUE",
         "falso": "FALSE"
+    },
+    "escanear": {
+        "boton": "Scan with the camera",
+        "insertar": "Scan pages with the camera",
+        "titulo": "Scan document",
+        "capturar": "Take photo",
+        "elegirFoto": "Choose photo…",
+        "sinCamara": "No camera available or permission was not granted. You can choose a photo from the gallery.",
+        "ajustar": "Fit the corners to the edge of the document",
+        "usar": "Use page",
+        "repetir": "Retake",
+        "filtroMejorado": "Enhanced",
+        "filtroColor": "Colour",
+        "filtroGris": "Grey",
+        "filtroTexto": "Text (black and white)",
+        "paginas": "{total} pp.",
+        "crearPdf": "Create PDF",
+        "anadir": "Add to document",
+        "quitarPagina": "Remove this page",
+        "nombre": "scanned.pdf",
+        "error": "The scanned page could not be processed.",
+        "errorFoto": "The photo could not be read."
     }
 }

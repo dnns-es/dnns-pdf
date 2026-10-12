@@ -169,6 +169,7 @@ const ACCIONES = {
     recortar,
     insertarBlanco,
     insertarArchivo,
+    escanear: () => emitir('escanear:abrir', { destino: 'insertar' }),
     extraer,
     dividir,
     deshacer: () => emitir('historial:deshacer'),
@@ -222,6 +223,14 @@ export function iniciarOrganizar() {
     // Al empezar a anotar (o a colocar una firma) se vuelve al visor
     escuchar('anotar:modo', (activo) => activo && abierta && mostrarVista(false));
     escuchar('organizar:reordenar', (orden) => operar('paginas:reordenar', { orden }));
+    // Páginas escaneadas con la cámara: van detrás de la selección
+    escuchar('escanear:paginas', async ({ imagenes, modo }) => {
+        const en = posicionInsertar();
+        const total = await operar('paginas:insertarImagenes', { en, imagenes, modo }, imagenes.map((i) => i.buffer));
+        if (total) {
+            seleccionar(Array.from({ length: total }, (_, i) => en + i));
+        }
+    });
     // Doble clic en una página: volver al visor en esa página
     escuchar('organizar:abrirPagina', (numero) => {
         mostrarVista(false);

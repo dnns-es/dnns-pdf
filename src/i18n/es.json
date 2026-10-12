@@ -254,5 +254,27 @@
         "filasOmitidas": "… y {total} filas más que no caben en el PDF",
         "verdadero": "VERDADERO",
         "falso": "FALSO"
+    },
+    "escanear": {
+        "boton": "Escanear con la cámara",
+        "insertar": "Escanear páginas con la cámara",
+        "titulo": "Escanear documento",
+        "capturar": "Hacer foto",
+        "elegirFoto": "Elegir foto…",
+        "sinCamara": "No hay cámara o no se ha dado permiso. Puedes elegir una foto de la galería.",
+        "ajustar": "Ajusta las esquinas al borde del documento",
+        "usar": "Usar página",
+        "repetir": "Repetir",
+        "filtroMejorado": "Mejorado",
+        "filtroColor": "Color",
+        "filtroGris": "Gris",
+        "filtroTexto": "Texto (blanco y negro)",
+        "paginas": "{total} pág.",
+        "crearPdf": "Crear PDF",
+        "anadir": "Añadir al documento",
+        "quitarPagina": "Quitar esta página",
+        "nombre": "escaneado.pdf",
+        "error": "No se pudo tratar la página escaneada.",
+        "errorFoto": "No se pudo leer la foto."
     }
 }
