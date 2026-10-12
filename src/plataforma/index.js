@@ -1,6 +1,6 @@
 // Fecha: 2026-10-12
 // Ruta: /src/plataforma/index.js
-// Puente entre la interfaz y la plataforma donde corre (web, escritorio Tauri o Android)
+// Puente entre la interfaz y la plataforma donde corre (web, escritorio Tauri, Android o iPhone)
 // Expone las mismas funciones en todos los sitios; en la web, las propias de las apps no hacen nada
 // Notas: el código de cada app se carga con import() solo dentro de esa app, así la web no lo descarga.
 //        Un File abierto puede llevar de dónde salió: `ruta` (escritorio) o `manejador` (web, File System
@@ -29,12 +29,35 @@ export function esEscritorio() {
 }
 
 // Capacitor inyecta window.Capacitor en el WebView de la app
-export function esAndroid() {
-    return typeof window !== 'undefined' && window.Capacitor?.getPlatform?.() === 'android';
+function plataformaMovil() {
+    return typeof window !== 'undefined' ? window.Capacitor?.getPlatform?.() : undefined;
 }
 
-// Apps instaladas: se actualizan solas por su canal, no por el service worker
+export function esAndroid() {
+    return plataformaMovil() === 'android';
+}
+
+export function esIOS() {
+    return plataformaMovil() === 'ios';
+}
+
+// App de móvil (Android o iPhone): mismos plugins nativos de archivos e impresión
+export function esMovil() {
+    return esAndroid() || esIOS();
+}
+
+// El escritorio de Apple, para nombrarlo bien en «Acerca de»
+export function esMac() {
+    return esEscritorio() && /Macintosh|Mac OS X/.test(navigator.userAgent);
+}
+
+// Apps instaladas: se actualizan por su canal, no por el service worker
 export function esApp() {
+    return esEscritorio() || esMovil();
+}
+
+// Apps que buscan versiones nuevas por su cuenta; en iPhone las actualiza la App Store
+export function tieneActualizador() {
     return esEscritorio() || esAndroid();
 }
 
@@ -44,6 +67,9 @@ async function app() {
     }
     if (esAndroid()) {
         return import('./android.js');
+    }
+    if (esIOS()) {
+        return import('./ios.js');
     }
     return null;
 }
@@ -173,7 +199,7 @@ export async function guardarArchivo(blob, nombre, archivo) {
     return true;
 }
 
-// Imprime el PDF directamente con el sistema si la plataforma lo permite (Android).
+// Imprime el PDF directamente con el sistema si la plataforma lo permite (Android, iPhone).
 // Devuelve false si no: entonces se imprime desde el navegador.
 export async function imprimirPdf(blob, nombre) {
     const imprimir = (await app())?.imprimirPdf;
