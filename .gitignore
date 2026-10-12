@@ -13,3 +13,4 @@ desktop/src-tauri/gen/schemas/
 desktop/.keys/
 # Contexto local del asistente de desarrollo: no se publica
 CLAUDE.md
+salida/

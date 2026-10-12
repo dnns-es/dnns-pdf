@@ -15,9 +15,12 @@
         "build": "vite build",
         "preview": "vite preview",
         "tauri": "tauri",
-        "release": "node scripts/release.js"
+        "release": "node scripts/release.js",
+        "apk": "node scripts/apk.js"
     },
     "dependencies": {
+        "@capacitor/android": "^8.5.3",
+        "@capacitor/core": "^8.5.3",
         "@tauri-apps/api": "^2.12.3",
         "@tauri-apps/plugin-cli": "^2.5.0",
         "@tauri-apps/plugin-process": "^2.4.0",
@@ -25,6 +28,7 @@
         "mupdf": "1.28.1"
     },
     "devDependencies": {
+        "@capacitor/cli": "^8.5.3",
         "@tauri-apps/cli": "^2.12.2",
         "vite": "^8.3.4"
     }

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Pantalla de arranque: fondo de la app con el logo centrado, mientras carga el motor PDF -->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@color/fondo_arranque" />
+    <item
+        android:width="96dp"
+        android:height="96dp"
+        android:gravity="center"
+        android:drawable="@drawable/logo_arranque" />
+</layer-list>
