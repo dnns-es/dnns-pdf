@@ -10,6 +10,7 @@
 import * as mupdf from 'mupdf';
 import { crearModuloAnotaciones } from './anotaciones.js';
 import { crearModuloPaginas } from './paginas.js';
+import * as firmaDigital from './firmaDigital.js';
 
 const MAX_RESULTADOS_BUSQUEDA = 2000;
 
@@ -244,6 +245,11 @@ const acciones = {
     modificado: () => anotaciones.modificado(),
     exportar: () => anotaciones.exportar(),
     marcarGuardado: () => anotaciones.marcarGuardado(),
+
+    // Firma digital con certificado (ver firmaDigital.js)
+    'firma:leerCertificado': (datos) => firmaDigital.leerCertificado(datos),
+    'firma:firmar': (datos) => firmaDigital.firmar(exigirDocumento(), datos),
+    'firma:verificar': (datos) => firmaDigital.verificar(datos),
 
     cerrar() {
         cerrarDocumento();
