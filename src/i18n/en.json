@@ -467,5 +467,23 @@
         "asunto": "Subject",
         "claves": "Keywords (comma separated)",
         "propiedadesHecho": "Properties changed. Save to keep them."
+    },
+    "comparar": {
+        "menu": "Compare with another PDF",
+        "titulo": "Compare",
+        "cerrar": "Close comparison",
+        "con": "With: {nombre}",
+        "comparando": "Comparing…",
+        "resumen": "Changes: {cambios} (pages with changes: {paginas}).",
+        "iguales": "The text of both documents is the same.",
+        "paginasDistintas": "This one has {abierto} pages and the other {otro}.",
+        "quitado": "Only in this one",
+        "anadido": "Only in the other",
+        "pagina": "Page {n}",
+        "soloOtro": "This page is only in the other document.",
+        "soloAbierto": "This page is not in the other document.",
+        "imagen": "The page image changes",
+        "protegido": "The other PDF has a password: remove it before comparing.",
+        "error": "The documents could not be compared."
     }
 }

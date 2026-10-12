@@ -170,7 +170,7 @@ Se eligió Capacitor en vez de Tauri porque el actualizador de Tauri no funciona
 - [x] Quitar contraseña (conociéndola; los permisos, con la de propietario)
 - [x] Comprimir / optimizar tamaño (imágenes a JPEG reducidas, fuentes recortadas, limpieza; tres niveles)
 - [x] OCR con Tesseract.js para hacer buscables los escaneados (capa de texto invisible; español e inglés incluidos en la app)
-- [ ] Comparar dos PDF y marcar diferencias
+- [x] Comparar dos PDF y marcar diferencias (texto palabra a palabra; escaneados por imagen)
 - [ ] Exportar páginas a imagen (PNG/JPG)
 - [ ] Extraer texto e imágenes
 

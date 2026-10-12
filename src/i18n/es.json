@@ -467,5 +467,23 @@
         "asunto": "Asunto",
         "claves": "Palabras clave (separadas por comas)",
         "propiedadesHecho": "Propiedades cambiadas. Guarda para conservarlas."
+    },
+    "comparar": {
+        "menu": "Comparar con otro PDF",
+        "titulo": "Comparar",
+        "cerrar": "Cerrar la comparación",
+        "con": "Con: {nombre}",
+        "comparando": "Comparando…",
+        "resumen": "Cambios: {cambios} (páginas con cambios: {paginas}).",
+        "iguales": "El texto de los dos documentos es igual.",
+        "paginasDistintas": "Este tiene {abierto} páginas y el otro {otro}.",
+        "quitado": "Solo en este",
+        "anadido": "Solo en el otro",
+        "pagina": "Página {n}",
+        "soloOtro": "Esta página solo está en el otro documento.",
+        "soloAbierto": "Esta página no está en el otro documento.",
+        "imagen": "La imagen de la página cambia",
+        "protegido": "El otro PDF tiene contraseña: quítala antes de comparar.",
+        "error": "No se ha podido comparar."
     }
 }

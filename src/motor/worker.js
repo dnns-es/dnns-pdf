@@ -18,6 +18,7 @@ import { crearModuloOcr } from './ocr.js';
 import { crearModuloMarcas } from './marcas.js';
 import { crearModuloRedactar } from './redactar.js';
 import { crearModuloEditar } from './editar.js';
+import { crearModuloComparar } from './comparar.js';
 import * as firmaDigital from './firmaDigital.js';
 import { convertirOficina } from './oficina/oficina.js';
 
@@ -32,6 +33,7 @@ const ocr = crearModuloOcr(() => exigirDocumento(), () => anotaciones.marcarCamb
 const marcas = crearModuloMarcas(() => exigirDocumento(), () => anotaciones.marcarCambio());
 const redactar = crearModuloRedactar(() => exigirDocumento(), () => anotaciones.marcarCambio());
 const editar = crearModuloEditar(() => exigirDocumento(), () => anotaciones.marcarCambio());
+const comparar = crearModuloComparar(() => exigirDocumento());
 
 function exigirDocumento() {
     if (!documento) {
@@ -308,6 +310,11 @@ const acciones = {
     'editar:cambiarImagen': (datos) => editar.cambiarImagen(datos),
     'editar:propiedades': () => editar.propiedades(),
     'editar:ponerPropiedades': (datos) => editar.ponerPropiedades(datos),
+
+    // Comparar con otro PDF (ver comparar.js)
+    'comparar:cargar': (datos) => comparar.cargar(datos),
+    'comparar:comparar': () => comparar.comparar(),
+    'comparar:cerrar': () => comparar.cerrar(),
 
     // Comprimir: sobre una copia con los cambios actuales (ver comprimir.js)
     'comprimir': ({ nivel }) => comprimir(anotaciones.exportar().bytes, nivel),
