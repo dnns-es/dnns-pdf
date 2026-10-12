@@ -153,7 +153,7 @@ Se eligió Capacitor en vez de Tauri porque el actualizador de Tauri no funciona
 
 ## Fase 6 — Edición de contenido
 
-- [x] Añadir texto nuevo con fuente, tamaño y color (fuentes estándar de PDF: Helvetica, Times y Courier)
+- [x] Añadir texto nuevo con fuente, tamaño y color (Helvetica, Times y Courier; DejaVu incrustada y recortada para símbolos y otros alfabetos)
 - [x] Añadir, mover, redimensionar y borrar imágenes (también las que ya traía el PDF, salvo si se solapan con otra)
 - [x] Editar texto existente (método "tapar y reescribir": se borra el texto de la línea, sin tocar el fondo, y se escribe el nuevo)
 - [x] Redacción real: borra el contenido de verdad, no solo lo tapa (zonas a mano o buscando un texto)

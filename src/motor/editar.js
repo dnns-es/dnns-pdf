@@ -5,15 +5,26 @@
 // se borra el texto original de esa línea y se escribe el nuevo en su sitio, sin tocar el fondo), añadir
 // texto e imágenes, mover, cambiar de tamaño o borrar imágenes existentes, y las propiedades del documento.
 // Notas: el texto nuevo usa las fuentes estándar de PDF (Helvetica, Times, Courier): se parece al original
-//        pero no es su tipo de letra exacto. Todo pasa por el journal y se puede deshacer.
+//        pero no es su tipo de letra exacto. Si lleva caracteres que esas no tienen (✓, griego, cirílico...),
+//        se usa DejaVu, que se mete en el PDF (al guardar, recortada a las letras usadas: hayFuentesPropias).
+//        Todo pasa por el journal y se puede deshacer.
 //        Para borrar se usa la redacción de MuPDF, que aplica TODAS las zonas Redact de la página: si hay
 //        zonas pendientes de «Ocultar datos» se avisa en vez de aplicarlas sin querer.
 
 import * as mupdf from 'mupdf';
-import { textoPdf, anchoTexto, num, matrizPagina, ponerRecurso, recursosPropios, anadirContenido, nombreFuenteEstandar, fuenteEstandar } from './contenido.js';
+import { textoPdf, anchoTexto, cabeEnWinAnsi, num, matrizPagina, ponerRecurso, recursosPropios, anadirContenido, nombreFuenteEstandar, fuenteEstandar } from './contenido.js';
 
 const INTERLINEADO = 1.2;
 const PREFIJO_FUENTE = 'DNNSE';
+const PREFIJO_UNICODE = 'DNNSU';
+// Fuentes completas por familia y estilo: normal, negrita, cursiva, negrita cursiva
+const UNICODE = {
+    sans: ['DejaVuSans', 'DejaVuSans-Bold', 'DejaVuSans-Oblique', 'DejaVuSans-BoldOblique'],
+    serif: ['DejaVuSerif', 'DejaVuSerif-Bold', 'DejaVuSerif-Italic', 'DejaVuSerif-BoldItalic'],
+    mono: ['DejaVuSansMono', 'DejaVuSansMono-Bold', 'DejaVuSansMono-Oblique', 'DejaVuSansMono-BoldOblique']
+};
+
+const nombreUnicode = (familia, negrita, cursiva) => (UNICODE[familia] ?? UNICODE.sans)[(negrita ? 1 : 0) + (cursiva ? 2 : 0)];
 const IMAGEN = 'DNNSImg';
 
 function errorCon(codigo) {
@@ -101,7 +112,66 @@ function imagenesDePagina(pagina) {
 
 const solapan = (a, b) => a[0] < b[2] && b[0] < a[2] && a[1] < b[3] && b[1] < a[3];
 
-export function crearModuloEditar(exigirDocumento, marcarCambio) {
+// La fuente tiene glifo para todos los caracteres (el 0 es «no está»)
+function cubre(fuente, texto) {
+    return [...texto].every((c) => /\s/.test(c) || fuente.encodeCharacter(c.codePointAt(0)) !== 0);
+}
+
+// obtenerFuente(nombre): promesa con los bytes de una fuente DejaVu (en el worker se descarga; en las pruebas se lee)
+export function crearModuloEditar(exigirDocumento, marcarCambio, obtenerFuente = null) {
+    const fuentesUnicode = new Map();
+    // Fuente ya metida en cada documento: no se repite en cada texto
+    const metidas = new WeakMap();
+
+    // Fuente que hace falta para estas líneas: estándar si basta; si no, DejaVu (ya cargada con prepararFuente)
+    function fuenteParaTexto(lineas, familia, negrita, cursiva) {
+        if (lineas.every(cabeEnWinAnsi)) {
+            const nombre = nombreFuenteEstandar(familia, negrita, cursiva);
+            return { nombre, fuente: fuenteEstandar(nombre), unicode: false };
+        }
+        // La de la familia si tiene todas las letras; si no, la sin serifa, que es la más completa
+        for (const nombre of [nombreUnicode(familia, negrita, cursiva), nombreUnicode('sans', negrita, cursiva)]) {
+            const fuente = fuentesUnicode.get(nombre);
+            if (fuente && lineas.every((linea) => cubre(fuente, linea))) {
+                return { nombre, fuente, unicode: true };
+            }
+        }
+        // Ninguna tiene todas: lo que falte sale como hueco
+        const nombre = nombreUnicode('sans', negrita, cursiva);
+        if (!fuentesUnicode.has(nombre)) {
+            throw errorCon('SINFUENTE');
+        }
+        return { nombre, fuente: fuentesUnicode.get(nombre), unicode: true };
+    }
+
+    function fuenteEnDocumento(doc, { nombre, fuente, unicode }) {
+        if (!unicode) {
+            return doc.addSimpleFont(fuente, 'Latin');
+        }
+        let delDoc = metidas.get(doc);
+        if (!delDoc) {
+            delDoc = new Map();
+            metidas.set(doc, delDoc);
+        }
+        const guardada = delDoc.get(nombre);
+        // Tras deshacer, el objeto puede haber desaparecido: entonces se vuelve a meter
+        if (guardada && guardada.resolve().get('Subtype').asName?.() === 'Type0') {
+            return guardada;
+        }
+        const nueva = doc.addFont(fuente);
+        delDoc.set(nombre, nueva);
+        return nueva;
+    }
+
+    // Cadena para Tj: WinAnsi con las estándar; con DejaVu, los glifos en hexadecimal (Identity-H)
+    function cadena(linea, { fuente, unicode }) {
+        if (!unicode) {
+            return `(${textoPdf(linea)})`;
+        }
+        const glifos = [...linea].map((c) => fuente.encodeCharacter(c.codePointAt(0)).toString(16).padStart(4, '0'));
+        return `<${glifos.join('')}>`;
+    }
+
     function conPagina(numero, trabajo) {
         const pagina = exigirDocumento().loadPage(numero);
         try {
@@ -142,14 +212,14 @@ export function crearModuloEditar(exigirDocumento, marcarCambio) {
 
     // Escribe líneas de texto con una fuente estándar; (x, y) es la línea base de la primera, en el espacio visible
     function escribir(doc, numero, { x, y, lineas, tamano, familia, negrita, cursiva, color }) {
-        const nombre = nombreFuenteEstandar(familia, negrita, cursiva);
-        const clave = `${PREFIJO_FUENTE}${nombre.replace(/-/g, '')}`;
+        const elegida = fuenteParaTexto(lineas, familia, negrita, cursiva);
+        const clave = `${elegida.unicode ? PREFIJO_UNICODE : PREFIJO_FUENTE}${elegida.nombre.replace(/-/g, '')}`;
         const objeto = doc.findPage(numero);
         const { matriz } = matrizPagina(doc, numero);
-        ponerRecurso(doc, objeto, 'Font', clave, doc.addSimpleFont(fuenteEstandar(nombre), 'Latin'));
+        ponerRecurso(doc, objeto, 'Font', clave, fuenteEnDocumento(doc, elegida));
         const partes = [`q ${matriz.map(num).join(' ')} cm ${colorPdf(color)} rg BT /${clave} 1 Tf`];
         lineas.forEach((linea, i) => {
-            partes.push(`${num(tamano)} 0 0 ${num(-tamano)} ${num(x)} ${num(y + i * tamano * INTERLINEADO)} Tm (${textoPdf(linea)}) Tj`);
+            partes.push(`${num(tamano)} 0 0 ${num(-tamano)} ${num(x)} ${num(y + i * tamano * INTERLINEADO)} Tm ${cadena(linea, elegida)} Tj`);
         });
         partes.push('ET Q');
         anadirContenido(doc, objeto, partes.join('\n'));
@@ -171,6 +241,33 @@ export function crearModuloEditar(exigirDocumento, marcarCambio) {
     }
 
     return {
+        // Carga DejaVu si el texto lo necesita; se llama antes de reescribir o añadir texto
+        async prepararFuente({ texto = '', familia = 'sans', negrita = false, cursiva = false }) {
+            if (cabeEnWinAnsi(String(texto).replace(/[\r\n]/g, ''))) {
+                return { unicode: false };
+            }
+            const cargar = async (nombre) => {
+                if (!fuentesUnicode.has(nombre)) {
+                    if (!obtenerFuente) {
+                        throw errorCon('SINFUENTE');
+                    }
+                    fuentesUnicode.set(nombre, new mupdf.Font(nombre, await obtenerFuente(nombre)));
+                }
+                return fuentesUnicode.get(nombre);
+            };
+            // Si a la de la familia le faltan letras, también la sin serifa (ver fuenteParaTexto)
+            const propia = await cargar(nombreUnicode(familia, negrita, cursiva));
+            if (!cubre(propia, String(texto).replace(/[\r\n]/g, ''))) {
+                await cargar(nombreUnicode('sans', negrita, cursiva));
+            }
+            return { unicode: true };
+        },
+
+        // Se ha metido alguna DejaVu: al guardar conviene recortarla a las letras usadas
+        hayFuentesPropias() {
+            return (metidas.get(exigirDocumento())?.size ?? 0) > 0;
+        },
+
         lineas({ pagina }) {
             return conPagina(pagina, lineasDePagina).map(({ rect, texto, origen, tamano, familia, negrita, cursiva, color }) => (
                 { rect, texto: texto.replace(/\s+$/, ''), origen, tamano, familia, negrita, cursiva, color }));
@@ -206,7 +303,8 @@ export function crearModuloEditar(exigirDocumento, marcarCambio) {
             return enOperacion('añadir texto', (doc) => {
                 // (x, y) es la esquina de arriba: la línea base va un cuerpo más abajo
                 escribir(doc, pagina, { x, y: y + tamano * 0.8, lineas, tamano, familia, negrita, cursiva, color });
-                const ancho = Math.max(...lineas.map((linea) => anchoTexto(linea, negrita, fuenteEstandar(nombreFuenteEstandar(familia, negrita, cursiva))))) * tamano;
+                const { fuente } = fuenteParaTexto(lineas, familia, negrita, cursiva);
+                const ancho = Math.max(...lineas.map((linea) => anchoTexto(linea, negrita, fuente))) * tamano;
                 return { ok: true, rect: [x, y, x + ancho, y + lineas.length * tamano * INTERLINEADO] };
             });
         },

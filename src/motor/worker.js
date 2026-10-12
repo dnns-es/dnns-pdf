@@ -18,6 +18,7 @@ import { crearModuloOcr } from './ocr.js';
 import { crearModuloMarcas } from './marcas.js';
 import { crearModuloRedactar } from './redactar.js';
 import { crearModuloEditar } from './editar.js';
+import { bytesFuenteUnicode } from './fuentesUnicode.js';
 import { crearModuloComparar } from './comparar.js';
 import { crearModuloExportar } from './exportar.js';
 import * as firmaDigital from './firmaDigital.js';
@@ -33,7 +34,26 @@ const seguridad = crearModuloSeguridad(() => exigirDocumento());
 const ocr = crearModuloOcr(() => exigirDocumento(), () => anotaciones.marcarCambio());
 const marcas = crearModuloMarcas(() => exigirDocumento(), () => anotaciones.marcarCambio());
 const redactar = crearModuloRedactar(() => exigirDocumento(), () => anotaciones.marcarCambio());
-const editar = crearModuloEditar(() => exigirDocumento(), () => anotaciones.marcarCambio());
+const editar = crearModuloEditar(() => exigirDocumento(), () => anotaciones.marcarCambio(), bytesFuenteUnicode);
+
+// Bytes del documento para guardar. Si se ha escrito con DejaVu, se recorta a las letras usadas (si no, cada
+// fuente añadiría cientos de KB); ese guardado ya no es incremental
+function exportarDocumento() {
+    const resultado = anotaciones.exportar();
+    if (!editar.hayFuentesPropias()) {
+        return resultado;
+    }
+    const copia = mupdf.Document.openDocument(resultado.bytes, 'application/pdf');
+    try {
+        copia.subsetFonts();
+        const buffer = copia.saveToBuffer('garbage=compact,compress=yes');
+        const bytes = buffer.asUint8Array().slice();
+        buffer.destroy();
+        return { bytes, _transferir: [bytes.buffer] };
+    } finally {
+        copia.destroy();
+    }
+}
 const comparar = crearModuloComparar(() => exigirDocumento());
 const exportar = crearModuloExportar(() => exigirDocumento());
 
@@ -265,7 +285,7 @@ const acciones = {
     'paginas:unir': (datos) => paginas.unir(datos),
     hayCambios: () => anotaciones.hayCambios(),
     modificado: () => anotaciones.modificado(),
-    exportar: () => anotaciones.exportar(),
+    exportar: () => exportarDocumento(),
     marcarGuardado: () => anotaciones.marcarGuardado(),
 
     // Formularios (ver formularios.js)
@@ -306,8 +326,14 @@ const acciones = {
     // Editar contenido (ver editar.js)
     'editar:lineas': (datos) => editar.lineas(datos),
     'editar:imagenes': (datos) => editar.imagenes(datos),
-    'editar:reescribir': (datos) => editar.reescribir(datos),
-    'editar:anadirTexto': (datos) => editar.anadirTexto(datos),
+    async 'editar:reescribir'(datos) {
+        await editar.prepararFuente(datos);
+        return editar.reescribir(datos);
+    },
+    async 'editar:anadirTexto'(datos) {
+        await editar.prepararFuente(datos);
+        return editar.anadirTexto(datos);
+    },
     'editar:anadirImagen': (datos) => editar.anadirImagen(datos),
     'editar:cambiarImagen': (datos) => editar.cambiarImagen(datos),
     'editar:propiedades': () => editar.propiedades(),
@@ -330,13 +356,13 @@ const acciones = {
     },
 
     // Comprimir: sobre una copia con los cambios actuales (ver comprimir.js)
-    'comprimir': ({ nivel }) => comprimir(anotaciones.exportar().bytes, nivel),
+    'comprimir': ({ nivel }) => comprimir(exportarDocumento().bytes, nivel),
 
     // Firma digital con certificado (ver firmaDigital.js)
     'firma:leerCertificado': (datos) => firmaDigital.leerCertificado(datos),
     // Se firma una copia con los cambios actuales: si el usuario no guarda, el documento abierto sigue igual
     async 'firma:firmar'(datos) {
-        const copia = mupdf.Document.openDocument(anotaciones.exportar().bytes, 'application/pdf');
+        const copia = mupdf.Document.openDocument(exportarDocumento().bytes, 'application/pdf');
         try {
             return await firmaDigital.firmar(copia, datos);
         } finally {

@@ -129,7 +129,7 @@ Lee [CONTRIBUTING.md](CONTRIBUTING.md). Toda ayuda es bienvenida: código, tradu
 
 ## Licencia
 
-[AGPL-3.0](LICENSE). Usamos MuPDF.js, que también es AGPL. Además: node-forge (BSD-3) para las firmas digitales, mammoth (BSD-2) para leer documentos de texto fflate (MIT) para abrir archivos comprimidos y Tesseract.js (Apache-2.0) con los datos de idioma de Tesseract (Apache-2.0) para el OCR. Las letras manuscritas de la firma (Dancing Script, Great Vibes y Allura) son libres, con licencia OFL (en `src/fuentes`).
+[AGPL-3.0](LICENSE). Usamos MuPDF.js, que también es AGPL. Además: node-forge (BSD-3) para las firmas digitales, mammoth (BSD-2) para leer documentos de texto, fflate (MIT) para abrir archivos comprimidos y Tesseract.js (Apache-2.0) con los datos de idioma de Tesseract (Apache-2.0) para el OCR. Las letras manuscritas de la firma (Dancing Script, Great Vibes y Allura) son libres, con licencia OFL (en `src/fuentes`). Para escribir símbolos y otros alfabetos al editar se usan las fuentes DejaVu (licencia libre de Bitstream Vera, paquete `dejavu-fonts-ttf`).
 
 ---
 
@@ -186,4 +186,4 @@ See [CONTRIBUTING.md](CONTRIBUTING.md). Code, translations, testing and bug repo
 
 ### License
 
-[AGPL-3.0](LICENSE), required by MuPDF.js. Also: node-forge (BSD-3) for digital signatures, mammoth (BSD-2) for text documents fflate (MIT) for compressed files and Tesseract.js (Apache-2.0) with the Tesseract language data (Apache-2.0) for OCR. The handwriting fonts (Dancing Script, Great Vibes, Allura) are OFL licensed (in `src/fuentes`).
+[AGPL-3.0](LICENSE), required by MuPDF.js. Also: node-forge (BSD-3) for digital signatures, mammoth (BSD-2) for text documents, fflate (MIT) for compressed files and Tesseract.js (Apache-2.0) with the Tesseract language data (Apache-2.0) for OCR. The handwriting fonts (Dancing Script, Great Vibes, Allura) are OFL licensed (in `src/fuentes`). Symbols and other alphabets in edited text use the DejaVu fonts (free Bitstream Vera licence, `dejavu-fonts-ttf` package).

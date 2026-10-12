@@ -112,3 +112,39 @@ test('propiedades del documento', () => {
     const otro = crearModuloEditar(() => guardado, () => {});
     assert.deepEqual(otro.propiedades(), { titulo: 'Título nuevo', autor: 'Oberluss', asunto: 'Prueba', claves: 'pdf, dnns' });
 });
+
+test('texto con símbolos y otros alfabetos: usa DejaVu, se lee bien y al recortarla pesa poco', async () => {
+    const leerFuente = async (nombre) => readFileSync(new URL(`../node_modules/dejavu-fonts-ttf/ttf/${nombre}.ttf`, import.meta.url));
+    const doc = mupdf.Document.openDocument(leer('texto.pdf'), 'application/pdf');
+    doc.enableJournal();
+    const motor = crearModuloEditar(() => doc, () => {}, leerFuente);
+    const tamanoAntes = doc.saveToBuffer('').asUint8Array().length;
+    const texto = 'Hecho ✓ Ωμέγα Привет → 5 €';
+    const datos = { pagina: 0, x: 72, y: 650, texto, tamano: 12, familia: 'serif', negrita: true };
+    await motor.prepararFuente(datos);
+    motor.anadirTexto(datos);
+    // Un segundo texto con la misma fuente no la vuelve a meter
+    await motor.prepararFuente({ ...datos, texto: '✓ otra' });
+    motor.anadirTexto({ ...datos, y: 680, texto: '✓ otra' });
+    assert.ok(motor.hayFuentesPropias());
+    // DejaVu con serifa no tiene ✓: esa línea va con la sin serifa
+    assert.ok(textoPagina(doc).includes(texto), textoPagina(doc));
+    const fuentes = new Set();
+    doc.loadPage(0).toStructuredText().walk({ onChar: (c, o, fuente) => fuentes.add(fuente.getName()) });
+    assert.ok([...fuentes].some((nombre) => /DejaVuSans-Bold/.test(nombre)), [...fuentes].join(','));
+    // Recortada a las letras usadas, como al guardar desde la app
+    const copia = mupdf.Document.openDocument(doc.saveToBuffer('').asUint8Array().slice(), 'application/pdf');
+    copia.subsetFonts();
+    const recortado = copia.saveToBuffer('garbage=compact,compress=yes').asUint8Array();
+    assert.ok(recortado.length - tamanoAntes < 60_000, `crece ${recortado.length - tamanoAntes} bytes`);
+    const reabierto = mupdf.Document.openDocument(recortado.slice(), 'application/pdf');
+    assert.ok(textoPagina(reabierto).includes(texto));
+});
+
+test('texto latino sigue usando las fuentes estándar (sin incrustar nada)', async () => {
+    const { motor } = abrir('texto.pdf');
+    const datos = { pagina: 0, x: 72, y: 650, texto: 'Año 2026: «café» – 5 €', tamano: 12 };
+    assert.deepEqual(await motor.prepararFuente(datos), { unicode: false });
+    motor.anadirTexto(datos);
+    assert.equal(motor.hayFuentesPropias(), false);
+});

@@ -30,6 +30,11 @@ function codigoWinAnsi(c) {
     return codigo >= 32 && codigo <= 255 && !(codigo >= 127 && codigo < 160) ? codigo : 63;
 }
 
+// Si todo el texto se puede escribir con las fuentes estándar (WinAnsi); si no, hace falta una fuente completa
+export function cabeEnWinAnsi(texto) {
+    return [...texto].every((c) => c === '?' || codigoWinAnsi(c) !== 63);
+}
+
 // Texto para un string PDF en WinAnsi: lo que no es ASCII va en octal
 export function textoPdf(texto) {
     return [...texto].map((c) => {
