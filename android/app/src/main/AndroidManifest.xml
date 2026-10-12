@@ -66,6 +66,9 @@ Notas: sin copia de seguridad en la nube de Google: la app no debe sacar nada de
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Escanear documentos con la cámara (opcional: sin cámara se eligen fotos) -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
     <!-- Abrir el instalador del sistema con una actualización ya comprobada; el usuario la acepta -->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 </manifest>
