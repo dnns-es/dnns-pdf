@@ -9,7 +9,7 @@ Cada fase se trabaja en su propia rama y termina con un PR y una versión public
 
 **Objetivo:** repo funcionando, app vacía publicada en GitHub Pages e instalable como PWA.
 
-- [ ] Crear el repositorio público `dnns-pdf` en GitHub
+- [x] Crear el repositorio público `dnns-pdf` en GitHub
 - [x] Copiar `CLAUDE.md` y `ROADMAP.md` a la raíz
 - [x] `LICENSE` con el texto completo de AGPL-3.0
 - [x] `README.md` en español e inglés (qué es, funciones, privacidad, cómo contribuir)
@@ -19,7 +19,7 @@ Cada fase se trabaja en su propia rama y termina con un PR y una versión public
 - [x] Instalar `mupdf` y comprobar que carga en un Web Worker
 - [x] Núcleo: bus de eventos, estado y carga de idiomas (es/en)
 - [x] PWA: `manifest.json`, `sw.js` con `CACHE_VERSION`, banner de actualización, iconos 192 y 512
-- [ ] GitHub Actions: build y despliegue automático a GitHub Pages en cada push a `main`
+- [x] GitHub Actions: build y despliegue automático a GitHub Pages en cada push a `main`
 - [x] Añadir PDFs de prueba en `tests/pdfs/` (texto, escaneado, formulario, protegido, 300+ páginas)
 
 **Terminado cuando:** la URL de Pages abre la app, se puede instalar y aparece el banner al subir versión.
