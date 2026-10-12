@@ -62,7 +62,7 @@ jobs:
             -quiet \
             build
 
-      - name: Arrancar en un iPhone simulado con un PDF de prueba
+      - name: Arrancar en un iPhone simulado
         run: |
           set -e
           UDID=$(xcrun simctl list devices available --json \
@@ -73,14 +73,16 @@ jobs:
           xcrun simctl bootstatus "$UDID" -b
           xcrun simctl status_bar "$UDID" override --time "9:41" --batteryState charged --batteryLevel 100
           xcrun simctl install "$UDID" ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app
-          xcrun simctl launch "$UDID" es.dnns.pdf
-          sleep 8
           mkdir -p capturas
-          xcrun simctl io "$UDID" screenshot capturas/1-portada.png
-          # «Abrir en» de verdad: el sistema le pasa el PDF a la app como si viniera de Archivos
-          xcrun simctl openurl "$UDID" "file://$PWD/tests/pdfs/texto.pdf" || echo "openurl no disponible para archivos"
-          sleep 10
-          xcrun simctl io "$UDID" screenshot capturas/2-pdf-abierto.png
+          # La consola de la web (Capacitor la pasa al registro del sistema en Debug) para ver errores
+          xcrun simctl spawn "$UDID" log stream --level debug --style compact --predicate 'process == "App"' > capturas/registro.txt 2>&1 &
+          xcrun simctl launch "$UDID" es.dnns.pdf
+          for s in 5 15 30; do
+            sleep $((s == 5 ? 5 : s == 15 ? 10 : 15))
+            xcrun simctl io "$UDID" screenshot "capturas/arranque-${s}s.png"
+          done
+          kill %1 || true
+          grep -E '⚡️|\[error\]|\[warn\]|Error|error' capturas/registro.txt | head -80 || true
           if xcrun simctl spawn "$UDID" launchctl list | grep -q "es.dnns.pdf"; then
             echo "La app sigue viva"
           else
