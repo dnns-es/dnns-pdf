@@ -264,7 +264,24 @@
         "falso": "FALSO"
     },
     "herramientas": {
-        "boton": "Herramientas: comprimir, proteger, quitar contraseña…"
+        "boton": "Herramientas: OCR, comprimir, proteger…"
+    },
+    "ocr": {
+        "menu": "Reconocer texto (OCR)…",
+        "titulo": "Reconocer texto (OCR)",
+        "texto": "Lee el texto de las páginas escaneadas o fotografiadas para poder buscarlo, seleccionarlo y copiarlo. La imagen no cambia. Se hace en tu dispositivo; la primera vez descarga el motor (unos 8 MB).",
+        "idioma": "Idioma del documento",
+        "espanol": "Español",
+        "ingles": "Inglés",
+        "ambos": "Español e inglés (más lento)",
+        "soloSinTexto": "Solo las páginas que aún no tienen texto",
+        "boton": "Reconocer",
+        "preparando": "Preparando el reconocimiento…",
+        "pagina": "Reconociendo la página {actual} de {total}…",
+        "hecho": "Texto reconocido: {palabras} palabras. Ya puedes buscar y copiar; guarda para conservarlo.",
+        "cancelado": "Reconocimiento cancelado ({palabras} palabras añadidas).",
+        "nadaQueHacer": "Todas las páginas tienen ya texto.",
+        "error": "No se pudo reconocer el texto."
     },
     "comprimir": {
         "menu": "Comprimir (reducir tamaño)…",

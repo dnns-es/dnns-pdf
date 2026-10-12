@@ -30,6 +30,7 @@ import { iniciarFormularios } from './modulos/formularios/formularios.js';
 import { iniciarHerramientas } from './modulos/herramientas/herramientas.js';
 import { iniciarSeguridad } from './modulos/seguridad/seguridad.js';
 import { iniciarComprimir } from './modulos/comprimir/comprimir.js';
+import { iniciarOcr } from './modulos/ocr/ocr.js';
 import { iniciarHistorial } from './nucleo/historial.js';
 
 function prepararIdioma() {
@@ -73,6 +74,7 @@ iniciarFormularios();
 iniciarHerramientas();
 iniciarSeguridad();
 iniciarComprimir();
+iniciarOcr();
 iniciarBarra();
 iniciarActualizador();
 arrancarMotor();

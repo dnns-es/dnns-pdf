@@ -27,10 +27,13 @@
         "@tauri-apps/plugin-dialog": "^2.8.2",
         "@tauri-apps/plugin-process": "^2.4.0",
         "@tauri-apps/plugin-updater": "^2.13.3",
+        "@tesseract.js-data/eng": "^1.0.0",
+        "@tesseract.js-data/spa": "^1.0.0",
         "fflate": "^0.8.3",
         "mammoth": "^1.13.0",
         "mupdf": "1.28.1",
-        "node-forge": "^1.4.0"
+        "node-forge": "^1.4.0",
+        "tesseract.js": "^7.0.0"
     },
     "devDependencies": {
         "@capacitor/cli": "^8.5.3",

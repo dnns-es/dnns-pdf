@@ -14,6 +14,7 @@ import { crearModuloPaginas } from './paginas.js';
 import { crearModuloFormularios } from './formularios.js';
 import { crearModuloSeguridad } from './seguridad.js';
 import { comprimir } from './comprimir.js';
+import { crearModuloOcr } from './ocr.js';
 import * as firmaDigital from './firmaDigital.js';
 import { convertirOficina } from './oficina/oficina.js';
 
@@ -24,6 +25,7 @@ const anotaciones = crearModuloAnotaciones(() => exigirDocumento());
 const paginas = crearModuloPaginas(() => exigirDocumento(), () => anotaciones.marcarCambio());
 const formularios = crearModuloFormularios(() => exigirDocumento(), () => anotaciones.marcarCambio());
 const seguridad = crearModuloSeguridad(() => exigirDocumento());
+const ocr = crearModuloOcr(() => exigirDocumento(), () => anotaciones.marcarCambio());
 
 function exigirDocumento() {
     if (!documento) {
@@ -268,6 +270,19 @@ const acciones = {
     'seguridad:estado': () => seguridad.estado(),
     'seguridad:proteger': (datos) => seguridad.proteger(datos),
     'seguridad:quitar': (datos) => seguridad.quitarProteccion(datos),
+
+    // OCR: imagen de la página para reconocer, y capa de texto invisible con el resultado (ver ocr.js)
+    async 'ocr:imagen'({ pagina, escala }) {
+        const pixmap = conPagina(pagina, (p) => p.toPixmap(mupdf.Matrix.scale(escala, escala), mupdf.ColorSpace.DeviceRGB, false, true));
+        try {
+            const png = pixmap.asPNG().slice();
+            return { png, _transferir: [png.buffer] };
+        } finally {
+            pixmap.destroy();
+        }
+    },
+    'ocr:tieneTexto': ({ pagina }) => lineasDeTexto(pagina).length > 0,
+    'ocr:anadirTexto': (datos) => ocr.anadirTexto(datos),
 
     // Comprimir: sobre una copia con los cambios actuales (ver comprimir.js)
     'comprimir': ({ nivel }) => comprimir(anotaciones.exportar().bytes, nivel),

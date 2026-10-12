@@ -97,6 +97,10 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
                     <svg viewBox="0 0 24 24"><path d="M14.5 6.5a4 4 0 0 0 5 5L9 22l-3-3L16.5 8.5"/><path d="M14.5 6.5L17 4l3 3-2.5 2.5"/><path d="M3 21l3-3"/></svg>
                 </button>
                 <div id="menu-herramientas" class="menu" role="menu" hidden>
+                    <button type="button" role="menuitem" data-util="ocr">
+                        <svg viewBox="0 0 24 24"><path d="M4 7V4h3M17 4h3v3M20 17v3h-3M7 20H4v-3"/><path d="M8 9h8M8 12h8M8 15h5"/></svg>
+                        <span data-i18n="ocr.menu"></span>
+                    </button>
                     <button type="button" role="menuitem" data-util="comprimir">
                         <svg viewBox="0 0 24 24"><path d="M12 3v7M9 7l3 3 3-3M12 21v-7M9 17l3-3 3 3M4 12h16"/></svg>
                         <span data-i18n="comprimir.menu"></span>
@@ -594,6 +598,34 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
             <div class="dialogo__botones">
                 <button id="proteger-cancelar" type="button" data-i18n="comun.cancelar"></button>
                 <button class="boton-principal" type="submit" data-i18n="seguridad.protegerBoton"></button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="dialogo-ocr" class="dialogo">
+        <form id="formulario-ocr" method="dialog">
+            <h2 data-i18n="ocr.titulo"></h2>
+            <p class="firma__pista" data-i18n="ocr.texto"></p>
+            <p class="cert__etiqueta" data-i18n="ocr.idioma"></p>
+            <label class="dialogo__opcion">
+                <input type="radio" name="idioma-ocr" value="spa" checked>
+                <span data-i18n="ocr.espanol"></span>
+            </label>
+            <label class="dialogo__opcion">
+                <input type="radio" name="idioma-ocr" value="eng">
+                <span data-i18n="ocr.ingles"></span>
+            </label>
+            <label class="dialogo__opcion">
+                <input type="radio" name="idioma-ocr" value="spa+eng">
+                <span data-i18n="ocr.ambos"></span>
+            </label>
+            <label class="dialogo__opcion">
+                <input id="ocr-solo-sin-texto" type="checkbox" checked>
+                <span data-i18n="ocr.soloSinTexto"></span>
+            </label>
+            <div class="dialogo__botones">
+                <button id="ocr-cancelar" type="button" data-i18n="comun.cancelar"></button>
+                <button class="boton-principal" type="submit" data-i18n="ocr.boton"></button>
             </div>
         </form>
     </dialog>

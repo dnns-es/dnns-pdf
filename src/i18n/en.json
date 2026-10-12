@@ -264,7 +264,24 @@
         "falso": "FALSE"
     },
     "herramientas": {
-        "boton": "Tools: compress, protect, remove password…"
+        "boton": "Tools: OCR, compress, protect…"
+    },
+    "ocr": {
+        "menu": "Recognise text (OCR)…",
+        "titulo": "Recognise text (OCR)",
+        "texto": "Reads the text of scanned or photographed pages so it can be searched, selected and copied. The image does not change. Done on your device; the first time it downloads the engine (about 8 MB).",
+        "idioma": "Document language",
+        "espanol": "Spanish",
+        "ingles": "English",
+        "ambos": "Spanish and English (slower)",
+        "soloSinTexto": "Only pages that have no text yet",
+        "boton": "Recognise",
+        "preparando": "Preparing recognition…",
+        "pagina": "Recognising page {actual} of {total}…",
+        "hecho": "Text recognised: {palabras} words. You can now search and copy; save to keep it.",
+        "cancelado": "Recognition cancelled ({palabras} words added).",
+        "nadaQueHacer": "All pages already have text.",
+        "error": "The text could not be recognised."
     },
     "comprimir": {
         "menu": "Compress (reduce size)…",
