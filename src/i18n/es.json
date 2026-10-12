@@ -264,7 +264,22 @@
         "falso": "FALSO"
     },
     "herramientas": {
-        "boton": "Herramientas: proteger, quitar contraseña…"
+        "boton": "Herramientas: comprimir, proteger, quitar contraseña…"
+    },
+    "comprimir": {
+        "menu": "Comprimir (reducir tamaño)…",
+        "titulo": "Comprimir el PDF",
+        "texto": "Reduce las imágenes y limpia el archivo para enviarlo por correo o WhatsApp. Se guarda una copia; el documento abierto no cambia.",
+        "actual": "Tamaño actual: {tamano}",
+        "ligero": "Ligera: casi sin pérdida de calidad",
+        "medio": "Media: buena para leer en pantalla e imprimir",
+        "fuerte": "Fuerte: lo más pequeño posible (imágenes más bastas)",
+        "boton": "Comprimir y guardar",
+        "sufijo": "comprimido",
+        "trabajando": "Comprimiendo…",
+        "hecho": "Comprimido: {antes} → {despues} ({ahorro} % menos)",
+        "sinMejora": "Este PDF ya está bastante optimizado: comprimirlo no lo hace más pequeño.",
+        "error": "No se pudo comprimir el documento."
     },
     "seguridad": {
         "menuProteger": "Proteger con contraseña…",

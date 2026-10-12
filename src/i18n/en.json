@@ -264,7 +264,22 @@
         "falso": "FALSE"
     },
     "herramientas": {
-        "boton": "Tools: protect, remove password…"
+        "boton": "Tools: compress, protect, remove password…"
+    },
+    "comprimir": {
+        "menu": "Compress (reduce size)…",
+        "titulo": "Compress the PDF",
+        "texto": "Shrinks the images and cleans up the file so it can be sent by email or messaging. A copy is saved; the open document is not changed.",
+        "actual": "Current size: {tamano}",
+        "ligero": "Light: almost no quality loss",
+        "medio": "Medium: good for reading on screen and printing",
+        "fuerte": "Strong: as small as possible (coarser images)",
+        "boton": "Compress and save",
+        "sufijo": "compressed",
+        "trabajando": "Compressing…",
+        "hecho": "Compressed: {antes} → {despues} ({ahorro}% smaller)",
+        "sinMejora": "This PDF is already well optimised: compressing it does not make it smaller.",
+        "error": "The document could not be compressed."
     },
     "seguridad": {
         "menuProteger": "Protect with a password…",

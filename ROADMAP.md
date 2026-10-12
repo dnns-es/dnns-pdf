@@ -164,7 +164,7 @@ Se eligió Capacitor en vez de Tauri porque el actualizador de Tauri no funciona
 - [x] Proteger con contraseña de apertura (AES-256, menú Herramientas)
 - [x] Permisos (impedir imprimir, copiar o editar) con contraseña de propietario
 - [x] Quitar contraseña (conociéndola; los permisos, con la de propietario)
-- [ ] Comprimir / optimizar tamaño
+- [x] Comprimir / optimizar tamaño (imágenes a JPEG reducidas, fuentes recortadas, limpieza; tres niveles)
 - [ ] OCR con Tesseract.js para hacer buscables los escaneados
 - [ ] Comparar dos PDF y marcar diferencias
 - [ ] Exportar páginas a imagen (PNG/JPG)

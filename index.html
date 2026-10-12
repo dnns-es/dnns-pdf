@@ -97,6 +97,10 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
                     <svg viewBox="0 0 24 24"><path d="M14.5 6.5a4 4 0 0 0 5 5L9 22l-3-3L16.5 8.5"/><path d="M14.5 6.5L17 4l3 3-2.5 2.5"/><path d="M3 21l3-3"/></svg>
                 </button>
                 <div id="menu-herramientas" class="menu" role="menu" hidden>
+                    <button type="button" role="menuitem" data-util="comprimir">
+                        <svg viewBox="0 0 24 24"><path d="M12 3v7M9 7l3 3 3-3M12 21v-7M9 17l3-3 3 3M4 12h16"/></svg>
+                        <span data-i18n="comprimir.menu"></span>
+                    </button>
                     <button type="button" role="menuitem" data-util="proteger">
                         <svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><circle cx="12" cy="16" r="1.5"/></svg>
                         <span data-i18n="seguridad.menuProteger"></span>
@@ -590,6 +594,30 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
             <div class="dialogo__botones">
                 <button id="proteger-cancelar" type="button" data-i18n="comun.cancelar"></button>
                 <button class="boton-principal" type="submit" data-i18n="seguridad.protegerBoton"></button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="dialogo-comprimir" class="dialogo">
+        <form id="formulario-comprimir" method="dialog">
+            <h2 data-i18n="comprimir.titulo"></h2>
+            <p class="firma__pista" data-i18n="comprimir.texto"></p>
+            <p id="comprimir-actual" class="firma__pista"></p>
+            <label class="dialogo__opcion">
+                <input type="radio" name="nivel-comprimir" value="ligero">
+                <span data-i18n="comprimir.ligero"></span>
+            </label>
+            <label class="dialogo__opcion">
+                <input type="radio" name="nivel-comprimir" value="medio" checked>
+                <span data-i18n="comprimir.medio"></span>
+            </label>
+            <label class="dialogo__opcion">
+                <input type="radio" name="nivel-comprimir" value="fuerte">
+                <span data-i18n="comprimir.fuerte"></span>
+            </label>
+            <div class="dialogo__botones">
+                <button id="comprimir-cancelar" type="button" data-i18n="comun.cancelar"></button>
+                <button class="boton-principal" type="submit" data-i18n="comprimir.boton"></button>
             </div>
         </form>
     </dialog>

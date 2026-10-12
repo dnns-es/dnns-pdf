@@ -13,6 +13,7 @@ import { crearModuloAnotaciones } from './anotaciones.js';
 import { crearModuloPaginas } from './paginas.js';
 import { crearModuloFormularios } from './formularios.js';
 import { crearModuloSeguridad } from './seguridad.js';
+import { comprimir } from './comprimir.js';
 import * as firmaDigital from './firmaDigital.js';
 import { convertirOficina } from './oficina/oficina.js';
 
@@ -267,6 +268,9 @@ const acciones = {
     'seguridad:estado': () => seguridad.estado(),
     'seguridad:proteger': (datos) => seguridad.proteger(datos),
     'seguridad:quitar': (datos) => seguridad.quitarProteccion(datos),
+
+    // Comprimir: sobre una copia con los cambios actuales (ver comprimir.js)
+    'comprimir': ({ nivel }) => comprimir(anotaciones.exportar().bytes, nivel),
 
     // Firma digital con certificado (ver firmaDigital.js)
     'firma:leerCertificado': (datos) => firmaDigital.leerCertificado(datos),
