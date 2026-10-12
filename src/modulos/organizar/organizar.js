@@ -96,6 +96,11 @@ async function insertarArchivo() {
 
 async function borrar() {
     const sel = seleccionadas();
+    // Se avisa antes de preguntar: confirmar algo que luego no se puede hacer despista
+    if (sel.length >= leer('documento').paginas) {
+        mostrarAviso(t('organizar.errorTodas'));
+        return;
+    }
     if (sel.length > 1 && !(await confirmar('organizar.confirmarBorrar', 'organizar.borrar'))) {
         return;
     }
