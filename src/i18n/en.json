@@ -263,6 +263,36 @@
         "verdadero": "TRUE",
         "falso": "FALSE"
     },
+    "herramientas": {
+        "boton": "Tools: protect, remove password…"
+    },
+    "seguridad": {
+        "menuProteger": "Protect with a password…",
+        "menuQuitar": "Remove the password…",
+        "protegerTitulo": "Protect the PDF",
+        "protegerTexto": "An encrypted copy (AES-256) is saved where you choose; the open document is not changed. Passwords never leave your device.",
+        "claveApertura": "Password to open (optional)",
+        "claveRepetir": "Repeat the password",
+        "permisos": "Permissions (even when opened without a password)",
+        "impedirImprimir": "Prevent printing",
+        "impedirCopiar": "Prevent copying text and images",
+        "impedirModificar": "Prevent editing, annotating and filling",
+        "clavePropietario": "Owner password",
+        "propietarioPista": "The one that allows removing the protection later. If left empty, the open password is used.",
+        "protegerBoton": "Protect and save",
+        "sufijoProtegido": "protected",
+        "protegido": "Saved protected: {nombre}",
+        "quitarTitulo": "Remove the protection",
+        "quitarTexto": "The document will open without a password or restrictions. Save it to keep it that way.",
+        "quitarTextoPropietario": "This PDF has restricted permissions: the owner password is needed to remove them.",
+        "quitarBoton": "Remove protection",
+        "quitado": "Protection removed. Save the document to keep it that way.",
+        "errNoCoinciden": "The two passwords do not match.",
+        "errSinClave": "Enter an open password or an owner password.",
+        "errClave": "That is not the owner password.",
+        "errSinCifrar": "This document has no password or restrictions.",
+        "error": "The document protection could not be changed."
+    },
     "formularios": {
         "boton": "Fill in the form and add fields",
         "aviso": "This document has a form: press “Fill in” to complete it.",

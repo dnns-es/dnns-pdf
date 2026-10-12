@@ -263,6 +263,36 @@
         "verdadero": "VERDADERO",
         "falso": "FALSO"
     },
+    "herramientas": {
+        "boton": "Herramientas: proteger, quitar contraseña…"
+    },
+    "seguridad": {
+        "menuProteger": "Proteger con contraseña…",
+        "menuQuitar": "Quitar la contraseña…",
+        "protegerTitulo": "Proteger el PDF",
+        "protegerTexto": "Se guarda una copia cifrada (AES-256) eligiendo dónde; el documento abierto no cambia. Las contraseñas no salen de tu dispositivo.",
+        "claveApertura": "Contraseña para abrir (opcional)",
+        "claveRepetir": "Repite la contraseña",
+        "permisos": "Permisos (aunque se abra sin contraseña)",
+        "impedirImprimir": "Impedir imprimir",
+        "impedirCopiar": "Impedir copiar texto e imágenes",
+        "impedirModificar": "Impedir modificar, anotar y rellenar",
+        "clavePropietario": "Contraseña de propietario",
+        "propietarioPista": "Es la que permite quitar la protección más adelante. Si la dejas vacía se usa la de apertura.",
+        "protegerBoton": "Proteger y guardar",
+        "sufijoProtegido": "protegido",
+        "protegido": "Guardado protegido: {nombre}",
+        "quitarTitulo": "Quitar la protección",
+        "quitarTexto": "El documento se abrirá sin contraseña ni restricciones. Guárdalo para conservarlo así.",
+        "quitarTextoPropietario": "Este PDF tiene permisos restringidos: hace falta la contraseña de propietario para quitarlos.",
+        "quitarBoton": "Quitar protección",
+        "quitado": "Protección quitada. Guarda el documento para conservarlo así.",
+        "errNoCoinciden": "Las dos contraseñas no coinciden.",
+        "errSinClave": "Escribe una contraseña de apertura o de propietario.",
+        "errClave": "Esa no es la contraseña de propietario.",
+        "errSinCifrar": "Este documento no tiene contraseña ni restricciones.",
+        "error": "No se pudo cambiar la protección del documento."
+    },
     "formularios": {
         "boton": "Rellenar formulario y añadir campos",
         "aviso": "Este documento tiene un formulario: pulsa «Rellenar» para completarlo.",

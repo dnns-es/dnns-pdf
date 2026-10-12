@@ -8,7 +8,8 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). V
 - Fase 5 (segunda parte): formularios. Botón «Rellenar» en la barra: los campos del PDF (texto, casillas, opciones, desplegables y listas) se rellenan encima de la página y quedan dentro del PDF al guardar. Al abrir un PDF con formulario, aviso.
 - Añadir campos nuevos a cualquier PDF: campo de texto (dibujando un recuadro; los altos admiten varias líneas) y casilla; cada campo se puede borrar.
 - Aplanar: los campos pasan a ser contenido fijo de la página. Todo (rellenar, crear, borrar, aplanar) se puede deshacer.
-- Pruebas automáticas de formularios (`npm test`).
+- Menú «Herramientas» en la barra, con: proteger el PDF con contraseña de apertura y permisos (impedir imprimir, copiar o modificar; cifrado AES-256; contraseña de propietario para poder quitarlo después) guardando una copia protegida; y quitar la contraseña y las restricciones de un PDF abierto (con la de propietario si tiene permisos restringidos).
+- Pruebas automáticas de formularios y seguridad (`npm test`).
 
 ## [0.8.0] - 2026-10-12
 

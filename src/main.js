@@ -27,6 +27,8 @@ import { iniciarFirmar } from './modulos/firmar/firmar.js';
 import { iniciarOficina } from './modulos/oficina/oficina.js';
 import { iniciarEscanear } from './modulos/escanear/escanear.js';
 import { iniciarFormularios } from './modulos/formularios/formularios.js';
+import { iniciarHerramientas } from './modulos/herramientas/herramientas.js';
+import { iniciarSeguridad } from './modulos/seguridad/seguridad.js';
 import { iniciarHistorial } from './nucleo/historial.js';
 
 function prepararIdioma() {
@@ -67,6 +69,8 @@ iniciarFirmar();
 iniciarOficina();
 iniciarEscanear();
 iniciarFormularios();
+iniciarHerramientas();
+iniciarSeguridad();
 iniciarBarra();
 iniciarActualizador();
 arrancarMotor();

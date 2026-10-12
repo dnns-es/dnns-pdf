@@ -12,6 +12,7 @@ import * as mupdf from 'mupdf';
 import { crearModuloAnotaciones } from './anotaciones.js';
 import { crearModuloPaginas } from './paginas.js';
 import { crearModuloFormularios } from './formularios.js';
+import { crearModuloSeguridad } from './seguridad.js';
 import * as firmaDigital from './firmaDigital.js';
 import { convertirOficina } from './oficina/oficina.js';
 
@@ -21,6 +22,7 @@ let documento = null;
 const anotaciones = crearModuloAnotaciones(() => exigirDocumento());
 const paginas = crearModuloPaginas(() => exigirDocumento(), () => anotaciones.marcarCambio());
 const formularios = crearModuloFormularios(() => exigirDocumento(), () => anotaciones.marcarCambio());
+const seguridad = crearModuloSeguridad(() => exigirDocumento());
 
 function exigirDocumento() {
     if (!documento) {
@@ -185,6 +187,7 @@ const acciones = {
     abrir({ buffer }) {
         cerrarDocumento();
         documento = mupdf.Document.openDocument(buffer, 'application/pdf');
+        seguridad.registrarApertura(null, 0);
         if (documento.needsPassword()) {
             return { necesitaClave: true };
         }
@@ -193,10 +196,12 @@ const acciones = {
     },
 
     autenticar({ clave }) {
-        // authenticatePassword devuelve 0 si la clave no vale
-        if (exigirDocumento().authenticatePassword(clave) === 0) {
+        // authenticatePassword devuelve 0 si la clave no vale; 2 si es la de usuario, 4 si es la de propietario
+        const nivel = exigirDocumento().authenticatePassword(clave);
+        if (nivel === 0) {
             return { ok: false };
         }
+        seguridad.registrarApertura(clave, nivel);
         anotaciones.activarHistorial();
         return { ok: true, ...datosDocumento() };
     },
@@ -257,6 +262,11 @@ const acciones = {
     'formularios:crear': (datos) => formularios.crear(datos),
     'formularios:borrar': (datos) => formularios.borrar(datos),
     'formularios:aplanar': () => formularios.aplanar(),
+
+    // Seguridad: contraseña y permisos (ver seguridad.js)
+    'seguridad:estado': () => seguridad.estado(),
+    'seguridad:proteger': (datos) => seguridad.proteger(datos),
+    'seguridad:quitar': (datos) => seguridad.quitarProteccion(datos),
 
     // Firma digital con certificado (ver firmaDigital.js)
     'firma:leerCertificado': (datos) => firmaDigital.leerCertificado(datos),

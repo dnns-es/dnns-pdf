@@ -161,9 +161,9 @@ Se eligió Capacitor en vez de Tauri porque el actualizador de Tauri no funciona
 
 ## Fase 7 — Seguridad y utilidades
 
-- [ ] Proteger con contraseña de apertura
-- [ ] Permisos (impedir imprimir, copiar o editar)
-- [ ] Quitar contraseña (conociéndola)
+- [x] Proteger con contraseña de apertura (AES-256, menú Herramientas)
+- [x] Permisos (impedir imprimir, copiar o editar) con contraseña de propietario
+- [x] Quitar contraseña (conociéndola; los permisos, con la de propietario)
 - [ ] Comprimir / optimizar tamaño
 - [ ] OCR con Tesseract.js para hacer buscables los escaneados
 - [ ] Comparar dos PDF y marcar diferencias
