@@ -15,6 +15,7 @@ import { crearModuloFormularios } from './formularios.js';
 import { crearModuloSeguridad } from './seguridad.js';
 import { comprimir } from './comprimir.js';
 import { crearModuloOcr } from './ocr.js';
+import { crearModuloMarcas } from './marcas.js';
 import * as firmaDigital from './firmaDigital.js';
 import { convertirOficina } from './oficina/oficina.js';
 
@@ -26,6 +27,7 @@ const paginas = crearModuloPaginas(() => exigirDocumento(), () => anotaciones.ma
 const formularios = crearModuloFormularios(() => exigirDocumento(), () => anotaciones.marcarCambio());
 const seguridad = crearModuloSeguridad(() => exigirDocumento());
 const ocr = crearModuloOcr(() => exigirDocumento(), () => anotaciones.marcarCambio());
+const marcas = crearModuloMarcas(() => exigirDocumento(), () => anotaciones.marcarCambio());
 
 function exigirDocumento() {
     if (!documento) {
@@ -283,6 +285,10 @@ const acciones = {
     },
     'ocr:tieneTexto': ({ pagina }) => lineasDeTexto(pagina).length > 0,
     'ocr:anadirTexto': (datos) => ocr.anadirTexto(datos),
+
+    // Números de página, encabezados y marcas de agua (ver marcas.js)
+    'marcas:numerar': (datos) => marcas.numerar(datos),
+    'marcas:marcaAgua': (datos) => marcas.marcaAgua(datos),
 
     // Comprimir: sobre una copia con los cambios actuales (ver comprimir.js)
     'comprimir': ({ nivel }) => comprimir(anotaciones.exportar().bytes, nivel),

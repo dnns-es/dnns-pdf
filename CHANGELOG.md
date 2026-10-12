@@ -11,7 +11,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). V
 - Menú «Herramientas» en la barra, con: proteger el PDF con contraseña de apertura y permisos (impedir imprimir, copiar o modificar; cifrado AES-256; contraseña de propietario para poder quitarlo después) guardando una copia protegida; y quitar la contraseña y las restricciones de un PDF abierto (con la de propietario si tiene permisos restringidos).
 - Comprimir (menú Herramientas): tres niveles (ligera, media, fuerte) que reducen y recomprimen las imágenes, recortan las fuentes y limpian el archivo; guarda una copia y dice cuánto se ha ahorrado.
 - Reconocer texto (OCR, menú Herramientas): con Tesseract en el dispositivo, en español, inglés o ambos; añade el texto como capa invisible para buscar, seleccionar y copiar en escaneados y fotos, sin tocar la imagen. Por defecto solo las páginas sin texto; se puede cancelar y deshacer. El motor y los idiomas van dentro de la app y se descargan la primera vez que se usa.
-- Pruebas automáticas de formularios, seguridad, compresión y OCR (`npm test`).
+- Numerar páginas, encabezado y pie (menú Herramientas): «1», «Página 1», «Página 1 de 10», «1 / 10» o texto propio con {n}, {total}, {fecha} y {nombre}; seis posiciones, tamaño, color, número inicial y páginas elegidas. Sale derecho también en páginas giradas.
+- Marca de agua (menú Herramientas): texto o imagen (logo), en diagonal, horizontal o vertical, con color, tamaño y opacidad; encima o detrás del contenido.
+- Pruebas automáticas de formularios, seguridad, compresión, OCR y marcas (`npm test`).
 
 ## [0.8.0] - 2026-10-12
 

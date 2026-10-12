@@ -9,7 +9,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import * as mupdf from 'mupdf';
 import { crearModuloPaginas } from '../src/motor/paginas.js';
-import { leerRangos, cadaN } from '../src/modulos/organizar/rangos.js';
+import { leerRangos, cadaN } from '../src/nucleo/rangos.js';
 
 const leer = (nombre) => readFileSync(new URL(`./pdfs/${nombre}`, import.meta.url));
 

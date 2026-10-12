@@ -2,7 +2,7 @@
 Fecha: 2026-10-12
 Ruta: /src/estilos/formularios.css
 Estilos del módulo Formularios
-Barra de relleno, capa de campos sobre cada página y recuadro de diseño de campos nuevos
+Barra de relleno, capa de campos, recuadro de diseño de campos nuevos y filas de ajustes de los diálogos de Herramientas
 */
 
 /* Barra de relleno (segunda fila, como la de anotar) */
@@ -130,4 +130,23 @@ body.formularios--diseno .campo__borrar {
     border: 1px dashed var(--acento);
     background: rgb(31 111 235 / 0.1);
     pointer-events: none;
+}
+
+/* Diálogos de numerar y marca de agua: varios ajustes en una fila */
+.marcas__fila {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 8px 14px;
+    margin: 6px 0;
+}
+
+.marcas__fila label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.marcas__fila input[type="number"] {
+    width: 70px;
 }

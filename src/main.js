@@ -31,6 +31,7 @@ import { iniciarHerramientas } from './modulos/herramientas/herramientas.js';
 import { iniciarSeguridad } from './modulos/seguridad/seguridad.js';
 import { iniciarComprimir } from './modulos/comprimir/comprimir.js';
 import { iniciarOcr } from './modulos/ocr/ocr.js';
+import { iniciarMarcas } from './modulos/marcas/marcas.js';
 import { iniciarHistorial } from './nucleo/historial.js';
 
 function prepararIdioma() {
@@ -75,6 +76,7 @@ iniciarHerramientas();
 iniciarSeguridad();
 iniciarComprimir();
 iniciarOcr();
+iniciarMarcas();
 iniciarBarra();
 iniciarActualizador();
 arrancarMotor();

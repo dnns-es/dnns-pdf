@@ -4,7 +4,7 @@
 // Devuelve la lista de partes (cada parte, sus páginas desde 0) o null si se cancela
 
 import { t } from '../../nucleo/i18n.js';
-import { leerRangos, cadaN } from './rangos.js';
+import { leerRangos, cadaN } from '../../nucleo/rangos.js';
 
 const $ = (id) => document.getElementById(id);
 

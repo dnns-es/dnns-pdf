@@ -47,6 +47,7 @@ Mira [ROADMAP.md](ROADMAP.md) para ver qué hay hecho y qué viene.
 
 **Herramientas:**
 
+- Numerar páginas y poner encabezados o pies («Página 1 de 10», fecha, nombre o texto propio), y marcas de agua de texto o imagen
 - Reconocer texto (OCR) en escaneados y fotos, en español o inglés, para buscarlo, seleccionarlo y copiarlo (todo en el dispositivo)
 - Comprimir para enviarlo por correo o WhatsApp: tres niveles, guarda una copia y dice cuánto se ha ahorrado
 - Proteger el PDF con contraseña de apertura y permisos (impedir imprimir, copiar o modificar), cifrado AES-256, guardando una copia protegida
@@ -144,7 +145,7 @@ Everything is processed on your device. Your PDFs never leave your browser; neit
 
 **Forms:** fill in the fields of a PDF (text, checkboxes, radio buttons, drop-downs and lists) right on the page; Save keeps them inside the PDF in the standard format. Add text fields and checkboxes to any PDF, delete them and flatten the form (turn it into fixed content); everything can be undone.
 
-**Tools:** text recognition (OCR) for scans and photos in Spanish or English, so they can be searched and copied (on your device); compress for email or messaging (three levels; saves a copy and shows the saving); protect the PDF with an open password and permissions (prevent printing, copying or editing), AES-256, saving a protected copy; remove the password and restrictions from a PDF (with the owner password when permissions are restricted).
+**Tools:** page numbers, headers and footers ("Page 1 of 10", date, name or custom text) and text or image watermarks; text recognition (OCR) for scans and photos in Spanish or English, so they can be searched and copied (on your device); compress for email or messaging (three levels; saves a copy and shows the saving); protect the PDF with an open password and permissions (prevent printing, copying or editing), AES-256, saving a protected copy; remove the password and restrictions from a PDF (with the owner password when permissions are restricted).
 
 **Sign:** handwritten signature (draw it, type your name in a handwriting font or upload a photo with the background removed; saved on your device for reuse; place, move and resize it), digital signature with your .p12/.pfx certificate (for example the Spanish FNMT one) with an optional visible box, and signature checking of received PDFs (signer, date, whether the file is intact and whether the certificate chains to a recognised Spanish authority). The certificate and its password never leave your device.
 

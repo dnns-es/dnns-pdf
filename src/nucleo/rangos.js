@@ -1,6 +1,6 @@
 // Fecha: 2026-10-12
-// Ruta: /src/modulos/organizar/rangos.js
-// Cálculo de las partes al dividir un PDF: por rangos escritos («1-3, 5») o cada N páginas
+// Ruta: /src/nucleo/rangos.js
+// Rangos de páginas escritos («1-3, 5») y partes cada N páginas (dividir, numerar, marcas de agua...)
 // Notas: sin dependencias de la página, para poder probarlo aparte (tests/organizar.test.js).
 //        Las páginas que devuelve se numeran desde 0.
 
