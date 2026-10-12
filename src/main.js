@@ -2,7 +2,7 @@
 // Ruta: /src/main.js
 // Punto de entrada de DNNS PDF
 // Arranca idioma, tema, interfaz, visor, motor MuPDF y service worker
-// Notas: los módulos de cada fase (anotar, organizar...) se iniciarán desde aquí
+// Notas: los módulos de cada fase (anotar, organizar...) se inician desde aquí
 
 import './estilos/base.css';
 import './estilos/ui.css';
@@ -17,6 +17,8 @@ import { iniciarBarra } from './ui/barra.js';
 import { iniciarPanelLateral } from './ui/panelLateral.js';
 import { iniciarVisor } from './modulos/visor/visor.js';
 import { iniciarActualizador } from './modulos/actualizador/actualizador.js';
+import { iniciarAnotar } from './modulos/anotar/anotar.js';
+import { iniciarHistorial } from './nucleo/historial.js';
 
 function prepararIdioma() {
     const selector = document.getElementById('selector-idioma');
@@ -49,6 +51,8 @@ iniciarTema();
 // El panel escucha 'estado:documento' antes que el visor: así el zoom inicial ya mide el ancho real
 iniciarPanelLateral();
 iniciarVisor();
+iniciarHistorial();
+iniciarAnotar();
 iniciarBarra();
 iniciarActualizador();
 arrancarMotor();

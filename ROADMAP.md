@@ -93,15 +93,28 @@ avisa y se actualiza sola sin desinstalar nada.
 
 ## Fase 3 — Anotar
 
-- [ ] Resaltar, subrayar y tachar texto
-- [ ] Notas adhesivas y comentarios
-- [ ] Dibujo libre (lápiz) con color y grosor
-- [ ] Formas: rectángulo, círculo, línea, flecha
-- [ ] Cuadros de texto libres
-- [ ] Sellos (Aprobado, Revisado, Borrador, personalizados)
-- [ ] Panel de lista de anotaciones (ir a, editar, borrar)
-- [ ] Deshacer / rehacer
-- [ ] Guardar las anotaciones dentro del PDF (compatibles con otros lectores)
+- [x] Resaltar, subrayar y tachar texto
+- [x] Notas adhesivas y comentarios
+- [x] Dibujo libre (lápiz) con color y grosor
+- [x] Formas: rectángulo, círculo, línea, flecha
+- [x] Cuadros de texto libres
+- [x] Sellos (Aprobado, Revisado, Borrador, personalizados)
+- [x] Panel de lista de anotaciones (ir a, editar, borrar)
+- [x] Deshacer / rehacer
+- [x] Guardar las anotaciones dentro del PDF (compatibles con otros lectores)
+
+---
+
+## Fase 3b — App de Android (prioridad alta, pedida por Antonio el 12-10-2026)
+
+**Objetivo:** APK nativa con Tauri v2 (mismo código web) en descargas.dnns.es y, más adelante, Google Play.
+Mientras tanto, la PWA ya se instala en Android desde Chrome.
+
+- [ ] Inicializar Tauri Android en `desktop/` (SDK/NDK ya instalados con Android Studio)
+- [ ] Abrir PDF desde «Compartir» / «Abrir con» en Android
+- [ ] Firma con clave propia (guardada con `proteger-llaves.sh`) y publicación en descargas.dnns.es + `latest.json`
+- [ ] Actualización desde la app (como OberDomo/BovedaDnns)
+- [ ] Ficha en dnns.es/apps.html y alta en apps.json
 
 ---
 

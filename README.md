@@ -23,13 +23,21 @@ Mira [ROADMAP.md](ROADMAP.md) para ver qué hay hecho y qué viene.
 - PDFs protegidos con contraseña, imprimir y descargar
 - Modo claro y oscuro, y fluido con documentos de cientos de páginas
 
+**Anotar:**
+
+- Resaltar, subrayar y tachar texto; notas adhesivas y cuadros de texto
+- Lápiz, rectángulo, círculo, línea y flecha con color, grosor y opacidad
+- Sellos (Aprobado, Revisado, Borrador, Confidencial, Urgente y personalizados)
+- Mover y borrar anotaciones, lista de anotaciones en el panel, deshacer y rehacer
+- Las anotaciones se guardan dentro del PDF en formato estándar: se ven en cualquier lector
+
 **App de Windows:** instalador en la [última Release](https://github.com/dnns-es/dnns-pdf/releases/latest)
 (`DNNS.PDF_x.y.z_x64-setup.exe`). Se instala sin administrador, asocia los `.pdf` y se actualiza sola.
 Windows puede avisar la primera vez («Windows protegió su PC»): pulsa «Más información» → «Ejecutar de todas formas».
 El motivo está en [docs/firma-smartscreen.md](docs/firma-smartscreen.md).
 
 **En camino:**
-- Anotar: resaltar, notas, dibujo, sellos
+- App de Android
 - Organizar páginas: unir, dividir, rotar, reordenar
 - Formularios y firma
 - Edición de texto e imágenes, redacción
@@ -81,9 +89,11 @@ Everything is processed on your device. Your PDFs never leave your browser. The 
 
 **Available now (viewer):** open PDFs (button, drag and drop, or "Open with" from the OS when installed), thumbnails, outline, go to page and keyboard shortcuts, zoom (fit width/page, Ctrl+wheel, pinch on mobile), text search with highlights, text selection and copy, password-protected PDFs, print and download, light and dark mode, and smooth with documents of hundreds of pages.
 
+**Annotate:** highlight, underline and strike out text, sticky notes, text boxes, pen, rectangle, circle, line and arrow (colour, thickness, opacity), stamps (including custom ones), move and delete annotations, annotation list in the side panel, undo and redo. Annotations are saved inside the PDF in the standard format, so any reader shows them.
+
 **Windows app:** installer in the [latest Release](https://github.com/dnns-es/dnns-pdf/releases/latest). Installs per user, associates `.pdf` files and updates itself. Windows may show a SmartScreen warning the first time: "More info" → "Run anyway" (see [docs/firma-smartscreen.md](docs/firma-smartscreen.md)).
 
-**Coming next** (see [ROADMAP.md](ROADMAP.md), in Spanish): annotations, page organisation, forms and signatures, content editing, security tools and OCR.
+**Coming next** (see [ROADMAP.md](ROADMAP.md), in Spanish): Android app, page organisation, forms and signatures, content editing, security tools and OCR.
 
 It can be installed as an app (PWA) and works offline.
 
