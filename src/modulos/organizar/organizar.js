@@ -219,6 +219,8 @@ export function iniciarOrganizar() {
     document.addEventListener('keydown', alTecla);
 
     escuchar('organizar:seleccion', actualizarBarra);
+    // Al empezar a anotar (o a colocar una firma) se vuelve al visor
+    escuchar('anotar:modo', (activo) => activo && abierta && mostrarVista(false));
     escuchar('organizar:reordenar', (orden) => operar('paginas:reordenar', { orden }));
     // Doble clic en una página: volver al visor en esa página
     escuchar('organizar:abrirPagina', (numero) => {

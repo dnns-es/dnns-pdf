@@ -7,7 +7,8 @@
 
 import { escuchar, emitir } from '../../nucleo/eventos.js';
 import { leer } from '../../nucleo/estado.js';
-import { pedirTexto } from '../../ui/dialogos.js';
+import { t } from '../../nucleo/i18n.js';
+import { pedirTexto, mostrarAviso } from '../../ui/dialogos.js';
 import { iniciarCapas } from './capaAnotaciones.js';
 import { iniciarMarcarTexto } from './marcarTexto.js';
 import { iniciarPanelAnotaciones } from './panelAnotaciones.js';
@@ -54,7 +55,7 @@ export function colorAMupdf(hex) {
     return [((n >> 16) & 255) / 255, ((n >> 8) & 255) / 255, (n & 255) / 255];
 }
 
-function elegirHerramienta(nombre) {
+export function elegirHerramienta(nombre) {
     ajustes.herramienta = nombre;
     if (COLORES[nombre]) {
         ajustes.color = COLORES[nombre];
@@ -96,6 +97,15 @@ function prepararBarra() {
     $('boton-anotar').addEventListener('click', () => activarModo(!ajustes.activo));
     // Otra vista que no admite anotar (Organizar) pide cerrar las herramientas
     escuchar('anotar:salir', () => ajustes.activo && activarModo(false));
+    // Firma hecha en el módulo Firmar: el siguiente toque en una página la coloca
+    escuchar('anotar:colocarFirma', (firma) => {
+        ajustes.firma = firma;
+        if (!ajustes.activo) {
+            activarModo(true);
+        }
+        elegirHerramienta('firma');
+        mostrarAviso(t('firmar.tocaParaColocar'));
+    });
     for (const boton of document.querySelectorAll('[data-herramienta]')) {
         boton.addEventListener('click', () => elegirHerramienta(boton.dataset.herramienta));
     }

@@ -15,6 +15,8 @@ const LADO_NOTA = 20;
 const ANCHO_SELLO = 200;
 const ALTO_SELLO = 60;
 const DISTANCIA_MINIMA = 2;
+const ANCHO_FIRMA = 150;
+const ALTO_MAXIMO_FIRMA = 70;
 
 function elementoSvg(nombre, atributos) {
     const elemento = document.createElementNS(SVG, nombre);
@@ -156,6 +158,24 @@ export const sello = {
     }
 };
 
+// La firma llega hecha desde el módulo Firmar (ajustes.firma); aquí solo se le da sitio y tamaño
+export const firma = {
+    colocar(punto, ajustes) {
+        if (!ajustes.firma) {
+            return null;
+        }
+        const { png, ancho, alto } = ajustes.firma;
+        let w = ANCHO_FIRMA;
+        let h = (w * alto) / ancho;
+        if (h > ALTO_MAXIMO_FIRMA) {
+            h = ALTO_MAXIMO_FIRMA;
+            w = (h * ancho) / alto;
+        }
+        // Copia: el mismo PNG puede colocarse varias veces y el original se cede al worker
+        return { rect: [punto[0] - w / 2, punto[1] - h / 2, punto[0] + w / 2, punto[1] + h / 2], imagen: png.slice() };
+    }
+};
+
 export const DE_ARRASTRE = { lapiz, rectangulo, circulo, linea, flecha };
-export const DE_CLIC = { texto, nota, sello };
+export const DE_CLIC = { texto, nota, sello, firma };
 export const DE_TEXTO = new Set(['resaltar', 'subrayar', 'tachar']);
