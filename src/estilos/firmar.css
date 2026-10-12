@@ -178,3 +178,167 @@ Diálogo de firma (dibujar, escribir, subir), firmas guardadas y asa para cambia
 .anotando:not([data-herramienta="seleccionar"]) .asa-tamano {
     display: none;
 }
+
+/* Menú del botón Firmar */
+.menu {
+    position: fixed;
+    z-index: 40;
+    display: grid;
+    min-width: 230px;
+    padding: 4px;
+    border: 1px solid var(--borde);
+    border-radius: 10px;
+    background: var(--superficie);
+    box-shadow: 0 8px 28px rgb(0 0 0 / 0.22);
+}
+
+.menu button {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 10px;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+}
+
+.menu button:hover,
+.menu button:focus-visible {
+    background: var(--acento-suave);
+}
+
+.menu svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+/* Firma con certificado */
+.cert__archivo {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px;
+    margin: 12px 0;
+}
+
+.cert__nombre {
+    min-width: 0;
+    overflow: hidden;
+    color: var(--texto-suave);
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.cert__etiqueta {
+    display: block;
+    margin: 10px 0 4px;
+    font-size: 0.9em;
+}
+
+.cert__datos {
+    margin-top: 10px;
+    padding: 8px 10px;
+    border-radius: 8px;
+    background: var(--superficie-2);
+    font-size: 0.9em;
+}
+
+.cert__datos p {
+    margin: 2px 0;
+}
+
+.cert__titular {
+    font-weight: 600;
+}
+
+/* Campo de contraseña con ojo para verla */
+.caja-clave {
+    position: relative;
+}
+
+.caja-clave .dialogo__campo {
+    padding-right: 44px;
+}
+
+.caja-clave__ojo {
+    position: absolute;
+    top: 50%;
+    right: 4px;
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 32px;
+    border: 0;
+    background: transparent;
+    color: var(--texto-suave);
+    transform: translateY(-50%);
+    cursor: pointer;
+}
+
+.caja-clave__ojo svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+}
+
+.caja-clave__ojo[aria-pressed="true"] {
+    color: var(--acento);
+}
+
+/* Comprobar firmas */
+.verificar__lista {
+    display: grid;
+    gap: 10px;
+    max-height: 55vh;
+    margin: 8px 0;
+    padding: 0;
+    overflow-y: auto;
+    list-style: none;
+}
+
+.verificar__ficha {
+    padding: 10px 12px;
+    border: 1px solid var(--borde);
+    border-radius: 10px;
+}
+
+.verificar__ficha p {
+    margin: 3px 0;
+    font-size: 0.92em;
+}
+
+.verificar__estado {
+    font-weight: 700;
+}
+
+.verificar__estado--bien {
+    color: var(--correcto);
+}
+
+.verificar__estado--mal {
+    color: var(--error);
+}
+
+.verificar__estado--duda {
+    color: var(--texto-suave);
+}
+
+.verificar__titular {
+    font-weight: 600;
+}
+
+.verificar__aviso {
+    color: var(--error);
+}

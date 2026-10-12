@@ -339,9 +339,9 @@ function buscarFirmante(f, certificados, emisorSerie) {
 }
 
 // ¿La cadena llega a una raíz de confianza española? (FNMT, DNIe)
-function deConfianza(f, firmante, certificados) {
+function deConfianza(f, firmante, certificados, extra) {
     try {
-        const raices = RAICES.map((base64) => f.pki.certificateFromAsn1(f.asn1.fromDer(f.util.decode64(base64))));
+        const raices = [...RAICES, ...extra].map((base64) => f.pki.certificateFromAsn1(f.asn1.fromDer(f.util.decode64(base64))));
         const almacen = f.pki.createCaStore(raices);
         const cadena = [firmante];
         let actual = firmante;
@@ -359,7 +359,7 @@ function deConfianza(f, firmante, certificados) {
     }
 }
 
-async function comprobarUna(f, bytes, { nombre, valor }) {
+async function comprobarUna(f, bytes, { nombre, valor }, extra) {
     const rango = valor.get('ByteRange');
     const contenido = valor.get('Contents').asByteString();
     const r = [0, 1, 2, 3].map((i) => rango.get(i).asNumber());
@@ -396,7 +396,7 @@ async function comprobarUna(f, bytes, { nombre, valor }) {
             firmaValida,
             fechaFirma: fechaAsn1(f, hora),
             certificado: resumenCertificado(firmante),
-            confianza: deConfianza(f, firmante, certificados)
+            confianza: deConfianza(f, firmante, certificados, extra)
         };
     } catch (error) {
         console.warn('No se pudo leer la firma:', error);
@@ -404,8 +404,9 @@ async function comprobarUna(f, bytes, { nombre, valor }) {
     }
 }
 
-// Se comprueba sobre los bytes del archivo tal como llegó: el documento abierto puede tener cambios
-export async function verificar({ buffer }) {
+// Se comprueba sobre los bytes del archivo tal como llegó: el documento abierto puede tener cambios.
+// raicesExtra (base64 DER) solo lo usan las pruebas, para tener una autoridad propia de confianza.
+export async function verificar({ buffer, raicesExtra = [] }) {
     const bytes = new Uint8Array(buffer);
     const doc = mupdf.Document.openDocument(bytes, 'application/pdf');
     try {
@@ -416,7 +417,7 @@ export async function verificar({ buffer }) {
         const f = await cargarForge();
         const resultados = [];
         for (const campo of campos) {
-            resultados.push(await comprobarUna(f, bytes, campo));
+            resultados.push(await comprobarUna(f, bytes, campo, raicesExtra));
         }
         return resultados;
     } finally {

@@ -106,6 +106,14 @@ function prepararBarra() {
         elegirHerramienta('firma');
         mostrarAviso(t('firmar.tocaParaColocar'));
     });
+    // Pedir un punto de una página (sin crear anotación): la respuesta llega en 'anotar:punto'
+    escuchar('anotar:pedirPunto', (claveAviso) => {
+        if (!ajustes.activo) {
+            activarModo(true);
+        }
+        elegirHerramienta('punto');
+        mostrarAviso(t(claveAviso));
+    });
     for (const boton of document.querySelectorAll('[data-herramienta]')) {
         boton.addEventListener('click', () => elegirHerramienta(boton.dataset.herramienta));
     }

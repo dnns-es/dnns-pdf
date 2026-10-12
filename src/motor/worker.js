@@ -248,7 +248,15 @@ const acciones = {
 
     // Firma digital con certificado (ver firmaDigital.js)
     'firma:leerCertificado': (datos) => firmaDigital.leerCertificado(datos),
-    'firma:firmar': (datos) => firmaDigital.firmar(exigirDocumento(), datos),
+    // Se firma una copia con los cambios actuales: si el usuario no guarda, el documento abierto sigue igual
+    async 'firma:firmar'(datos) {
+        const copia = mupdf.Document.openDocument(anotaciones.exportar().bytes, 'application/pdf');
+        try {
+            return await firmaDigital.firmar(copia, datos);
+        } finally {
+            copia.destroy();
+        }
+    },
     'firma:verificar': (datos) => firmaDigital.verificar(datos),
 
     cerrar() {

@@ -237,6 +237,12 @@ async function alSoltar(evento) {
 }
 
 async function colocar(nombre, pagina, punto, ajustes) {
+    // Otro módulo (firma con certificado) solo quiere saber dónde se ha tocado
+    if (nombre === 'punto') {
+        emitir('anotar:punto', { pagina, punto });
+        elegirHerramienta('seleccionar');
+        return;
+    }
     const datos = await DE_CLIC[nombre].colocar(punto, ajustes);
     if (!datos) {
         return;

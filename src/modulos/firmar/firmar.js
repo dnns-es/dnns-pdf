@@ -1,7 +1,7 @@
 // Fecha: 2026-10-12
 // Ruta: /src/modulos/firmar/firmar.js
-// Módulo Firmar: crear o elegir una firma manuscrita y mandarla a colocar en el documento
-// Dibujar, escribir el nombre con letra manuscrita o subir una foto; las firmas se pueden guardar
+// Módulo Firmar: menú de firma, firma manuscrita, firma con certificado y comprobar firmas
+// Manuscrita: dibujar, escribir el nombre con letra manuscrita o subir una foto; se pueden guardar
 // Notas: no conoce al módulo Anotar: emite 'anotar:colocarFirma' con el PNG y su tamaño, y Anotar
 //        se encarga de colocarla con un toque y de moverla o cambiarle el tamaño.
 
@@ -11,6 +11,8 @@ import { mostrarAviso } from '../../ui/dialogos.js';
 import { crearLienzoFirma } from './lienzo.js';
 import { quitarFondo, ajustarFirma, textoAFirma, lienzoDeArchivo, aPng } from './imagen.js';
 import { listarFirmas, guardarFirma, borrarFirma, pngDe } from './almacen.js';
+import { iniciarDigital, abrirCertificado } from './digital.js';
+import { iniciarVerificar, abrirVerificar } from './verificar.js';
 import urlDancing from '../../fuentes/DancingScript.ttf?url';
 import urlGreatVibes from '../../fuentes/GreatVibes.ttf?url';
 import urlAllura from '../../fuentes/Allura.ttf?url';
@@ -166,9 +168,44 @@ export function abrirFirma() {
     cargarLetras().then(pintarMuestras);
 }
 
+const OPCIONES = { manuscrita: abrirFirma, certificado: abrirCertificado, verificar: abrirVerificar };
+
+// El menú es fixed: la barra tiene scroll horizontal y recortaría un menú dentro de ella
+function mostrarMenu(visible) {
+    const menu = $('menu-firmar');
+    menu.hidden = !visible;
+    if (visible) {
+        const caja = $('boton-firmar').getBoundingClientRect();
+        menu.style.top = `${caja.bottom + 4}px`;
+        menu.style.left = `${Math.max(8, Math.min(caja.left, window.innerWidth - menu.offsetWidth - 8))}px`;
+    }
+    $('boton-firmar').setAttribute('aria-expanded', String(visible));
+}
+
+function prepararMenu() {
+    $('boton-firmar').addEventListener('click', (evento) => {
+        evento.stopPropagation();
+        mostrarMenu($('menu-firmar').hidden);
+    });
+    for (const boton of document.querySelectorAll('[data-firmar]')) {
+        boton.addEventListener('click', () => {
+            mostrarMenu(false);
+            OPCIONES[boton.dataset.firmar]();
+        });
+    }
+    document.addEventListener('click', (evento) => {
+        if (!$('menu-firmar').hidden && !evento.target.closest('#menu-firmar')) {
+            mostrarMenu(false);
+        }
+    });
+    document.addEventListener('keydown', (evento) => evento.key === 'Escape' && mostrarMenu(false));
+}
+
 export function iniciarFirmar() {
     lienzo = crearLienzoFirma($('firma-lienzo'));
-    $('boton-firmar').addEventListener('click', abrirFirma);
+    prepararMenu();
+    iniciarDigital();
+    iniciarVerificar();
     for (const boton of document.querySelectorAll('[data-firma-modo]')) {
         boton.addEventListener('click', () => elegirModo(boton.dataset.firmaModo));
     }

@@ -2,8 +2,9 @@
 // Ruta: /tests/firmaDigital.test.js
 // Pruebas de la fase 5 (Firmar): firma digital con certificado y comprobación de firmas
 // Uso: npm test
-// Notas: certificado-prueba.p12 (cifrado antiguo, como el de la FNMT) y certificado-prueba-aes.p12 (moderno)
-//        son autofirmados, de usar y tirar, con la contraseña «prueba».
+// Notas: certificado-prueba.p12 (cifrado antiguo, como el de la FNMT), certificado-prueba-aes.p12 (moderno) y
+//        certificado-prueba-ca.p12 (emitido por la autoridad de prueba ac-prueba.b64)
+//        Son de usar y tirar, con la contraseña «prueba».
 
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -81,4 +82,16 @@ test('dos firmas seguidas: las dos se verifican y la primera ya no cubre todo', 
 
 test('un PDF sin firmas devuelve la lista vacía', async () => {
     assert.deepEqual(await verificar({ buffer: new Uint8Array(leer('texto.pdf')).buffer }), []);
+});
+
+test('confianza: sí si la cadena llega a una autoridad conocida, no si no la conocemos', async () => {
+    const doc = abrir();
+    const { bytes } = await firmar(doc, { p12: leer('certificado-prueba-ca.p12'), clave: 'prueba', pagina: 0, rect: null, lineas: LINEAS });
+    const ac = readFileSync(new URL('./pdfs/ac-prueba.b64', import.meta.url), 'utf8').trim();
+    const [conocida] = await verificar({ buffer: bytes.slice().buffer, raicesExtra: [ac] });
+    assert.equal(conocida.estado, 'valida');
+    assert.equal(conocida.confianza, true);
+    assert.equal(conocida.certificado.emisor, 'AC PRUEBA');
+    const [desconocida] = await verificar({ buffer: bytes.slice().buffer });
+    assert.equal(desconocida.confianza, false);
 });

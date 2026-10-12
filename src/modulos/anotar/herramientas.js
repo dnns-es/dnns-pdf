@@ -177,5 +177,8 @@ export const firma = {
 };
 
 export const DE_ARRASTRE = { lapiz, rectangulo, circulo, linea, flecha };
-export const DE_CLIC = { texto, nota, sello, firma };
+// Toque sin anotación: capaAnotaciones avisa con 'anotar:punto'
+const punto = { colocar: () => null };
+
+export const DE_CLIC = { texto, nota, sello, firma, punto };
 export const DE_TEXTO = new Set(['resaltar', 'subrayar', 'tachar']);

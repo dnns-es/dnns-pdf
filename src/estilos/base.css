@@ -17,6 +17,7 @@ Notas: el tema lo marca el atributo data-tema de <html> (claro por defecto, lo c
     --acento-texto: #ffffff;
     --acento-suave: rgb(31 111 235 / 0.12);
     --error: #cf222e;
+    --correcto: #1a7f37;
     --resaltado: rgb(255 200 0 / 0.4);
     --resaltado-actual: rgb(255 120 0 / 0.55);
     --sombra-pagina: 0 1px 4px rgb(0 0 0 / 0.18);
@@ -34,6 +35,7 @@ Notas: el tema lo marca el atributo data-tema de <html> (claro por defecto, lo c
     --acento: #4493f8;
     --acento-suave: rgb(68 147 248 / 0.18);
     --error: #f85149;
+    --correcto: #3fb950;
     --sombra-pagina: 0 1px 6px rgb(0 0 0 / 0.6);
     color-scheme: dark;
 }
