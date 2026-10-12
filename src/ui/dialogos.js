@@ -102,9 +102,14 @@ export function abrirProgreso(alCancelar) {
     dialogo.showModal();
 
     return {
+        // fraccion null = barra indeterminada (tarea sin avance conocido)
         actualizar(mensaje, fraccion) {
             texto.textContent = mensaje;
-            barra.value = fraccion;
+            if (fraccion === null) {
+                barra.removeAttribute('value');
+            } else {
+                barra.value = fraccion;
+            }
         },
         cerrar() {
             botonCancelar.removeEventListener('click', cancelar);

@@ -1,6 +1,6 @@
 // Fecha: 2026-10-12
 // Ruta: /src/modulos/visor/abrir.js
-// Apertura de documentos PDF
+// Apertura de documentos PDF (y de .docx, .xlsx y .pptx, que pasan por el módulo Oficina)
 // Botón Abrir, arrastrar y soltar, y "Abrir con" desde el sistema cuando la PWA está instalada
 // Notas: el archivo se lee en local y se cede al worker; nunca sale del dispositivo.
 //        Se conserva el File original para poder descargarlo tal cual.
@@ -10,6 +10,7 @@ import { cambiar, leer } from '../../nucleo/estado.js';
 import { t } from '../../nucleo/i18n.js';
 import { pedir } from '../../motor/cliente.js';
 import { mostrarAviso, confirmar } from '../../ui/dialogos.js';
+import { esArchivoZip } from '../../nucleo/utilidades.js';
 import { pedirContrasena } from './contrasena.js';
 import { archivoInicial, alRecibirArchivo, ponerTitulo } from '../../plataforma/index.js';
 
@@ -48,6 +49,11 @@ async function abrirEnMotor(archivo) {
 
 export async function abrirArchivo(archivo) {
     if (!archivo) {
+        return;
+    }
+    // Los documentos de texto, hojas y presentaciones son ZIP: el módulo Oficina los convierte y los devuelve como PDF
+    if (await esArchivoZip(archivo)) {
+        emitir('oficina:abrir', archivo);
         return;
     }
     if (!(await pareceUnPdf(archivo))) {

@@ -26,7 +26,10 @@
         "@tauri-apps/plugin-cli": "^2.5.0",
         "@tauri-apps/plugin-process": "^2.4.0",
         "@tauri-apps/plugin-updater": "^2.13.3",
-        "mupdf": "1.28.1"
+        "fflate": "^0.8.3",
+        "mammoth": "^1.13.0",
+        "mupdf": "1.28.1",
+        "node-forge": "^1.4.0"
     },
     "devDependencies": {
         "@capacitor/cli": "^8.5.3",

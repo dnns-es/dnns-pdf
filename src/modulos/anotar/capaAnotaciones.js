@@ -14,11 +14,13 @@ import { pedir } from '../../motor/cliente.js';
 import { registrarCambio } from '../../nucleo/historial.js';
 import { pedirTexto, mostrarAviso } from '../../ui/dialogos.js';
 import { t } from '../../nucleo/i18n.js';
-import { getAjustes } from './anotar.js';
+import { getAjustes, elegirHerramienta } from './anotar.js';
 import { DE_ARRASTRE, DE_CLIC, DE_TEXTO } from './herramientas.js';
 
 const SVG = 'http://www.w3.org/2000/svg';
 const DISTANCIA_ARRASTRE = 3;
+const LADO_ASA = 10;
+const TAMANO_MINIMO = 12;
 
 let seleccion = null;
 let dibujo = null;
@@ -93,18 +95,26 @@ export async function refrescarCapa(pagina) {
         rect.dataset.id = String(anotacion.id);
         rect.dataset.movible = String(anotacion.movible);
         rect.dataset.tipo = anotacion.tipo;
+        rect.dataset.firma = String(anotacion.firma);
         if (seleccion && seleccion.pagina === pagina && seleccion.id === anotacion.id) {
             rect.classList.add('anotacion-hit--seleccionada');
         }
         return rect;
     }));
+    pintarAsa(capa, grupo.querySelector('.anotacion-hit--seleccionada'));
 }
 
 function seleccionar(pagina, id) {
     document.querySelector('.anotacion-hit--seleccionada')?.classList.remove('anotacion-hit--seleccionada');
+    document.querySelector('.asa-tamano')?.remove();
     seleccion = id === null ? null : { pagina, id };
     if (seleccion) {
-        capaDe(pagina)?.querySelector(`.anotacion-hit[data-id="${id}"]`)?.classList.add('anotacion-hit--seleccionada');
+        const capa = capaDe(pagina);
+        const hit = capa?.querySelector(`.anotacion-hit[data-id="${id}"]`);
+        hit?.classList.add('anotacion-hit--seleccionada');
+        if (hit) {
+            pintarAsa(capa, hit);
+        }
     }
     emitir('anotar:seleccion', seleccion);
 }
@@ -227,13 +237,83 @@ async function alSoltar(evento) {
 }
 
 async function colocar(nombre, pagina, punto, ajustes) {
+    // Otro módulo (firma con certificado) solo quiere saber dónde se ha tocado
+    if (nombre === 'punto') {
+        emitir('anotar:punto', { pagina, punto });
+        elegirHerramienta('seleccionar');
+        return;
+    }
     const datos = await DE_CLIC[nombre].colocar(punto, ajustes);
-    if (datos) {
-        await crearAnotacion(pagina, nombre, datos);
+    if (!datos) {
+        return;
+    }
+    const creada = await crearAnotacion(pagina, nombre, datos);
+    // La firma se coloca una vez y queda seleccionada para moverla o ajustar su tamaño
+    if (nombre === 'firma' && creada) {
+        elegirHerramienta('seleccionar');
+        seleccionar(pagina, creada.id);
     }
 }
 
+// ---- Asa de la esquina para cambiar el tamaño (todas las movibles menos la nota, que es un icono)
+
+function pintarAsa(capa, hit) {
+    capa.querySelector('.asa-tamano')?.remove();
+    if (!hit || hit.dataset.movible !== 'true' || hit.dataset.tipo === 'Text') {
+        return;
+    }
+    const x1 = Number(hit.getAttribute('x')) + Number(hit.getAttribute('width'));
+    const y1 = Number(hit.getAttribute('y')) + Number(hit.getAttribute('height'));
+    const asa = elementoSvg('rect', { class: 'asa-tamano', x: x1 - LADO_ASA / 2, y: y1 - LADO_ASA / 2, width: LADO_ASA, height: LADO_ASA });
+    capa.querySelector('.capa-anotar__existentes').append(asa);
+}
+
+function empezarTamano(evento, capa, pagina) {
+    const hit = capa.querySelector('.anotacion-hit--seleccionada');
+    if (!hit) {
+        return;
+    }
+    evento.preventDefault();
+    capa.setPointerCapture(evento.pointerId);
+    const x0 = Number(hit.getAttribute('x'));
+    const y0 = Number(hit.getAttribute('y'));
+    const proporcion = Number(hit.getAttribute('height')) / Number(hit.getAttribute('width'));
+    // La firma conserva su proporción para no deformarse
+    const fija = hit.dataset.firma === 'true';
+    let rect = null;
+    const mover = (ev) => {
+        const [px, py] = puntoEnPagina(capa, ev);
+        const ancho = Math.max(TAMANO_MINIMO, px - x0);
+        const alto = fija ? ancho * proporcion : Math.max(TAMANO_MINIMO, py - y0);
+        rect = [x0, y0, x0 + ancho, y0 + alto];
+        hit.setAttribute('width', ancho);
+        hit.setAttribute('height', alto);
+        pintarAsa(capa, hit);
+    };
+    const soltar = async () => {
+        capa.removeEventListener('pointermove', mover);
+        capa.removeEventListener('pointerup', soltar);
+        capa.removeEventListener('pointercancel', soltar);
+        if (!rect) {
+            return;
+        }
+        try {
+            await pedir('anotaciones:modificar', { pagina, id: Number(hit.dataset.id), datos: { rect } });
+            await tomarCambio(pagina);
+        } catch (error) {
+            console.error('No se pudo cambiar el tamaño de la anotación:', error);
+        }
+    };
+    capa.addEventListener('pointermove', mover);
+    capa.addEventListener('pointerup', soltar);
+    capa.addEventListener('pointercancel', soltar);
+}
+
 function empezarSeleccion(evento, capa, pagina, punto) {
+    if (evento.target.classList?.contains('asa-tamano')) {
+        empezarTamano(evento, capa, pagina);
+        return;
+    }
     const hit = evento.target.closest?.('.anotacion-hit');
     if (!hit) {
         seleccionar(pagina, null);
@@ -252,6 +332,7 @@ function empezarSeleccion(evento, capa, pagina, punto) {
         const actual = puntoEnPagina(capa, ev);
         desplazamiento = [actual[0] - origen[0], actual[1] - origen[1]];
         hit.setAttribute('transform', `translate(${desplazamiento[0]} ${desplazamiento[1]})`);
+        capa.querySelector('.asa-tamano')?.setAttribute('transform', hit.getAttribute('transform'));
     };
     const soltar = () => {
         capa.removeEventListener('pointermove', mover);

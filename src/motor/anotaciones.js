@@ -24,10 +24,17 @@ const TIPOS = {
     linea: 'Line',
     flecha: 'Line',
     texto: 'FreeText',
-    sello: 'Stamp'
+    sello: 'Stamp',
+    firma: 'Stamp'
 };
 
 const MOVIBLES = new Set(['Text', 'FreeText', 'Stamp', 'Square', 'Circle']);
+
+// Clave propia en el diccionario de la anotación con la imagen de la firma,
+// para poder repintarla al moverla o cambiarle el tamaño. Los lectores ignoran claves que no conocen.
+const CLAVE_FIRMA = 'DNNSFirma';
+
+const esFirma = (anotacion) => anotacion.getType() === 'Stamp' && !anotacion.getObject().get(CLAVE_FIRMA).isNull();
 
 export function crearModuloAnotaciones(exigirDocumento) {
     // hayCambios: hay algo sin descargar. modificado: el documento ya no es el archivo original.
@@ -67,7 +74,8 @@ export function crearModuloAnotaciones(exigirDocumento) {
             opacidad: anotacion.getOpacity(),
             grosor: anotacion.hasBorder() ? anotacion.getBorderWidth() : 0,
             // Lápiz, líneas y marcas de texto llevan sus propios puntos: mover el Rect no las movería
-            movible: MOVIBLES.has(tipo)
+            movible: MOVIBLES.has(tipo),
+            firma: esFirma(anotacion)
         };
         if (tipo === 'Line') {
             // MuPDF.js devuelve { start, end }
@@ -121,12 +129,34 @@ export function crearModuloAnotaciones(exigirDocumento) {
         anotacion.setModificationDate(new Date());
         anotacion.update();
         // La apariencia propia del sello va después de update(): si no, MuPDF la cambia por la suya
-        if (datos.sello) {
+        if (datos.imagen) {
+            const doc = exigirDocumento();
+            const imagen = doc.addImage(new mupdf.Image(datos.imagen));
+            anotacion.getObject().put(CLAVE_FIRMA, imagen);
+            dibujarImagen(anotacion, imagen);
+        } else if (esFirma(anotacion)) {
+            // Al mover o cambiar de tamaño una firma se vuelve a pintar la misma imagen
+            dibujarImagen(anotacion, anotacion.getObject().get(CLAVE_FIRMA));
+        } else if (datos.sello) {
             dibujarSello(anotacion, datos.sello, datos.color ?? [0.8, 0, 0]);
         } else if (datos.rect && tipo === 'Stamp' && anotacion.getContents()) {
             // Al mover un sello propio hay que rehacer su apariencia en el sitio nuevo
             dibujarSello(anotacion, anotacion.getContents(), anotacion.getColor());
         }
+    }
+
+    // La imagen ocupa todo el recuadro de la anotación (el recuadro ya guarda su proporción)
+    function dibujarImagen(anotacion, imagen) {
+        const [x0, y0, x1, y1] = anotacion.getRect();
+        const ancho = Math.max(1, x1 - x0);
+        const alto = Math.max(1, y1 - y0);
+        const doc = exigirDocumento();
+        const recursos = doc.newDictionary();
+        const objetos = doc.newDictionary();
+        objetos.put('Firma', imagen);
+        recursos.put('XObject', objetos);
+        const contenido = `q ${ancho.toFixed(3)} 0 0 ${alto.toFixed(3)} 0 0 cm /Firma Do Q`;
+        anotacion.setAppearance(null, null, mupdf.Matrix.identity, [0, 0, ancho, alto], recursos, contenido);
     }
 
     // Los sellos de MuPDF vienen en inglés; dibujamos el texto en un recuadro como apariencia propia

@@ -8,6 +8,8 @@ import './estilos/base.css';
 import './estilos/ui.css';
 import './estilos/visor.css';
 import './estilos/organizar.css';
+import './estilos/firmar.css';
+import './estilos/escanear.css';
 import { idiomaInicial, ponerIdioma, traducirPagina } from './nucleo/i18n.js';
 import { cambiar } from './nucleo/estado.js';
 import { emitir } from './nucleo/eventos.js';
@@ -20,6 +22,9 @@ import { iniciarVisor } from './modulos/visor/visor.js';
 import { iniciarActualizador } from './modulos/actualizador/actualizador.js';
 import { iniciarAnotar } from './modulos/anotar/anotar.js';
 import { iniciarOrganizar } from './modulos/organizar/organizar.js';
+import { iniciarFirmar } from './modulos/firmar/firmar.js';
+import { iniciarOficina } from './modulos/oficina/oficina.js';
+import { iniciarEscanear } from './modulos/escanear/escanear.js';
 import { iniciarHistorial } from './nucleo/historial.js';
 
 function prepararIdioma() {
@@ -56,6 +61,9 @@ iniciarVisor();
 iniciarHistorial();
 iniciarAnotar();
 iniciarOrganizar();
+iniciarFirmar();
+iniciarOficina();
+iniciarEscanear();
 iniciarBarra();
 iniciarActualizador();
 arrancarMotor();

@@ -8,7 +8,7 @@ Editor de PDF libre y gratuito, con las funciones de los editores comerciales. S
 
 ## Privacidad
 
-Todo se procesa en tu dispositivo. Tus PDF nunca salen de tu navegador. La única excepción será la conversión a Word/Excel (fase 8), que será opcional y te avisará antes de subir nada.
+Todo se procesa en tu dispositivo. Tus PDF nunca salen de tu navegador; tampoco los documentos que abres, tu certificado de firma ni las fotos que escaneas. La única excepción será la conversión de PDF a documento de texto u hoja de cálculo (fase 8), que será opcional y te avisará antes de subir nada.
 
 ## Funciones
 
@@ -40,6 +40,22 @@ Mira [ROADMAP.md](ROADMAP.md) para ver qué hay hecho y qué viene.
 - Unir varios PDF e imágenes en uno, y pasar fotos (JPG/PNG) a PDF, desde la portada o soltando varios archivos
 - Todo se puede deshacer, igual que las anotaciones
 
+**Firmar:**
+
+- Firma manuscrita: dibújala con el dedo o el ratón, escribe tu nombre con letra manuscrita o sube una foto de tu firma (el fondo se quita solo). Se guarda en el dispositivo para reutilizarla, y se coloca con un toque, se mueve y se cambia de tamaño
+- Firma digital con tu certificado .p12/.pfx (por ejemplo, el de persona física de la FNMT), con recuadro visible, motivo y lugar. El certificado y su contraseña no salen del dispositivo
+- Comprobar las firmas de un PDF recibido: quién firma, cuándo, si el documento sigue intacto y si el certificado es de una autoridad española reconocida (FNMT, DNIe). Al abrir un PDF firmado te avisa
+
+**Abrir documentos de texto, hojas de cálculo y presentaciones (.docx, .xlsx, .pptx):**
+
+- Se convierten a PDF en tu dispositivo y se abren como un PDF más; con Descargar los guardas ya convertidos
+- Se conserva el contenido (texto, negritas, listas, tablas, imágenes; una página por hoja y por diapositiva), no la maquetación exacta
+
+**Escanear con la cámara:**
+
+- Fotografía un documento, o elige una foto de la galería: detecta los bordes, deja ajustar las cuatro esquinas, lo endereza y lo limpia (mejorado, color, gris o texto en blanco y negro)
+- Varias páginas en un PDF nuevo desde la portada, o añadidas a un documento abierto desde Organizar
+
 **App de Windows:** instalador en la [última Release](https://github.com/dnns-es/dnns-pdf/releases/latest)
 (`DNNS.PDF_x.y.z_x64-setup.exe`). Se instala sin administrador, asocia los `.pdf` y se actualiza sola.
 Windows puede avisar la primera vez («Windows protegió su PC»): pulsa «Más información» → «Ejecutar de todas formas».
@@ -50,8 +66,7 @@ El motivo está en [docs/firma-smartscreen.md](docs/firma-smartscreen.md).
 Se registra para «Abrir con» y «Compartir» PDF, y avisa e instala las versiones nuevas desde la propia app.
 
 **En camino:**
-- Formularios y firma
-- Escanear documentos con la cámara del móvil
+- Formularios: rellenar, crear campos y aplanar
 - Edición de texto e imágenes, redacción
 - Contraseñas, compresión, OCR
 
@@ -92,7 +107,7 @@ Lee [CONTRIBUTING.md](CONTRIBUTING.md). Toda ayuda es bienvenida: código, tradu
 
 ## Licencia
 
-[AGPL-3.0](LICENSE). Usamos MuPDF.js, que también es AGPL.
+[AGPL-3.0](LICENSE). Usamos MuPDF.js, que también es AGPL. Además: node-forge (BSD-3) para las firmas digitales, mammoth (BSD-2) para leer documentos de texto y fflate (MIT) para abrir archivos comprimidos. Las letras manuscritas de la firma (Dancing Script, Great Vibes y Allura) son libres, con licencia OFL (en `src/fuentes`).
 
 ---
 
@@ -104,7 +119,7 @@ Free and open source PDF editor with the features of commercial editors. No sign
 
 ### Privacy
 
-Everything is processed on your device. Your PDFs never leave your browser. The only exception will be Word/Excel conversion (phase 8), which will be optional and will warn you before uploading anything.
+Everything is processed on your device. Your PDFs never leave your browser; neither do the documents you open, your signing certificate or the photos you scan. The only exception will be PDF to text document / spreadsheet conversion (phase 8), which will be optional and will warn you before uploading anything.
 
 ### Features
 
@@ -114,11 +129,17 @@ Everything is processed on your device. Your PDFs never leave your browser. The 
 
 **Organise pages:** grid view with drag-and-drop reordering (long press on mobile), rotate, delete, duplicate and crop pages, insert blank pages, pages from another PDF or from images, extract pages or split by ranges or every N pages, merge several PDFs and images into one, and turn photos (JPG/PNG) into a PDF. Everything can be undone.
 
+**Sign:** handwritten signature (draw it, type your name in a handwriting font or upload a photo with the background removed; saved on your device for reuse; place, move and resize it), digital signature with your .p12/.pfx certificate (for example the Spanish FNMT one) with an optional visible box, and signature checking of received PDFs (signer, date, whether the file is intact and whether the certificate chains to a recognised Spanish authority). The certificate and its password never leave your device.
+
+**Open text documents, spreadsheets and presentations (.docx, .xlsx, .pptx):** converted to PDF on your device and opened like any PDF (text, bold, lists, tables, images; one page per sheet and per slide; content is kept, exact layout is not). Download saves them already converted.
+
+**Scan with the camera:** take a photo of a document (or pick one from the gallery), edges are detected, the four corners can be adjusted, the page is straightened and cleaned up (enhanced, colour, grey or black-and-white text). Several pages into a new PDF, or added to an open document from Organise.
+
 **Windows app:** installer in the [latest Release](https://github.com/dnns-es/dnns-pdf/releases/latest). Installs per user, associates `.pdf` files and updates itself. Windows may show a SmartScreen warning the first time: "More info" → "Run anyway" (see [docs/firma-smartscreen.md](docs/firma-smartscreen.md)).
 
 **Android app:** download the APK from [dnns.es/apps](https://dnns.es/apps.html#dnns-pdf). It handles "Open with" and "Share" for PDFs and updates itself from inside the app.
 
-**Coming next** (see [ROADMAP.md](ROADMAP.md), in Spanish): forms and signatures, document scanning with the phone camera, content editing, security tools and OCR.
+**Coming next** (see [ROADMAP.md](ROADMAP.md), in Spanish): forms, content editing, security tools and OCR.
 
 It can be installed as an app (PWA) and works offline.
 
@@ -137,4 +158,4 @@ See [CONTRIBUTING.md](CONTRIBUTING.md). Code, translations, testing and bug repo
 
 ### License
 
-[AGPL-3.0](LICENSE), required by MuPDF.js.
+[AGPL-3.0](LICENSE), required by MuPDF.js. Also: node-forge (BSD-3) for digital signatures, mammoth (BSD-2) for text documents and fflate (MIT) for compressed files. The handwriting fonts (Dancing Script, Great Vibes, Allura) are OFL licensed (in `src/fuentes`).

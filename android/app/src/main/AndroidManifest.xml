@@ -29,7 +29,7 @@ Notas: sin copia de seguridad en la nube de Google: la app no debe sacar nada de
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <!-- «Abrir con DNNS PDF» desde el gestor de archivos, el correo, WhatsApp... -->
+            <!-- «Abrir con DNNS PDF» desde el gestor de archivos, el correo, WhatsApp... (PDF y documentos de Office) -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -37,6 +37,9 @@ Notas: sin copia de seguridad en la nube de Google: la app no debe sacar nada de
                 <data android:scheme="content" />
                 <data android:scheme="file" />
                 <data android:mimeType="application/pdf" />
+                <data android:mimeType="application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
+                <data android:mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+                <data android:mimeType="application/vnd.openxmlformats-officedocument.presentationml.presentation" />
             </intent-filter>
 
             <!-- «Compartir» un PDF con DNNS PDF -->
@@ -44,6 +47,9 @@ Notas: sin copia de seguridad en la nube de Google: la app no debe sacar nada de
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="application/pdf" />
+                <data android:mimeType="application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
+                <data android:mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
+                <data android:mimeType="application/vnd.openxmlformats-officedocument.presentationml.presentation" />
             </intent-filter>
 
         </activity>
@@ -60,6 +66,9 @@ Notas: sin copia de seguridad en la nube de Google: la app no debe sacar nada de
     </application>
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Escanear documentos con la cámara (opcional: sin cámara se eligen fotos) -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
     <!-- Abrir el instalador del sistema con una actualización ya comprobada; el usuario la acepta -->
     <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
 </manifest>

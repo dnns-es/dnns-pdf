@@ -2,6 +2,22 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versionado semántico.
 
+## [0.6.0] - 2026-10-12
+
+### Añadido
+- Fase 5 (primera parte): botón «Firmar» en la barra, con firma manuscrita, firma con certificado y comprobar firmas.
+- Firma manuscrita: dibujar, escribir el nombre con letra manuscrita (tres tipos de letra libres) o subir una foto quitando el fondo; se guardan hasta seis firmas en el dispositivo; se coloca con un toque, se mueve y se cambia de tamaño con el asa de la esquina.
+- Firma digital con certificado .p12/.pfx (FNMT y similares): firma estándar PDF (PKCS#7) con recuadro visible, motivo y lugar; guarda una copia firmada y la abre. Se aceptan los certificados con cifrado antiguo de la FNMT.
+- Comprobar firmas: estado de cada firma (válida, no válida o desconocida), firmante, fecha, motivo, si cubre todo el archivo y si la cadena llega a una autoridad española reconocida (FNMT, DNIe). Aviso al abrir un PDF firmado.
+- Abrir documentos .docx, .xlsx y .pptx: se convierten a PDF en el dispositivo (texto, negritas, listas, tablas e imágenes; una página por hoja y por diapositiva). También con «Abrir con» en Android y Windows.
+- Escanear con la cámara, o desde una foto: detección de bordes, esquinas ajustables, enderezado y filtros (mejorado, color, gris, texto); varias páginas a un PDF nuevo o añadidas desde Organizar.
+- Asa para cambiar el tamaño de cuadros de texto, sellos, rectángulos y círculos.
+- Pruebas automáticas de firmas, conversión de documentos y escáner (`npm test`).
+
+### Cambiado
+- La portada y la zona de soltar aceptan también .docx, .xlsx y .pptx.
+- La barra de progreso puede quedar indeterminada en tareas sin avance conocido.
+
 ## [0.5.0] - 2026-10-12
 
 ### Añadido

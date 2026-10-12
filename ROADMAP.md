@@ -137,10 +137,11 @@ Se eligió Capacitor en vez de Tauri porque el actualizador de Tauri no funciona
 - [ ] Detectar y rellenar formularios existentes (texto, casillas, radio, listas)
 - [ ] Crear campos de formulario nuevos
 - [ ] Aplanar formulario (convertir en contenido fijo)
-- [ ] Firma manuscrita: dibujar, escribir o subir imagen, y guardarla para reutilizar
-- [ ] Firma digital con certificado (.p12/.pfx, p. ej. FNMT) — **verificar soporte en MuPDF.js antes de empezar**; en la versión de escritorio se puede resolver con Rust si el navegador no basta
-- [ ] Verificar firmas digitales de PDFs recibidos
-- [ ] Escanear documentos con la cámara (sobre todo en el móvil): recortar y enderezar la hoja y guardarla como PDF (pedido por Antonio el 12-10-2026, tras las firmas)
+- [x] Firma manuscrita: dibujar, escribir o subir imagen, y guardarla para reutilizar
+- [x] Firma digital con certificado (.p12/.pfx, p. ej. FNMT) — MuPDF.js no firma: se hace con node-forge (PKCS#7 separado, guardado incremental), comprobado con OpenSSL y pyHanko
+- [x] Verificar firmas digitales de PDFs recibidos (integridad, firmante, fecha y confianza FNMT/DNIe; sin consultar revocación)
+- [x] Escanear documentos con la cámara (sobre todo en el móvil): recortar y enderezar la hoja y guardarla como PDF (pedido por Antonio el 12-10-2026, tras las firmas)
+- [x] Abrir documentos .docx, .xlsx y .pptx convertidos a PDF en el dispositivo (pedido por un probador el 12-10-2026)
 
 ---
 
@@ -173,7 +174,7 @@ Se eligió Capacitor en vez de Tauri porque el actualizador de Tauri no funciona
 
 - [ ] Servicio en `/server` con LibreOffice headless en contenedor Docker
 - [ ] PDF → Word, Excel y PowerPoint
-- [ ] Word, Excel, PowerPoint → PDF
+- [x] Word, Excel, PowerPoint → PDF (hecho en local en la fase 5, sin servidor; aquí quedaría solo mejorar la fidelidad)
 - [ ] Borrado automático de archivos tras convertir; sin registros de contenido
 - [ ] Aviso claro al usuario de que esta función sí sube el archivo
 - [ ] Instrucciones para autoalojarlo (Proxmox LXC / Docker)

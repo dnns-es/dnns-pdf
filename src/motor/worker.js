@@ -10,6 +10,8 @@
 import * as mupdf from 'mupdf';
 import { crearModuloAnotaciones } from './anotaciones.js';
 import { crearModuloPaginas } from './paginas.js';
+import * as firmaDigital from './firmaDigital.js';
+import { convertirOficina } from './oficina/oficina.js';
 
 const MAX_RESULTADOS_BUSQUEDA = 2000;
 
@@ -244,6 +246,22 @@ const acciones = {
     modificado: () => anotaciones.modificado(),
     exportar: () => anotaciones.exportar(),
     marcarGuardado: () => anotaciones.marcarGuardado(),
+
+    // Firma digital con certificado (ver firmaDigital.js)
+    'firma:leerCertificado': (datos) => firmaDigital.leerCertificado(datos),
+    // Se firma una copia con los cambios actuales: si el usuario no guarda, el documento abierto sigue igual
+    async 'firma:firmar'(datos) {
+        const copia = mupdf.Document.openDocument(anotaciones.exportar().bytes, 'application/pdf');
+        try {
+            return await firmaDigital.firmar(copia, datos);
+        } finally {
+            copia.destroy();
+        }
+    },
+    'firma:verificar': (datos) => firmaDigital.verificar(datos),
+
+    // Documentos de Office a PDF (ver oficina/oficina.js)
+    'oficina:convertir': (datos) => convertirOficina(datos),
 
     cerrar() {
         cerrarDocumento();

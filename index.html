@@ -27,7 +27,7 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
             <button id="boton-abrir" class="boton-icono" type="button" data-i18n-titulo="barra.abrir">
                 <svg viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></svg>
             </button>
-            <input id="entrada-archivo" type="file" accept="application/pdf,.pdf" hidden>
+            <input id="entrada-archivo" type="file" accept="application/pdf,.pdf,.docx,.xlsx,.pptx" hidden>
         </div>
 
         <div class="barra__grupo">
@@ -70,6 +70,25 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
             <button id="boton-organizar" class="boton-icono" type="button" aria-pressed="false" data-i18n-titulo="organizar.boton" data-requiere-doc>
                 <svg viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/></svg>
             </button>
+            <div class="menu-contenedor">
+                <button id="boton-firmar" class="boton-icono" type="button" aria-haspopup="menu" aria-expanded="false" data-i18n-titulo="firmar.boton" data-requiere-doc>
+                    <svg viewBox="0 0 24 24"><path d="M3 17c2-1 3-5 5-5s0 5 2 5 3-6 5-6 1 4 3 4 2-1 3-2"/><path d="M3 21h18"/></svg>
+                </button>
+                <div id="menu-firmar" class="menu" role="menu" hidden>
+                    <button type="button" role="menuitem" data-firmar="manuscrita">
+                        <svg viewBox="0 0 24 24"><path d="M3 17c2-1 3-5 5-5s0 5 2 5 3-6 5-6 1 4 3 4 2-1 3-2"/></svg>
+                        <span data-i18n="firmar.menuManuscrita"></span>
+                    </button>
+                    <button type="button" role="menuitem" data-firmar="certificado">
+                        <svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="12" rx="2"/><circle cx="16" cy="17" r="3"/><path d="M14.5 19.5L14 22l2-1 2 1-.5-2.5M7 9h6M7 12h4"/></svg>
+                        <span data-i18n="firmar.menuCertificado"></span>
+                    </button>
+                    <button type="button" role="menuitem" data-firmar="verificar">
+                        <svg viewBox="0 0 24 24"><path d="M12 3l8 3v6c0 5-3.5 8-8 9-4.5-1-8-4-8-9V6z"/><path d="M8.5 12l2.5 2.5 4.5-5"/></svg>
+                        <span data-i18n="firmar.menuVerificar"></span>
+                    </button>
+                </div>
+            </div>
         </div>
 
         <div class="barra__grupo barra__grupo--final">
@@ -219,6 +238,7 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
                 <div class="portada__extra">
                     <button id="portada-unir" class="boton-secundario" type="button" data-i18n="organizar.unirPdf"></button>
                     <button id="portada-imagenes" class="boton-secundario" type="button" data-i18n="organizar.imagenesAPdf"></button>
+                    <button id="portada-escanear" class="boton-secundario" type="button" data-i18n="escanear.boton"></button>
                 </div>
                 <p class="portada__estado">
                     <span data-i18n="motor.etiqueta"></span>
@@ -262,6 +282,9 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
                     </button>
                     <button class="boton-icono" type="button" data-organizar="insertarArchivo" data-i18n-titulo="organizar.insertarArchivo">
                         <svg viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M12 10v6M9 13h6"/></svg>
+                    </button>
+                    <button class="boton-icono" type="button" data-organizar="escanear" data-i18n-titulo="escanear.insertar">
+                        <svg viewBox="0 0 24 24"><path d="M4 8V6a2 2 0 0 1 2-2h2M16 4h2a2 2 0 0 1 2 2v2M20 16v2a2 2 0 0 1-2 2h-2M8 20H6a2 2 0 0 1-2-2v-2"/><circle cx="12" cy="12" r="3.5"/><path d="M9 8h6"/></svg>
                     </button>
                     <button class="boton-icono" type="button" data-organizar="extraer" data-requiere-seleccion data-i18n-titulo="organizar.extraer">
                         <svg viewBox="0 0 24 24"><path d="M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z"/><path d="M14 3v6h6M12 11v7M9 15l3 3 3-3"/></svg>
@@ -406,6 +429,146 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
         </div>
     </dialog>
 
+    <dialog id="dialogo-firma" class="dialogo dialogo--ancho">
+        <h2 data-i18n="firmar.titulo"></h2>
+        <section id="firma-guardadas" class="firma__seccion" hidden>
+            <p class="firma__subtitulo" data-i18n="firmar.guardadas"></p>
+            <ul id="firma-lista" class="firma__lista"></ul>
+            <p class="firma__subtitulo" data-i18n="firmar.nueva"></p>
+        </section>
+        <div class="panel__pestanas firma__pestanas" role="tablist">
+            <button class="panel__pestana" type="button" role="tab" data-firma-modo="dibujar" data-i18n="firmar.dibujar"></button>
+            <button class="panel__pestana" type="button" role="tab" data-firma-modo="escribir" data-i18n="firmar.escribir"></button>
+            <button class="panel__pestana" type="button" role="tab" data-firma-modo="subir" data-i18n="firmar.subir"></button>
+        </div>
+        <div data-firma-panel="dibujar">
+            <canvas id="firma-lienzo" class="firma__lienzo"></canvas>
+            <p class="firma__pista" data-i18n="firmar.pistaDibujar"></p>
+        </div>
+        <div data-firma-panel="escribir" hidden>
+            <input id="firma-nombre" class="dialogo__campo" type="text" maxlength="60" autocomplete="name" data-i18n-placeholder="firmar.tuNombre">
+            <div class="firma__letras">
+                <button class="firma__letra" type="button" data-letra="DNNS Dancing"></button>
+                <button class="firma__letra" type="button" data-letra="DNNS Great Vibes"></button>
+                <button class="firma__letra" type="button" data-letra="DNNS Allura"></button>
+            </div>
+        </div>
+        <div data-firma-panel="subir" hidden>
+            <button id="firma-elegir" class="boton-secundario" type="button" data-i18n="firmar.elegirFoto"></button>
+            <img id="firma-vista" class="firma__vista" alt="" hidden>
+            <p class="firma__pista" data-i18n="firmar.pistaSubir"></p>
+        </div>
+        <div class="firma__pie">
+            <div class="firma__tintas">
+                <button class="firma__tinta firma__tinta--negra" type="button" data-tinta="#000000" data-i18n-titulo="firmar.tintaNegra"></button>
+                <button class="firma__tinta firma__tinta--azul" type="button" data-tinta="#1a3a9e" data-i18n-titulo="firmar.tintaAzul"></button>
+                <button id="firma-borrar" type="button" data-i18n="firmar.borrar"></button>
+            </div>
+            <label class="crear__modo">
+                <input id="firma-recordar" type="checkbox" checked>
+                <span data-i18n="firmar.recordar"></span>
+            </label>
+        </div>
+        <div class="dialogo__botones">
+            <button id="firma-cancelar" type="button" data-i18n="comun.cancelar"></button>
+            <button id="firma-aceptar" class="boton-principal" type="button" data-i18n="firmar.colocar"></button>
+        </div>
+    </dialog>
+
+    <dialog id="dialogo-certificado" class="dialogo">
+        <form id="formulario-certificado" method="dialog" autocomplete="off">
+            <h2 data-i18n="firmar.certTitulo"></h2>
+            <p class="firma__pista" data-i18n="firmar.certPrivacidad"></p>
+            <div class="cert__archivo">
+                <button id="cert-elegir" class="boton-secundario" type="button" data-i18n="firmar.certElegir"></button>
+                <span id="cert-nombre" class="cert__nombre"></span>
+            </div>
+            <label class="cert__etiqueta" for="cert-clave" data-i18n="firmar.certClave"></label>
+            <div class="caja-clave">
+                <input id="cert-clave" class="dialogo__campo" type="password" autocomplete="off">
+                <button id="cert-ojo" class="caja-clave__ojo" type="button" aria-pressed="false" data-i18n-titulo="firmar.mostrarClave">
+                    <svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+            </div>
+            <div id="cert-datos" class="cert__datos" hidden></div>
+            <label class="cert__etiqueta" for="cert-motivo" data-i18n="firmar.certMotivo"></label>
+            <input id="cert-motivo" class="dialogo__campo" type="text" maxlength="120">
+            <label class="cert__etiqueta" for="cert-lugar" data-i18n="firmar.certLugar"></label>
+            <input id="cert-lugar" class="dialogo__campo" type="text" maxlength="80">
+            <label class="dialogo__opcion">
+                <input id="cert-visible" type="checkbox" checked>
+                <span data-i18n="firmar.certVisible"></span>
+            </label>
+            <p id="cert-error" class="dialogo__error" hidden></p>
+            <div class="dialogo__botones">
+                <button id="cert-cancelar" type="button" data-i18n="comun.cancelar"></button>
+                <button class="boton-principal" type="submit" data-i18n="firmar.certFirmar"></button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="dialogo-verificar" class="dialogo dialogo--ancho">
+        <h2 data-i18n="firmar.verTitulo"></h2>
+        <p id="verificar-resumen"></p>
+        <ul id="verificar-lista" class="verificar__lista"></ul>
+        <p class="firma__pista" data-i18n="firmar.verNota"></p>
+        <div class="dialogo__botones">
+            <button id="verificar-cerrar" class="boton-principal" type="button" data-i18n="comun.aceptar"></button>
+        </div>
+    </dialog>
+
+    <dialog id="dialogo-escanear" class="dialogo dialogo--pantalla">
+        <div class="escanear" data-escanear-vista="camara">
+            <div class="escanear__cabecera">
+                <h2 data-i18n="escanear.titulo"></h2>
+                <button id="escanear-cerrar" class="boton-icono" type="button" data-i18n-titulo="comun.cancelar">
+                    <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+                </button>
+            </div>
+            <div class="escanear__visor">
+                <video id="escanear-video" class="escanear__video" autoplay playsinline muted></video>
+                <p id="escanear-sin-camara" class="escanear__aviso" data-i18n="escanear.sinCamara" hidden></p>
+            </div>
+            <div class="escanear__paginas">
+                <ol id="escanear-lista" class="escanear__lista"></ol>
+                <span id="escanear-cuenta" class="escanear__cuenta" aria-live="polite"></span>
+            </div>
+            <div class="escanear__pie">
+                <button id="escanear-foto" class="boton-secundario" type="button" data-i18n="escanear.elegirFoto"></button>
+                <button id="escanear-capturar" class="escanear__disparador" type="button" data-i18n-titulo="escanear.capturar"></button>
+                <select id="escanear-modo" data-i18n-titulo="organizar.tamanoImagenes">
+                    <option value="a4" data-i18n="organizar.modoA4"></option>
+                    <option value="imagen" data-i18n="organizar.modoImagen"></option>
+                </select>
+                <button id="escanear-terminar" class="boton-principal" type="button" disabled></button>
+            </div>
+        </div>
+        <div class="escanear" data-escanear-vista="ajuste" hidden>
+            <div class="escanear__cabecera">
+                <h2 data-i18n="escanear.ajustar"></h2>
+            </div>
+            <div class="escanear__visor">
+                <div class="escanear__marco">
+                    <canvas id="escanear-lienzo"></canvas>
+                    <svg id="escanear-esquinas" class="escanear__esquinas" preserveAspectRatio="none"></svg>
+                </div>
+            </div>
+            <div class="escanear__filtros" role="group">
+                <button type="button" data-filtro="mejorado" aria-pressed="true" data-i18n="escanear.filtroMejorado"></button>
+                <button type="button" data-filtro="color" aria-pressed="false" data-i18n="escanear.filtroColor"></button>
+                <button type="button" data-filtro="gris" aria-pressed="false" data-i18n="escanear.filtroGris"></button>
+                <button type="button" data-filtro="texto" aria-pressed="false" data-i18n="escanear.filtroTexto"></button>
+            </div>
+            <div class="escanear__pie">
+                <button id="escanear-repetir" class="boton-secundario" type="button" data-i18n="escanear.repetir"></button>
+                <button id="escanear-usar" class="boton-principal" type="button" data-i18n="escanear.usar"></button>
+            </div>
+        </div>
+    </dialog>
+
+    <input id="entrada-foto" type="file" accept="image/*" hidden>
+    <input id="entrada-certificado" type="file" accept=".p12,.pfx,application/x-pkcs12,application/octet-stream" hidden>
+    <input id="entrada-firma" type="file" accept="image/png,image/jpeg,image/webp" hidden>
     <input id="entrada-varios" type="file" accept="application/pdf,.pdf,image/jpeg,image/png" multiple hidden>
 
     <dialog id="dialogo-confirmar" class="dialogo">
