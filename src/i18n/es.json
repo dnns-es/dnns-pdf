@@ -3,8 +3,8 @@
         "titulo": "Editor de PDF libre y gratuito",
         "texto": "Tus documentos nunca salen de tu dispositivo: todo se procesa aquí, en tu navegador.",
         "abrir": "Abrir PDF",
-        "soltar": "o arrastra un archivo PDF a esta ventana",
-        "sueltaAqui": "Suelta el PDF para abrirlo"
+        "soltar": "o arrastra aquí un PDF, un .docx, un .xlsx o un .pptx",
+        "sueltaAqui": "Suelta el archivo para abrirlo"
     },
     "barra": {
         "panel": "Mostrar u ocultar el panel lateral",
@@ -92,7 +92,7 @@
         "preparando": "Preparando página {actual} de {total}…"
     },
     "errores": {
-        "noEsPdf": "Ese archivo no es un PDF.",
+        "noEsPdf": "Ese archivo no es un PDF ni un documento .docx, .xlsx o .pptx.",
         "abrir": "No se pudo abrir el documento. Puede que esté dañado.",
         "imprimir": "No se pudo preparar la impresión.",
         "motor": "El motor PDF no está disponible."
@@ -245,5 +245,14 @@
         "verNota": "Se comprueba el archivo tal como se abrió. No se consulta si el certificado ha sido revocado.",
         "avisoFirmas": "Este documento tiene firmas digitales ({total}) y están bien. Detalles en Firmar › Comprobar firmas.",
         "avisoFirmasRotas": "¡Atención! Alguna firma de este documento no es válida. Mira Firmar › Comprobar firmas."
+    },
+    "oficina": {
+        "convirtiendo": "Convirtiendo «{nombre}» a PDF…",
+        "convertido": "Convertido a PDF. Con Descargar lo guardas ya como PDF.",
+        "error": "No se pudo convertir el documento.",
+        "hojaVacia": "Hoja vacía",
+        "filasOmitidas": "… y {total} filas más que no caben en el PDF",
+        "verdadero": "VERDADERO",
+        "falso": "FALSO"
     }
 }

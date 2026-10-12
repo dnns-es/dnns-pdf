@@ -29,6 +29,12 @@ export function descargarBlob(blob, nombre) {
 }
 
 // Un atajo de teclado no debe saltar mientras se escribe en un campo
+// Los documentos de texto, hojas y presentaciones (.docx, .xlsx, .pptx) son ZIP: empiezan por «PK»
+export async function esArchivoZip(archivo) {
+    const cabecera = new Uint8Array(await archivo.slice(0, 4).arrayBuffer());
+    return cabecera[0] === 0x50 && cabecera[1] === 0x4b && cabecera[2] === 3 && cabecera[3] === 4;
+}
+
 export function escribiendoEnCampo(evento) {
     const objetivo = evento.target;
     return objetivo instanceof HTMLInputElement || objetivo instanceof HTMLTextAreaElement

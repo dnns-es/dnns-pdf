@@ -11,6 +11,7 @@ import * as mupdf from 'mupdf';
 import { crearModuloAnotaciones } from './anotaciones.js';
 import { crearModuloPaginas } from './paginas.js';
 import * as firmaDigital from './firmaDigital.js';
+import { convertirOficina } from './oficina/oficina.js';
 
 const MAX_RESULTADOS_BUSQUEDA = 2000;
 
@@ -258,6 +259,9 @@ const acciones = {
         }
     },
     'firma:verificar': (datos) => firmaDigital.verificar(datos),
+
+    // Documentos de Office a PDF (ver oficina/oficina.js)
+    'oficina:convertir': (datos) => convertirOficina(datos),
 
     cerrar() {
         cerrarDocumento();

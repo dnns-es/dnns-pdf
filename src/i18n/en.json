@@ -3,8 +3,8 @@
         "titulo": "Free and open PDF editor",
         "texto": "Your documents never leave your device: everything is processed here, in your browser.",
         "abrir": "Open PDF",
-        "soltar": "or drag a PDF file onto this window",
-        "sueltaAqui": "Drop the PDF to open it"
+        "soltar": "or drop a PDF, .docx, .xlsx or .pptx file here",
+        "sueltaAqui": "Drop the file to open it"
     },
     "barra": {
         "panel": "Show or hide the side panel",
@@ -92,7 +92,7 @@
         "preparando": "Preparing page {actual} of {total}…"
     },
     "errores": {
-        "noEsPdf": "That file is not a PDF.",
+        "noEsPdf": "That file is not a PDF or a .docx, .xlsx or .pptx document.",
         "abrir": "The document could not be opened. It may be damaged.",
         "imprimir": "Printing could not be prepared.",
         "motor": "The PDF engine is not available."
@@ -245,5 +245,14 @@
         "verNota": "The file is checked as it was opened. Certificate revocation is not checked.",
         "avisoFirmas": "This document has digital signatures ({total}) and they are fine. Details in Sign › Check signatures.",
         "avisoFirmasRotas": "Warning! A signature in this document is not valid. See Sign › Check signatures."
+    },
+    "oficina": {
+        "convirtiendo": "Converting “{nombre}” to PDF…",
+        "convertido": "Converted to PDF. Use Download to save it as a PDF.",
+        "error": "The document could not be converted.",
+        "hojaVacia": "Empty sheet",
+        "filasOmitidas": "… and {total} more rows that do not fit in the PDF",
+        "verdadero": "TRUE",
+        "falso": "FALSE"
     }
 }

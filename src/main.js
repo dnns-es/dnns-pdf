@@ -22,6 +22,7 @@ import { iniciarActualizador } from './modulos/actualizador/actualizador.js';
 import { iniciarAnotar } from './modulos/anotar/anotar.js';
 import { iniciarOrganizar } from './modulos/organizar/organizar.js';
 import { iniciarFirmar } from './modulos/firmar/firmar.js';
+import { iniciarOficina } from './modulos/oficina/oficina.js';
 import { iniciarHistorial } from './nucleo/historial.js';
 
 function prepararIdioma() {
@@ -59,6 +60,7 @@ iniciarHistorial();
 iniciarAnotar();
 iniciarOrganizar();
 iniciarFirmar();
+iniciarOficina();
 iniciarBarra();
 iniciarActualizador();
 arrancarMotor();
