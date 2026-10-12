@@ -43,9 +43,11 @@ function aBase64(blob) {
     });
 }
 
-export async function guardarArchivo(blob, nombre) {
+// En Android siempre se elige dónde con el selector del sistema (no hay acceso al archivo original).
+// Devuelve el File guardado o null si el usuario cancela
+export async function guardarComo(blob, nombre) {
     const { guardado } = await Archivos.guardar({ nombre, datos: await aBase64(blob) });
-    return guardado;
+    return guardado ? new File([blob], nombre, { type: 'application/pdf' }) : null;
 }
 
 export async function imprimirPdf(blob, nombre) {

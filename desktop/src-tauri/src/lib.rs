@@ -1,7 +1,7 @@
 // Fecha: 2026-10-12
 // Ruta: /desktop/src-tauri/src/lib.rs
 // Parte nativa de la app de escritorio (Tauri)
-// Abre el PDF recibido por doble clic o línea de comandos, lee archivos y registra los plugins
+// Abre el PDF recibido por doble clic o línea de comandos, lee y escribe archivos y registra los plugins
 // Notas: la interfaz es la misma web de /dist. Lo que necesita del sistema lo pide por `invoke`.
 //        Una sola instancia: si ya está abierta y se hace doble clic en otro PDF, se lo pasa
 //        a la ventana existente con el evento 'archivo-recibido'.
@@ -41,6 +41,29 @@ fn leer_archivo(ruta: String) -> Result<tauri::ipc::Response, String> {
         .map_err(|error| format!("No se pudo leer {ruta}: {error}"))
 }
 
+/// Escribe el PDF en la ruta pedida: primero en un archivo temporal al lado y luego lo sustituye,
+/// así un fallo a medias no deja el original roto. La ruta va en la cabecera `ruta` (codificada como
+/// URL, porque las cabeceras solo admiten ASCII) y los bytes, en el cuerpo sin pasar por JSON.
+#[tauri::command]
+fn escribir_archivo(request: tauri::ipc::Request<'_>) -> Result<(), String> {
+    let codificada = request
+        .headers()
+        .get("ruta")
+        .and_then(|valor| valor.to_str().ok())
+        .ok_or("Falta la ruta del archivo")?;
+    let ruta = PathBuf::from(urlencoding::decode(codificada).map_err(|error| error.to_string())?.into_owned());
+    let tauri::ipc::InvokeBody::Raw(bytes) = request.body() else {
+        return Err("Faltan los datos del archivo".into());
+    };
+    let nombre = ruta.file_name().and_then(|n| n.to_str()).unwrap_or("documento.pdf");
+    let temporal = ruta.with_file_name(format!("{nombre}.tmp"));
+    std::fs::write(&temporal, bytes).map_err(|error| format!("No se pudo escribir {}: {error}", temporal.display()))?;
+    std::fs::rename(&temporal, &ruta).map_err(|error| {
+        let _ = std::fs::remove_file(&temporal);
+        format!("No se pudo sustituir {}: {error}", ruta.display())
+    })
+}
+
 fn enfocar_ventana(app: &AppHandle) {
     if let Some(ventana) = app.get_webview_window("main") {
         let _ = ventana.unminimize();
@@ -59,7 +82,8 @@ pub fn run() {
         }))
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_process::init())
-        .invoke_handler(tauri::generate_handler![archivo_inicial, leer_archivo])
+        .plugin(tauri_plugin_dialog::init())
+        .invoke_handler(tauri::generate_handler![archivo_inicial, leer_archivo, escribir_archivo])
         .run(tauri::generate_context!())
         .expect("No se pudo arrancar DNNS PDF");
 }

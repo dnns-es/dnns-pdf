@@ -22,6 +22,8 @@ tauri = { version = "2", features = [] }
 tauri-plugin-updater = "2"
 tauri-plugin-process = "2"
 tauri-plugin-single-instance = "2"
+tauri-plugin-dialog = "2"
+urlencoding = "2"
 
 [profile.release]
 # Instalador pequeño: optimizar por tamaño y quitar símbolos

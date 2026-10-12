@@ -2,6 +2,17 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versionado semántico.
 
+## [0.8.0] - 2026-10-12
+
+### Añadido
+- Guardar con las opciones de siempre: el botón de guardar (barra y barra de anotar) abre un menú con «Guardar» (Ctrl+S) y «Guardar como…» (Ctrl+Mayús+S).
+- Windows: «Guardar» sobrescribe el archivo abierto (escritura segura: primero en un temporal) y «Guardar como» abre el diálogo del sistema; el botón Abrir usa también el diálogo del sistema.
+- Web (Chrome y Edge): abrir con el selector del sistema, soltar un archivo o «Abrir con» de la PWA dan permiso para guardar encima del archivo; «Guardar como» abre el diálogo de guardar. En otros navegadores se descarga, como hasta ahora.
+- Tras guardar, el documento pasa a llamarse como el archivo guardado.
+
+### Cambiado
+- El botón «Descargar» de la barra es ahora el de guardar.
+
 ## [0.7.0] - 2026-10-12
 
 ### Añadido

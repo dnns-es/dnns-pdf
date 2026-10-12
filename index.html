@@ -98,9 +98,23 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
             <button id="boton-imprimir" class="boton-icono" type="button" data-i18n-titulo="barra.imprimir" data-requiere-doc>
                 <svg viewBox="0 0 24 24"><path d="M7 9V3h10v6M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"/><rect x="7" y="14" width="10" height="7"/></svg>
             </button>
-            <button id="boton-descargar" class="boton-icono" type="button" data-i18n-titulo="barra.descargar" data-requiere-doc>
-                <svg viewBox="0 0 24 24"><path d="M12 4v11M7 10l5 5 5-5M5 20h14"/></svg>
-            </button>
+            <div class="menu-contenedor">
+                <button id="boton-guardar" class="boton-icono" type="button" aria-haspopup="menu" aria-expanded="false" data-abre-menu="guardar" data-i18n-titulo="barra.guardar" data-requiere-doc>
+                    <svg viewBox="0 0 24 24"><path d="M5 3h11l3 3v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M7 3v6h8V3M7 21v-7h10v7"/></svg>
+                </button>
+                <div id="menu-guardar" class="menu" role="menu" hidden>
+                    <button type="button" role="menuitem" data-guardar="guardar">
+                        <svg viewBox="0 0 24 24"><path d="M5 3h11l3 3v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M7 3v6h8V3M7 21v-7h10v7"/></svg>
+                        <span data-i18n="guardar.guardar"></span>
+                        <kbd data-i18n="guardar.atajoGuardar"></kbd>
+                    </button>
+                    <button type="button" role="menuitem" data-guardar="como">
+                        <svg viewBox="0 0 24 24"><path d="M5 3h11l3 3v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M7 3v6h8V3"/><path d="M9 17l2 2 4-4"/></svg>
+                        <span data-i18n="guardar.como"></span>
+                        <kbd data-i18n="guardar.atajoComo"></kbd>
+                    </button>
+                </div>
+            </div>
             <button id="boton-ajustes" class="boton-icono" type="button" data-i18n-titulo="ajustes.boton" hidden>
                 <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"/></svg>
             </button>
@@ -190,7 +204,7 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
             <button id="boton-rehacer" class="boton-icono" type="button" data-i18n-titulo="anotar.rehacer" disabled>
                 <svg viewBox="0 0 24 24"><path d="M15 14l5-5-5-5"/><path d="M20 9H9a5 5 0 0 0 0 10h3"/></svg>
             </button>
-            <button id="boton-guardar" class="boton-icono" type="button" data-i18n-titulo="anotar.guardar">
+            <button id="boton-guardar-anotar" class="boton-icono" type="button" aria-haspopup="menu" aria-expanded="false" data-abre-menu="guardar" data-i18n-titulo="anotar.guardar">
                 <svg viewBox="0 0 24 24"><path d="M5 3h11l3 3v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M7 3v6h8V3M7 21v-7h10v7"/></svg>
             </button>
         </div>

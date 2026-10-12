@@ -1,7 +1,7 @@
 // Fecha: 2026-10-12
 // Ruta: /src/modulos/visor/navegacion.js
 // Atajos de teclado del visor
-// Ctrl+O/F/P/S, zoom con Ctrl +/−/0 y cambio de página con flechas, Inicio y Fin
+// Ctrl+O/F/P/S (Ctrl+Mayús+S = guardar como), zoom con Ctrl +/−/0 y cambio de página con flechas, Inicio y Fin
 // Notas: Ctrl+P se intercepta porque imprimir la página tal cual sacaría la interfaz, no el PDF
 
 import { emitir } from '../../nucleo/eventos.js';
@@ -12,14 +12,16 @@ const ATAJOS_CTRL = {
     o: 'archivo:elegir',
     f: 'busqueda:abrir',
     p: 'imprimir:pedir',
-    s: 'descargar:pedir',
+    s: 'guardar:pedir',
+    S: 'guardar:como',
     '+': 'zoom:acercar',
     '=': 'zoom:acercar',
     '-': 'zoom:alejar'
 };
 
 function atajoConCtrl(evento) {
-    const tecla = evento.key.toLowerCase();
+    // Con Mayús la tecla va en mayúscula: así Ctrl+Mayús+S se distingue de Ctrl+S
+    const tecla = evento.shiftKey && evento.key.length === 1 ? evento.key.toUpperCase() : evento.key.toLowerCase();
     const hayDocumento = Boolean(leer('documento'));
     if (tecla === '0' && hayDocumento) {
         evento.preventDefault();

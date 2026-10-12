@@ -20,7 +20,7 @@ Mira [ROADMAP.md](ROADMAP.md) para ver qué hay hecho y qué viene.
 - Miniaturas, índice del documento, ir a página y atajos de teclado
 - Zoom: ajustar al ancho o a la página, Ctrl+rueda y pellizco en el móvil
 - Búsqueda de texto con resaltado, seleccionar y copiar texto
-- PDFs protegidos con contraseña, imprimir y descargar
+- PDFs protegidos con contraseña, imprimir, guardar (Ctrl+S, encima del archivo abierto cuando el sistema lo permite) y guardar como (Ctrl+Mayús+S)
 - Modo claro y oscuro, y fluido con documentos de cientos de páginas
 
 **Anotar:**
@@ -124,7 +124,7 @@ Everything is processed on your device. Your PDFs never leave your browser; neit
 
 ### Features
 
-**Available now (viewer):** open PDFs (button, drag and drop, or "Open with" from the OS when installed), thumbnails, outline, go to page and keyboard shortcuts, zoom (fit width/page, Ctrl+wheel, pinch on mobile), text search with highlights, text selection and copy, password-protected PDFs, print and download, light and dark mode, and smooth with documents of hundreds of pages.
+**Available now (viewer):** open PDFs (button, drag and drop, or "Open with" from the OS when installed), thumbnails, outline, go to page and keyboard shortcuts, zoom (fit width/page, Ctrl+wheel, pinch on mobile), text search with highlights, text selection and copy, password-protected PDFs, print, save (Ctrl+S, over the open file when the system allows it) and save as (Ctrl+Shift+S), light and dark mode, and smooth with documents of hundreds of pages.
 
 **Annotate:** highlight, underline and strike out text, sticky notes, text boxes, pen, rectangle, circle, line and arrow (colour, thickness, opacity), stamps (including custom ones), move and delete annotations, annotation list in the side panel, undo and redo. Annotations are saved inside the PDF in the standard format, so any reader shows them.
 

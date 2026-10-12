@@ -12,7 +12,7 @@ import { escribiendoEnCampo } from '../../nucleo/utilidades.js';
 import { registrarCambioDePaginas } from '../../nucleo/historial.js';
 import { pedir } from '../../motor/cliente.js';
 import { mostrarAviso, confirmar } from '../../ui/dialogos.js';
-import { guardarArchivo } from '../../plataforma/index.js';
+import { guardarComo } from '../../plataforma/index.js';
 import { iniciarCuadricula, construir, seleccionadas, seleccionar, seleccionarTodo } from './cuadricula.js';
 import { elegirArchivos, esImagen, bytesDe, nombreBase } from './archivos.js';
 import { iniciarCrearPdf, abrirCrearPdf } from './crearPdf.js';
@@ -121,7 +121,7 @@ async function guardarPartes(partes) {
     for (const [i, paginas] of partes.entries()) {
         const { bytes } = await pedir('paginas:extraer', { paginas });
         const nombre = partes.length === 1 ? `${base}-extracto.pdf` : `${base}-parte-${i + 1}.pdf`;
-        const guardado = await guardarArchivo(new Blob([bytes], { type: 'application/pdf' }), nombre);
+        const guardado = await guardarComo(new Blob([bytes], { type: 'application/pdf' }), nombre, leer('documento').archivo);
         if (!guardado) {
             return;
         }

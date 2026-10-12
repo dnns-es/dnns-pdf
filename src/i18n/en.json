@@ -18,8 +18,16 @@
         "zoom": "Zoom",
         "buscar": "Search (Ctrl+F)",
         "imprimir": "Print (Ctrl+P)",
-        "descargar": "Download (Ctrl+S)",
+        "guardar": "Save (Ctrl+S) or save as",
         "tema": "Switch between light and dark mode"
+    },
+    "guardar": {
+        "guardar": "Save",
+        "como": "Save as…",
+        "atajoGuardar": "Ctrl+S",
+        "atajoComo": "Ctrl+Shift+S",
+        "hecho": "Saved: {nombre}",
+        "descargado": "Downloaded: {nombre}"
     },
     "zoom": {
         "ancho": "Fit width",
@@ -41,7 +49,7 @@
         "tamano": "Text size",
         "deshacer": "Undo (Ctrl+Z)",
         "rehacer": "Redo (Ctrl+Y)",
-        "guardar": "Save the PDF with the annotations",
+        "guardar": "Save the PDF with the annotations (Ctrl+S) or save as",
         "borrar": "Delete annotation",
         "pedirNota": "Write the note",
         "pedirTexto": "Write the text",

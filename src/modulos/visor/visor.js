@@ -13,7 +13,7 @@ import { iniciarBusqueda } from './busqueda.js';
 import { iniciarMiniaturas } from './miniaturas.js';
 import { iniciarIndice } from './indice.js';
 import { iniciarImprimir } from './imprimir.js';
-import { iniciarDescargar } from './descargar.js';
+import { iniciarGuardar } from './guardar.js';
 
 export function iniciarVisor() {
     iniciarPaginas();
@@ -24,5 +24,5 @@ export function iniciarVisor() {
     iniciarMiniaturas();
     iniciarIndice();
     iniciarImprimir();
-    iniciarDescargar();
+    iniciarGuardar();
 }
