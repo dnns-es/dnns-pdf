@@ -179,7 +179,7 @@ Se eligió Capacitor en vez de Tauri porque el actualizador de Tauri no funciona
 ## Fase 8 — Conversión (servidor opcional)
 
 - [ ] Servicio en `/server` con LibreOffice headless en contenedor Docker
-- [ ] PDF → Word, Excel y PowerPoint
+- [x] PDF → Word y Excel, en el dispositivo y sin servidor (párrafos con su formato, tablas, imágenes; en Excel las cantidades como números). PowerPoint descartado por ahora (12-10-2026)
 - [x] Word, Excel, PowerPoint → PDF (hecho en local en la fase 5, sin servidor; aquí quedaría solo mejorar la fidelidad)
 - [ ] Borrado automático de archivos tras convertir; sin registros de contenido
 - [ ] Aviso claro al usuario de que esta función sí sube el archivo

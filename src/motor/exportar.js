@@ -38,6 +38,38 @@ function codificar(pixmap, formato, calidad = CALIDAD_JPG) {
     return (formato === 'jpg' ? pixmap.asJPEG(calidad, false) : pixmap.asPNG()).slice();
 }
 
+// Imagen del PDF lista para guardar: { formato: 'png'|'jpg', bytes, ancho, alto }. vistas: huellas ya sacadas
+// (si se repite devuelve null). null también si no se puede (máscaras sueltas, formatos raros)
+export function imagenCodificada(imagen, vistas = null) {
+    let pixmap = null;
+    try {
+        pixmap = imagen.toPixmap();
+        // CMYK, escala de grises con paleta, etc.: todo a RGB para poder guardarlo
+        const componentes = pixmap.getColorSpace()?.getNumberOfComponents?.();
+        if (componentes !== 3 && componentes !== 1) {
+            const convertida = pixmap.convertToColorSpace(mupdf.ColorSpace.DeviceRGB, Boolean(pixmap.getAlpha?.()));
+            pixmap.destroy();
+            pixmap = convertida;
+        }
+        if (vistas) {
+            const clave = huella(pixmap);
+            if (vistas.has(clave)) {
+                return null;
+            }
+            vistas.add(clave);
+        }
+        const conAlfa = Boolean(pixmap.getAlpha?.());
+        const grande = Math.max(pixmap.getWidth(), pixmap.getHeight()) >= LADO_PARA_JPG;
+        const formato = grande && !conAlfa ? 'jpg' : 'png';
+        return { formato, bytes: codificar(pixmap, formato), ancho: pixmap.getWidth(), alto: pixmap.getHeight() };
+    } catch (error) {
+        console.warn('Imagen que no se puede exportar:', error);
+        return null;
+    } finally {
+        pixmap?.destroy();
+    }
+}
+
 export function crearModuloExportar(exigirDocumento) {
     return {
         // Una página como imagen a los ppp pedidos (con tope de memoria)
@@ -80,29 +112,9 @@ export function crearModuloExportar(exigirDocumento) {
                 try {
                     texto.walk({
                         onImageBlock(bbox, transformacion, imagen) {
-                            let pixmap = null;
-                            try {
-                                pixmap = imagen.toPixmap();
-                                // CMYK, escala de grises con paleta, etc.: todo a RGB para poder guardarlo
-                                if (pixmap.getColorSpace()?.getNumberOfComponents?.() !== 3 && pixmap.getColorSpace()?.getNumberOfComponents?.() !== 1) {
-                                    const convertida = pixmap.convertToColorSpace(mupdf.ColorSpace.DeviceRGB, pixmap.getAlpha?.() ?? false);
-                                    pixmap.destroy();
-                                    pixmap = convertida;
-                                }
-                                const clave = huella(pixmap);
-                                if (yaVistas.has(clave)) {
-                                    return;
-                                }
-                                yaVistas.add(clave);
-                                const conAlfa = Boolean(pixmap.getAlpha?.());
-                                const grande = Math.max(pixmap.getWidth(), pixmap.getHeight()) >= LADO_PARA_JPG;
-                                const formato = grande && !conAlfa ? 'jpg' : 'png';
-                                imagenes.push({ formato, bytes: codificar(pixmap, formato), ancho: pixmap.getWidth(), alto: pixmap.getHeight() });
-                            } catch (error) {
-                                // Máscaras sueltas o formatos raros: se saltan sin parar la exportación
-                                console.warn('Imagen que no se puede exportar:', error);
-                            } finally {
-                                pixmap?.destroy();
+                            const codificada = imagenCodificada(imagen, yaVistas);
+                            if (codificada) {
+                                imagenes.push(codificada);
                             }
                         }
                     });

@@ -487,7 +487,7 @@
         "error": "No se ha podido comparar."
     },
     "exportar": {
-        "menu": "Exportar páginas, texto o imágenes",
+        "menu": "Exportar o convertir (Word, Excel, imagen, texto)",
         "titulo": "Exportar",
         "paginas": "Páginas como imagen (una por página)",
         "texto": "Todo el texto (.txt)",
@@ -505,7 +505,12 @@
         "sinImagenes": "Este documento no lleva imágenes dentro.",
         "sinTexto": "Estas páginas no tienen texto (si es un escaneado, usa antes Reconocer texto).",
         "error": "No se ha podido exportar.",
-        "pagina": "Página {n}"
+        "pagina": "Página {n}",
+        "word": "Documento de Word (.docx), para editarlo",
+        "excel": "Hoja de Excel (.xlsx), con las tablas en celdas",
+        "notaWord": "Se conservan el texto con su formato, las listas, las tablas sencillas y las imágenes; la maquetación puede variar un poco. Todo se hace en tu dispositivo.",
+        "notaExcel": "Una hoja por página: cada línea es una fila y las columnas salen de cómo está alineado el texto. Las cantidades pasan a ser números. Todo se hace en tu dispositivo.",
+        "sinTextoConvertir": "Estas páginas no tienen texto (si es un escaneado, usa antes Reconocer texto)."
     },
     "pestanas": {
         "titulo": "Documentos abiertos",

@@ -55,6 +55,7 @@ Mira [ROADMAP.md](ROADMAP.md) para ver qué hay hecho y qué viene.
 
 **Herramientas:**
 
+- Convertir a Word y a Excel en tu dispositivo, sin subir el archivo: texto con su formato, tablas e imágenes; en Excel, las cantidades como números
 - Exportar páginas como imagen (PNG o JPG), todo el texto a .txt o las imágenes que lleva dentro
 - Comparar con otro PDF (dos versiones de un contrato, por ejemplo): los cambios palabra a palabra, marcados en la página
 - Ocultar datos de verdad (redacción): marca zonas o busca un texto (un DNI, un nombre) y se borran del archivo, no solo se tapan
@@ -91,7 +92,7 @@ El motivo está en [docs/firma-smartscreen.md](docs/firma-smartscreen.md).
 Se registra para «Abrir con» y «Compartir» PDF, y avisa e instala las versiones nuevas desde la propia app.
 
 **En camino:**
-- Convertir PDF a Word, Excel y PowerPoint (con un servicio opcional y avisando, porque ahí el archivo sí sale del dispositivo)
+- Publicar en Google Play
 
 Se puede instalar como app (PWA) desde el navegador y funciona sin conexión.
 
@@ -156,7 +157,7 @@ Everything is processed on your device. Your PDFs never leave your browser; neit
 
 **Edit:** change a line of text by clicking it, add text with font, size and colour, add, move, resize or delete images, and edit the document properties (title, author, subject, keywords).
 
-**Tools:** export pages as PNG or JPG images, all the text to .txt or the images inside; compare with another PDF (word-by-word changes, marked on the page; scanned pages compared as images); true redaction (mark areas or search for a text such as an ID number and it is erased from the file, not just covered); page numbers, headers and footers ("Page 1 of 10", date, name or custom text) and text or image watermarks; text recognition (OCR) for scans and photos in Spanish or English, so they can be searched and copied (on your device); compress for email or messaging (three levels; saves a copy and shows the saving); protect the PDF with an open password and permissions (prevent printing, copying or editing), AES-256, saving a protected copy; remove the password and restrictions from a PDF (with the owner password when permissions are restricted).
+**Tools:** convert to Word and Excel on your device, without uploading the file (formatted text, tables and images; amounts as numbers in Excel); export pages as PNG or JPG images, all the text to .txt or the images inside; compare with another PDF (word-by-word changes, marked on the page; scanned pages compared as images); true redaction (mark areas or search for a text such as an ID number and it is erased from the file, not just covered); page numbers, headers and footers ("Page 1 of 10", date, name or custom text) and text or image watermarks; text recognition (OCR) for scans and photos in Spanish or English, so they can be searched and copied (on your device); compress for email or messaging (three levels; saves a copy and shows the saving); protect the PDF with an open password and permissions (prevent printing, copying or editing), AES-256, saving a protected copy; remove the password and restrictions from a PDF (with the owner password when permissions are restricted).
 
 **Sign:** handwritten signature (draw it, type your name in a handwriting font or upload a photo with the background removed; saved on your device for reuse; place, move and resize it), digital signature with your .p12/.pfx certificate (for example the Spanish FNMT one) with an optional visible box, and signature checking of received PDFs (signer, date, whether the file is intact and whether the certificate chains to a recognised Spanish authority). The certificate and its password never leave your device.
 
@@ -168,7 +169,7 @@ Everything is processed on your device. Your PDFs never leave your browser; neit
 
 **Android app:** download the APK from [dnns.es/apps](https://dnns.es/apps.html#dnns-pdf). It handles "Open with" and "Share" for PDFs and updates itself from inside the app.
 
-**Coming next** (see [ROADMAP.md](ROADMAP.md), in Spanish): converting PDF to Word, Excel and PowerPoint (with an optional service and a clear warning, since the file does leave the device there).
+**Coming next** (see [ROADMAP.md](ROADMAP.md), in Spanish): Google Play.
 
 It can be installed as an app (PWA) and works offline.
 

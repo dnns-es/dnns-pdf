@@ -844,7 +844,15 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
         <form id="formulario-exportar" method="dialog">
             <h2 data-i18n="exportar.titulo"></h2>
             <label class="dialogo__opcion">
-                <input type="radio" name="que-exportar" value="paginas" checked>
+                <input type="radio" name="que-exportar" value="word" checked>
+                <span data-i18n="exportar.word"></span>
+            </label>
+            <label class="dialogo__opcion">
+                <input type="radio" name="que-exportar" value="excel">
+                <span data-i18n="exportar.excel"></span>
+            </label>
+            <label class="dialogo__opcion">
+                <input type="radio" name="que-exportar" value="paginas">
                 <span data-i18n="exportar.paginas"></span>
             </label>
             <label class="dialogo__opcion">
@@ -868,6 +876,7 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
             </div>
             <label class="cert__etiqueta" for="exportar-rango" data-i18n="exportar.rango"></label>
             <input id="exportar-rango" class="dialogo__campo" type="text" data-i18n-placeholder="exportar.rangoEjemplo">
+            <p id="exportar-nota" class="firma__pista" hidden></p>
             <p id="exportar-error" class="dialogo__error" role="alert"></p>
             <div class="dialogo__botones">
                 <button id="exportar-cancelar" type="button" data-i18n="comun.cancelar"></button>

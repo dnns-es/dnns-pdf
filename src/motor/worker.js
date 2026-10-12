@@ -22,6 +22,7 @@ import { crearModuloEditar } from './editar.js';
 import { bytesFuenteUnicode } from './fuentesUnicode.js';
 import { crearModuloComparar } from './comparar.js';
 import { crearModuloExportar } from './exportar.js';
+import { extraerPagina } from './convertir/extraer.js';
 import * as firmaDigital from './firmaDigital.js';
 import { convertirOficina } from './oficina/oficina.js';
 
@@ -422,6 +423,12 @@ const acciones = {
         return { bytes, _transferir: [bytes.buffer] };
     },
     'exportar:paginaTexto': (datos) => exportar.paginaTexto(datos),
+    // Convertir a Word o Excel: el contenido de una página con su disposición (ver convertir/)
+    'convertir:pagina': ({ pagina }) => {
+        const datos = conPagina(pagina, extraerPagina);
+        const imagenes = datos.bloques.filter((b) => b.tipo === 'imagen').map((b) => b.bytes.buffer);
+        return { ...datos, _transferir: imagenes };
+    },
     'exportar:paginaImagenes': (datos) => {
         const resultado = exportar.paginaImagenes(datos);
         return { ...resultado, _transferir: resultado.imagenes.map((imagen) => imagen.bytes.buffer) };

@@ -1,6 +1,7 @@
 // Fecha: 2026-10-12
 // Ruta: /src/modulos/exportar/exportar.js
-// Módulo Exportar: páginas como imagen (PNG o JPG), todo el texto en un .txt, o las imágenes que lleva el PDF
+// Módulo Exportar: convertir a Word (.docx) o Excel (.xlsx), páginas como imagen (PNG o JPG), todo el texto en
+// un .txt, o las imágenes que lleva el PDF
 // Opción del menú Herramientas. Un solo archivo se guarda tal cual; varios van juntos en un .zip.
 // Notas: todo en el dispositivo. Se pide página a página al worker para enseñar el avance y poder cancelar.
 
@@ -12,9 +13,18 @@ import { leerRangos } from '../../nucleo/rangos.js';
 import { mostrarAviso, abrirProgreso } from '../../ui/dialogos.js';
 import { guardarArchivo } from '../../plataforma/index.js';
 import { registrarUtilidad } from '../herramientas/herramientas.js';
+import { crearDocx } from '../../motor/convertir/word.js';
+import { crearXlsx } from '../../motor/convertir/excel.js';
 
 const $ = (id) => document.getElementById(id);
-const TIPOS = { png: 'image/png', jpg: 'image/jpeg', txt: 'text/plain', zip: 'application/zip' };
+const TIPOS = {
+    png: 'image/png',
+    jpg: 'image/jpeg',
+    txt: 'text/plain',
+    zip: 'application/zip',
+    docx: 'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
+    xlsx: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+};
 
 class Cancelado extends Error {}
 
@@ -94,6 +104,20 @@ async function exportarImagenes(paginas) {
     return archivos;
 }
 
+// Word o Excel: se lee la disposición de cada página en el worker y aquí se monta el archivo
+async function convertir(paginas, formato) {
+    const leidas = [];
+    await porPaginas(paginas, async (pagina) => {
+        leidas.push(await pedir('convertir:pagina', { pagina }));
+    });
+    if (!leidas.some((pagina) => pagina.bloques.some((bloque) => bloque.tipo === 'texto'))) {
+        mostrarAviso(t('exportar.sinTextoConvertir'));
+        return [];
+    }
+    const bytes = formato === 'docx' ? crearDocx(leidas) : crearXlsx(leidas, (n) => t('exportar.pagina', { n: paginas[n - 1] + 1 }));
+    return bytes ? [{ nombre: `${baseDelNombre()}.${formato}`, bytes }] : [];
+}
+
 async function entregar(archivos, sufijoZip) {
     if (!archivos.length) {
         return;
@@ -125,7 +149,9 @@ async function exportar() {
     }
     $('dialogo-exportar').close();
     try {
-        if (que === 'paginas') {
+        if (que === 'word' || que === 'excel') {
+            await entregar(await convertir(paginas, que === 'word' ? 'docx' : 'xlsx'), que);
+        } else if (que === 'paginas') {
             await entregar(await exportarPaginas(paginas, $('exportar-formato').value, Number($('exportar-ppp').value)), 'paginas');
         } else if (que === 'texto') {
             await entregar(await exportarTexto(paginas), 'texto');
@@ -143,6 +169,9 @@ async function exportar() {
 function mostrarOpciones() {
     const que = document.querySelector('input[name="que-exportar"]:checked').value;
     $('exportar-opciones-imagen').hidden = que !== 'paginas';
+    const nota = { word: 'exportar.notaWord', excel: 'exportar.notaExcel' }[que];
+    $('exportar-nota').hidden = !nota;
+    $('exportar-nota').textContent = nota ? t(nota) : '';
 }
 
 function abrir() {

@@ -487,7 +487,7 @@
         "error": "The documents could not be compared."
     },
     "exportar": {
-        "menu": "Export pages, text or images",
+        "menu": "Export or convert (Word, Excel, image, text)",
         "titulo": "Export",
         "paginas": "Pages as images (one per page)",
         "texto": "All the text (.txt)",
@@ -505,7 +505,12 @@
         "sinImagenes": "This document has no images inside.",
         "sinTexto": "These pages have no text (if it is a scan, use Recognise text first).",
         "error": "The export failed.",
-        "pagina": "Page {n}"
+        "pagina": "Page {n}",
+        "word": "Word document (.docx), to edit it",
+        "excel": "Excel sheet (.xlsx), with tables in cells",
+        "notaWord": "Text with its formatting, lists, simple tables and images are kept; the layout may change slightly. Everything happens on your device.",
+        "notaExcel": "One sheet per page: each line is a row and columns come from how the text is aligned. Amounts become numbers. Everything happens on your device.",
+        "sinTextoConvertir": "These pages have no text (if it is a scan, use Recognise text first)."
     },
     "pestanas": {
         "titulo": "Open documents",
