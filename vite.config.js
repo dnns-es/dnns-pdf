@@ -54,8 +54,8 @@ function recursosOcr() {
     };
 }
 
-// Las apps (Tauri y Android) sirven la web desde la raíz; GitHub Pages desde /dnns-pdf/.
-// El CLI de Tauri marca su build con TAURI_ENV_PLATFORM y scripts/apk.js con DNNS_APP
+// Las apps (Tauri, Android e iPhone) sirven la web desde la raíz; GitHub Pages desde /dnns-pdf/.
+// El CLI de Tauri marca su build con TAURI_ENV_PLATFORM y scripts/apk.js y el workflow de iOS con DNNS_APP
 const paraApp = Boolean(process.env.TAURI_ENV_PLATFORM || process.env.DNNS_APP);
 
 export default defineConfig({

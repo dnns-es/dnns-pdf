@@ -43,7 +43,7 @@ jobs:
       - name: Web y sync iOS
         run: |
           npm ci
-          npm run build
+          DNNS_APP=1 npm run build
           npx cap sync ios
 
       - name: Compilar (simulador, sin firma)
@@ -135,7 +135,7 @@ jobs:
         if: steps.secretos.outputs.hay == 'si'
         run: |
           npm ci
-          npm run build
+          DNNS_APP=1 npm run build
           npx cap sync ios
 
       # Apple exige el SDK más nuevo: se elige siempre el Xcode más reciente del runner
