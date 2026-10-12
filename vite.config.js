@@ -26,8 +26,11 @@ function versionPublicada() {
     };
 }
 
+// Tauri sirve la web desde la raíz; GitHub Pages desde /dnns-pdf/. El CLI de Tauri marca su build con TAURI_ENV_PLATFORM
+const paraEscritorio = Boolean(process.env.TAURI_ENV_PLATFORM);
+
 export default defineConfig({
-    base: '/dnns-pdf/',
+    base: paraEscritorio ? './' : '/dnns-pdf/',
     plugins: [versionPublicada()],
     define: {
         __VERSION_APP__: JSON.stringify(paquete.version),

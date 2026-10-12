@@ -8,5 +8,8 @@ Thumbs.db
 .vscode/
 .idea/
 desktop/src-tauri/target/
+desktop/src-tauri/gen/schemas/
+# Clave privada de firma de actualizaciones: NUNCA al repo (vive en los secretos de GitHub y en la copia de Antonio)
+desktop/.keys/
 # Contexto local del asistente de desarrollo: no se publica
 CLAUDE.md
