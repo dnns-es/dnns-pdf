@@ -1,0 +1,19 @@
+{
+    "bienvenida": {
+        "titulo": "Editor de PDF libre y gratuito",
+        "texto": "Tus documentos nunca salen de tu dispositivo: todo se procesa aquí, en tu navegador."
+    },
+    "motor": {
+        "etiqueta": "Motor PDF:",
+        "cargando": "cargando…",
+        "listo": "listo (MuPDF {version})",
+        "error": "no se pudo cargar"
+    },
+    "pie": {
+        "licencia": "Software libre · AGPL-3.0 · DNNS.es"
+    },
+    "actualizacion": {
+        "texto": "Nueva versión disponible",
+        "boton": "Actualizar"
+    }
+}

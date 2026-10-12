@@ -1,0 +1,19 @@
+{
+    "bienvenida": {
+        "titulo": "Free and open PDF editor",
+        "texto": "Your documents never leave your device: everything is processed here, in your browser."
+    },
+    "motor": {
+        "etiqueta": "PDF engine:",
+        "cargando": "loading…",
+        "listo": "ready (MuPDF {version})",
+        "error": "could not be loaded"
+    },
+    "pie": {
+        "licencia": "Free software · AGPL-3.0 · DNNS.es"
+    },
+    "actualizacion": {
+        "texto": "New version available",
+        "boton": "Update"
+    }
+}
