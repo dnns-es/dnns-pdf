@@ -1,0 +1,221 @@
+# Fecha: 2026-10-12
+# Ruta: /.github/workflows/ios.yml
+# App de iPhone y iPad: compilación en el Mac de GitHub (no hace falta Mac en casa)
+#   1. simulador: compila sin firma, la arranca en un iPhone simulado y saca una captura. No pide secretos.
+#   2. testflight: firma y sube a TestFlight. Necesita los secretos de Apple del equipo DNNS
+#      (scripts/secretos-apple.ps1): APPLE_CERT_P12 / APPLE_CERT_PASSWORD (certificado Apple Distribution),
+#      APPLE_PROFILE (perfil «DNNS PDF App Store» de es.dnns.pdf), APPLE_TEAM_ID y la clave de App Store
+#      Connect APPLE_ASC_KEY_P8 / APPLE_ASC_KEY_ID / APPLE_ASC_ISSUER_ID.
+# Notas: con cada etiqueta vX.Y.Z se sube a TestFlight si están los secretos; si no, solo se avisa.
+#        A mano (Actions → iOS → Run workflow) se elige entre simulador o subir.
+#        Versión = la de package.json (la misma que web, Windows, Mac y Android); build = número de ejecución.
+#        El repo es público: los Mac de GitHub no gastan cuota.
+
+name: iOS
+
+on:
+  push:
+    tags: ['v*.*.*']
+  # En un PR que toque la app de iPhone se comprueba en el simulador
+  pull_request:
+    paths: ['ios/**', 'src/plataforma/**', '.github/workflows/ios.yml']
+  workflow_dispatch:
+    inputs:
+      subir:
+        description: 'Subir a TestFlight (si no, solo comprueba en el simulador)'
+        type: boolean
+        default: false
+
+jobs:
+  simulador:
+    name: Compilar y arrancar en el simulador
+    if: github.event_name == 'pull_request' || (github.event_name == 'workflow_dispatch' && !inputs.subir)
+    runs-on: macos-26
+    timeout-minutes: 40
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Web y sync iOS
+        run: |
+          npm ci
+          npm run build
+          npx cap sync ios
+
+      - name: Compilar (simulador, sin firma)
+        run: |
+          set -o pipefail
+          xcodebuild -version
+          xcodebuild \
+            -project ios/App/App.xcodeproj \
+            -scheme App \
+            -configuration Debug \
+            -sdk iphonesimulator \
+            -destination 'generic/platform=iOS Simulator' \
+            -derivedDataPath ios/DerivedData \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            -quiet \
+            build
+
+      - name: Arrancar en un iPhone simulado con un PDF de prueba
+        run: |
+          set -e
+          UDID=$(xcrun simctl list devices available --json \
+              | jq -r '.devices | to_entries | map(select(.key | test("iOS"))) | .[].value[] | select(.name | test("iPhone")) | .udid' | head -1)
+          [ -n "$UDID" ] || { echo "No hay simulador de iPhone"; exit 1; }
+          echo "SIMULADOR=$UDID" >> "$GITHUB_ENV"
+          xcrun simctl boot "$UDID" || true
+          xcrun simctl bootstatus "$UDID" -b
+          xcrun simctl status_bar "$UDID" override --time "9:41" --batteryState charged --batteryLevel 100
+          xcrun simctl install "$UDID" ios/DerivedData/Build/Products/Debug-iphonesimulator/App.app
+          xcrun simctl launch "$UDID" es.dnns.pdf
+          sleep 8
+          mkdir -p capturas
+          xcrun simctl io "$UDID" screenshot capturas/1-portada.png
+          # «Abrir en» de verdad: el sistema le pasa el PDF a la app como si viniera de Archivos
+          xcrun simctl openurl "$UDID" "file://$PWD/tests/pdfs/texto.pdf" || echo "openurl no disponible para archivos"
+          sleep 10
+          xcrun simctl io "$UDID" screenshot capturas/2-pdf-abierto.png
+          if xcrun simctl spawn "$UDID" launchctl list | grep -q "es.dnns.pdf"; then
+            echo "La app sigue viva"
+          else
+            echo "LA APP SE HA CERRADO SOLA"; exit 1
+          fi
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: dnns-pdf-ios-simulador
+          path: capturas
+          if-no-files-found: warn
+          retention-days: 14
+
+  testflight:
+    name: Firmar y subir a TestFlight
+    if: github.event_name == 'push' || (github.event_name == 'workflow_dispatch' && inputs.subir)
+    runs-on: macos-26
+    timeout-minutes: 45
+    env:
+      APPLE_CERT_P12: ${{ secrets.APPLE_CERT_P12 }}
+      APPLE_CERT_PASSWORD: ${{ secrets.APPLE_CERT_PASSWORD }}
+      APPLE_PROFILE: ${{ secrets.APPLE_PROFILE }}
+      APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+      APPLE_ASC_KEY_P8: ${{ secrets.APPLE_ASC_KEY_P8 }}
+      APPLE_ASC_KEY_ID: ${{ secrets.APPLE_ASC_KEY_ID }}
+      APPLE_ASC_ISSUER_ID: ${{ secrets.APPLE_ASC_ISSUER_ID }}
+    steps:
+      # Sin secretos no hay firma: se avisa y se para sin gastar tiempo de compilación
+      - name: Comprobar secretos
+        id: secretos
+        run: |
+          if [ -z "$APPLE_CERT_P12" ] || [ -z "$APPLE_PROFILE" ] || [ -z "$APPLE_ASC_KEY_P8" ]; then
+            echo "::warning::Faltan los secretos de Apple (scripts/secretos-apple.ps1): no se sube a TestFlight."
+            echo "hay=no" >> "$GITHUB_OUTPUT"
+          else
+            echo "hay=si" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/checkout@v4
+        if: steps.secretos.outputs.hay == 'si'
+
+      - uses: actions/setup-node@v4
+        if: steps.secretos.outputs.hay == 'si'
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Web y sync iOS
+        if: steps.secretos.outputs.hay == 'si'
+        run: |
+          npm ci
+          npm run build
+          npx cap sync ios
+
+      # Apple exige el SDK más nuevo: se elige siempre el Xcode más reciente del runner
+      - name: Usar el Xcode más nuevo
+        if: steps.secretos.outputs.hay == 'si'
+        run: |
+          ULTIMO=$(ls -d /Applications/Xcode*.app | sort -V | tail -1)
+          echo "Xcode elegido: $ULTIMO"
+          sudo xcode-select -s "$ULTIMO"
+          xcodebuild -version
+
+      - name: Certificado y perfil
+        if: steps.secretos.outputs.hay == 'si'
+        run: |
+          set -e
+          LLAVERO="$RUNNER_TEMP/firma.keychain-db"
+          CLAVE_LLAVERO="$(uuidgen)"
+          security create-keychain -p "$CLAVE_LLAVERO" "$LLAVERO"
+          security set-keychain-settings -lut 21600 "$LLAVERO"
+          security unlock-keychain -p "$CLAVE_LLAVERO" "$LLAVERO"
+          echo "$APPLE_CERT_P12" | base64 --decode > "$RUNNER_TEMP/distribution.p12"
+          security import "$RUNNER_TEMP/distribution.p12" -P "$APPLE_CERT_PASSWORD" -A -t cert -f pkcs12 -k "$LLAVERO"
+          curl -sSfo "$RUNNER_TEMP/wwdr.cer" https://www.apple.com/certificateauthority/AppleWWDRCAG3.cer
+          security import "$RUNNER_TEMP/wwdr.cer" -k "$LLAVERO" -A || echo "El intermedio WWDR ya estaba."
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$CLAVE_LLAVERO" "$LLAVERO" > /dev/null
+          security list-keychains -d user -s "$LLAVERO" $(security list-keychains -d user | tr -d '"')
+          security find-identity -v -p codesigning "$LLAVERO"
+          rm -f "$RUNNER_TEMP/distribution.p12"
+          for d in "$HOME/Library/MobileDevice/Provisioning Profiles" "$HOME/Library/Developer/Xcode/UserData/Provisioning Profiles"; do
+            mkdir -p "$d"
+            echo "$APPLE_PROFILE" | base64 --decode > "$d/dnns-pdf-app-store.mobileprovision"
+          done
+
+      # La firma (equipo, identidad y perfil) está en la configuración Release del target App
+      - name: Archivar (firmado)
+        if: steps.secretos.outputs.hay == 'si'
+        run: |
+          set -o pipefail
+          VERSION="$(node -p "require('./package.json').version")"
+          echo "DNNS PDF $VERSION ($GITHUB_RUN_NUMBER)"
+          xcodebuild \
+            -project ios/App/App.xcodeproj \
+            -scheme App \
+            -configuration Release \
+            -sdk iphoneos \
+            -destination 'generic/platform=iOS' \
+            -archivePath "$RUNNER_TEMP/DNNSPDF.xcarchive" \
+            -derivedDataPath ios/DerivedData \
+            MARKETING_VERSION="$VERSION" \
+            CURRENT_PROJECT_VERSION="$GITHUB_RUN_NUMBER" \
+            -quiet \
+            archive
+
+      - name: Subir a TestFlight
+        if: steps.secretos.outputs.hay == 'si'
+        run: |
+          set -o pipefail
+          mkdir -p "$RUNNER_TEMP/asc"
+          echo "$APPLE_ASC_KEY_P8" > "$RUNNER_TEMP/asc/AuthKey.p8"
+          cat > "$RUNNER_TEMP/ExportOptions.plist" <<EOF
+          <?xml version="1.0" encoding="UTF-8"?>
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <plist version="1.0">
+          <dict>
+            <key>method</key><string>app-store-connect</string>
+            <key>destination</key><string>upload</string>
+            <key>teamID</key><string>$APPLE_TEAM_ID</string>
+            <key>signingStyle</key><string>manual</string>
+            <key>signingCertificate</key><string>Apple Distribution</string>
+            <key>provisioningProfiles</key>
+            <dict><key>es.dnns.pdf</key><string>DNNS PDF App Store</string></dict>
+            <key>uploadSymbols</key><true/>
+            <key>manageAppVersionAndBuildNumber</key><false/>
+          </dict>
+          </plist>
+          EOF
+          xcodebuild -exportArchive \
+            -archivePath "$RUNNER_TEMP/DNNSPDF.xcarchive" \
+            -exportOptionsPlist "$RUNNER_TEMP/ExportOptions.plist" \
+            -exportPath "$RUNNER_TEMP/export" \
+            -authenticationKeyPath "$RUNNER_TEMP/asc/AuthKey.p8" \
+            -authenticationKeyID "$APPLE_ASC_KEY_ID" \
+            -authenticationKeyIssuerID "$APPLE_ASC_ISSUER_ID" \
+            -allowProvisioningUpdates
+          rm -rf "$RUNNER_TEMP/asc"
