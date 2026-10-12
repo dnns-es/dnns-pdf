@@ -506,5 +506,13 @@
         "sinTexto": "Estas páginas no tienen texto (si es un escaneado, usa antes Reconocer texto).",
         "error": "No se ha podido exportar.",
         "pagina": "Página {n}"
+    },
+    "pestanas": {
+        "titulo": "Documentos abiertos",
+        "cerrar": "Cerrar este documento",
+        "sinGuardar": "Tiene cambios sin guardar",
+        "descartar": "Este documento tiene cambios sin guardar. ¿Cerrarlo y perderlos?",
+        "demasiadas": "Hay demasiados documentos abiertos: cierra alguno antes de abrir otro.",
+        "error": "No se ha podido cambiar de documento."
     }
 }

@@ -6,7 +6,8 @@
 //        Las anotaciones y el historial viven en anotaciones.js; las operaciones de páginas, en paginas.js;
 //        los formularios, en formularios.js.
 //        Una acción puede devolver { _transferir: [...] } para ceder buffers/bitmaps sin copiarlos.
-//        Solo hay un documento abierto a la vez.
+//        Puede haber varios documentos abiertos (pestañas): cada uno tiene su sesión con sus propios módulos
+//        (historial, cambios, contraseña...). Las acciones trabajan siempre sobre la sesión activa.
 
 import * as mupdf from 'mupdf';
 import { crearModuloAnotaciones } from './anotaciones.js';
@@ -26,15 +27,60 @@ import { convertirOficina } from './oficina/oficina.js';
 
 const MAX_RESULTADOS_BUSQUEDA = 2000;
 
-let documento = null;
-const anotaciones = crearModuloAnotaciones(() => exigirDocumento());
-const paginas = crearModuloPaginas(() => exigirDocumento(), () => anotaciones.marcarCambio());
-const formularios = crearModuloFormularios(() => exigirDocumento(), () => anotaciones.marcarCambio());
-const seguridad = crearModuloSeguridad(() => exigirDocumento());
-const ocr = crearModuloOcr(() => exigirDocumento(), () => anotaciones.marcarCambio());
-const marcas = crearModuloMarcas(() => exigirDocumento(), () => anotaciones.marcarCambio());
-const redactar = crearModuloRedactar(() => exigirDocumento(), () => anotaciones.marcarCambio());
-const editar = crearModuloEditar(() => exigirDocumento(), () => anotaciones.marcarCambio(), bytesFuenteUnicode);
+const MAX_SESIONES = 12;
+
+// Las fuentes DejaVu se descargan una vez para todas las pestañas
+const fuentesDescargadas = new Map();
+function obtenerFuenteUnicode(nombre) {
+    if (!fuentesDescargadas.has(nombre)) {
+        fuentesDescargadas.set(nombre, bytesFuenteUnicode(nombre).catch((error) => {
+            fuentesDescargadas.delete(nombre);
+            throw error;
+        }));
+    }
+    return fuentesDescargadas.get(nombre);
+}
+
+// Una sesión por documento abierto, con sus módulos atados a él
+function crearSesion(doc) {
+    const exigir = () => doc;
+    const sesion = { doc };
+    const marcarCambio = () => sesion.anotaciones.marcarCambio();
+    sesion.anotaciones = crearModuloAnotaciones(exigir);
+    sesion.paginas = crearModuloPaginas(exigir, marcarCambio);
+    sesion.formularios = crearModuloFormularios(exigir, marcarCambio);
+    sesion.seguridad = crearModuloSeguridad(exigir);
+    sesion.ocr = crearModuloOcr(exigir, marcarCambio);
+    sesion.marcas = crearModuloMarcas(exigir, marcarCambio);
+    sesion.redactar = crearModuloRedactar(exigir, marcarCambio);
+    sesion.editar = crearModuloEditar(exigir, marcarCambio, obtenerFuenteUnicode);
+    sesion.comparar = crearModuloComparar(exigir);
+    sesion.exportar = crearModuloExportar(exigir);
+    return sesion;
+}
+
+const sesiones = new Map();
+let activa = null;
+let siguienteId = 1;
+
+function sesionActiva() {
+    const sesion = sesiones.get(activa);
+    if (!sesion) {
+        throw new Error('No hay ningún documento abierto');
+    }
+    return sesion;
+}
+
+// Cada módulo de la sesión activa, con el mismo nombre que tenía cuando solo había un documento
+const delActivo = (modulo) => new Proxy({}, { get: (_, clave) => sesionActiva()[modulo][clave] });
+const anotaciones = delActivo('anotaciones');
+const paginas = delActivo('paginas');
+const formularios = delActivo('formularios');
+const seguridad = delActivo('seguridad');
+const ocr = delActivo('ocr');
+const marcas = delActivo('marcas');
+const redactar = delActivo('redactar');
+const editar = delActivo('editar');
 
 // Bytes del documento para guardar. Si se ha escrito con DejaVu, se recorta a las letras usadas (si no, cada
 // fuente añadiría cientos de KB); ese guardado ya no es incremental
@@ -54,19 +100,29 @@ function exportarDocumento() {
         copia.destroy();
     }
 }
-const comparar = crearModuloComparar(() => exigirDocumento());
-const exportar = crearModuloExportar(() => exigirDocumento());
+const comparar = delActivo('comparar');
+const exportar = delActivo('exportar');
 
 function exigirDocumento() {
-    if (!documento) {
-        throw new Error('No hay ningún documento abierto');
-    }
-    return documento;
+    return sesionActiva().doc;
 }
 
-function cerrarDocumento() {
-    documento?.destroy();
-    documento = null;
+// Cierra una sesión (por defecto la activa) y suelta su memoria
+function cerrarSesion(id = activa) {
+    const sesion = sesiones.get(id);
+    if (!sesion) {
+        return;
+    }
+    try {
+        sesion.comparar.cerrar();
+    } catch {
+        // Sin comparación abierta
+    }
+    sesion.doc.destroy();
+    sesiones.delete(id);
+    if (activa === id) {
+        activa = null;
+    }
 }
 
 // Usar la página y liberarla siempre: la memoria del .wasm no la recoge el recolector de JS
@@ -217,16 +273,32 @@ const acciones = {
         return { version: __VERSION_MUPDF__, paginas };
     },
 
+    // Abre en una pestaña nueva, que pasa a ser la activa. Devuelve su id
     abrir({ buffer }) {
-        cerrarDocumento();
-        documento = mupdf.Document.openDocument(buffer, 'application/pdf');
+        if (sesiones.size >= MAX_SESIONES) {
+            throw new Error('DEMASIADAS');
+        }
+        const doc = mupdf.Document.openDocument(buffer, 'application/pdf');
+        const id = siguienteId++;
+        sesiones.set(id, crearSesion(doc));
+        activa = id;
         seguridad.registrarApertura(null, 0);
-        if (documento.needsPassword()) {
-            return { necesitaClave: true };
+        if (doc.needsPassword()) {
+            return { id, necesitaClave: true };
         }
         anotaciones.activarHistorial();
-        return { necesitaClave: false, ...datosDocumento() };
+        return { id, necesitaClave: false, ...datosDocumento() };
     },
+
+    // Pestañas: cambiar de documento activo y saber si uno tiene cambios sin guardar
+    'pestanas:activar'({ id }) {
+        if (!sesiones.has(id)) {
+            throw new Error('No existe esa pestaña');
+        }
+        activa = id;
+        return { id, ...anotaciones.historial() };
+    },
+    'pestanas:hayCambios': ({ id }) => sesiones.get(id)?.anotaciones.hayCambios() ?? false,
 
     autenticar({ clave }) {
         // authenticatePassword devuelve 0 si la clave no vale; 2 si es la de usuario, 4 si es la de propietario
@@ -374,8 +446,9 @@ const acciones = {
     // Documentos de Office a PDF (ver oficina/oficina.js)
     'oficina:convertir': (datos) => convertirOficina(datos),
 
-    cerrar() {
-        cerrarDocumento();
+    // Cierra la pestaña pedida (por defecto la activa)
+    cerrar({ id } = {}) {
+        cerrarSesion(id ?? activa);
         return true;
     }
 };

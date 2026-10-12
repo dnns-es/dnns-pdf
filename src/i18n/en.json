@@ -506,5 +506,13 @@
         "sinTexto": "These pages have no text (if it is a scan, use Recognise text first).",
         "error": "The export failed.",
         "pagina": "Page {n}"
+    },
+    "pestanas": {
+        "titulo": "Open documents",
+        "cerrar": "Close this document",
+        "sinGuardar": "Has unsaved changes",
+        "descartar": "This document has unsaved changes. Close it and lose them?",
+        "demasiadas": "Too many documents are open: close one before opening another.",
+        "error": "Could not switch documents."
     }
 }

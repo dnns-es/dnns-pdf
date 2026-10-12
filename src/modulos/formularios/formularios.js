@@ -63,7 +63,7 @@ async function aplanar() {
 }
 
 async function avisarSiHayFormulario(documento) {
-    if (!documento) {
+    if (!documento || documento.avisado) {
         return;
     }
     try {
