@@ -14,3 +14,5 @@ desktop/.keys/
 # Contexto local del asistente de desarrollo: no se publica
 CLAUDE.md
 salida/
+# Recursos del OCR copiados desde node_modules por vite.config.js
+public/ocr/

@@ -43,6 +43,10 @@ Cada fase se trabaja en su propia rama y termina con un PR y una versión public
 - [x] Guardar y Guardar como de verdad (sobrescribir el archivo abierto en Windows y en Chrome/Edge; diálogo del sistema) (pedido por Antonio el 12-10-2026)
 - [x] Pedir contraseña al abrir PDFs protegidos
 - [x] Rendimiento aceptable con un PDF de 300+ páginas
+- [x] Abiertos hace poco en la portada (escritorio, y Chrome/Edge con permiso del navegador)
+- [x] Recordar la página y el zoom de cada documento
+- [x] Modo presentación a pantalla completa, con girar la vista
+- [x] Pestañas para tener varios documentos abiertos a la vez (una sesión por documento en el worker)
 
 ---
 
@@ -135,9 +139,9 @@ Se eligió Capacitor en vez de Tauri porque el actualizador de Tauri no funciona
 
 ## Fase 5 — Formularios y firma
 
-- [ ] Detectar y rellenar formularios existentes (texto, casillas, radio, listas)
-- [ ] Crear campos de formulario nuevos
-- [ ] Aplanar formulario (convertir en contenido fijo)
+- [x] Detectar y rellenar formularios existentes (texto, casillas, radio, listas)
+- [x] Crear campos de formulario nuevos (texto y casilla; MuPDF.js no crea widgets: se montan con la API de objetos y apariencias propias)
+- [x] Aplanar formulario (convertir en contenido fijo), con deshacer
 - [x] Firma manuscrita: dibujar, escribir o subir imagen, y guardarla para reutilizar
 - [x] Firma digital con certificado (.p12/.pfx, p. ej. FNMT) — MuPDF.js no firma: se hace con node-forge (PKCS#7 separado, guardado incremental), comprobado con OpenSSL y pyHanko
 - [x] Verificar firmas digitales de PDFs recibidos (integridad, firmante, fecha y confianza FNMT/DNIe; sin consultar revocación)
@@ -149,33 +153,33 @@ Se eligió Capacitor en vez de Tauri porque el actualizador de Tauri no funciona
 
 ## Fase 6 — Edición de contenido
 
-- [ ] Añadir texto nuevo con fuente, tamaño y color
-- [ ] Añadir, mover, redimensionar y borrar imágenes
-- [ ] Editar texto existente (método "tapar y reescribir": detectar línea, cubrir y reescribir)
-- [ ] Redacción real: borra el contenido de verdad, no solo lo tapa
-- [ ] Encabezados, pies y numeración de páginas
-- [ ] Marca de agua de texto o imagen
-- [ ] Editar metadatos (título, autor, palabras clave)
+- [x] Añadir texto nuevo con fuente, tamaño y color (Helvetica, Times y Courier; DejaVu incrustada y recortada para símbolos y otros alfabetos)
+- [x] Añadir, mover, redimensionar y borrar imágenes (también las que ya traía el PDF, salvo si se solapan con otra)
+- [x] Editar texto existente (método "tapar y reescribir": se borra el texto de la línea, sin tocar el fondo, y se escribe el nuevo)
+- [x] Redacción real: borra el contenido de verdad, no solo lo tapa (zonas a mano o buscando un texto)
+- [x] Encabezados, pies y numeración de páginas
+- [x] Marca de agua de texto o imagen
+- [x] Editar metadatos (título, autor, asunto, palabras clave)
 
 ---
 
 ## Fase 7 — Seguridad y utilidades
 
-- [ ] Proteger con contraseña de apertura
-- [ ] Permisos (impedir imprimir, copiar o editar)
-- [ ] Quitar contraseña (conociéndola)
-- [ ] Comprimir / optimizar tamaño
-- [ ] OCR con Tesseract.js para hacer buscables los escaneados
-- [ ] Comparar dos PDF y marcar diferencias
-- [ ] Exportar páginas a imagen (PNG/JPG)
-- [ ] Extraer texto e imágenes
+- [x] Proteger con contraseña de apertura (AES-256, menú Herramientas)
+- [x] Permisos (impedir imprimir, copiar o editar) con contraseña de propietario
+- [x] Quitar contraseña (conociéndola; los permisos, con la de propietario)
+- [x] Comprimir / optimizar tamaño (imágenes a JPEG reducidas, fuentes recortadas, limpieza; tres niveles)
+- [x] OCR con Tesseract.js para hacer buscables los escaneados (capa de texto invisible; español e inglés incluidos en la app)
+- [x] Comparar dos PDF y marcar diferencias (texto palabra a palabra; escaneados por imagen)
+- [x] Exportar páginas a imagen (PNG/JPG, 72, 150 o 300 ppp; varias en un .zip)
+- [x] Extraer texto (.txt) e imágenes (sin repetir las que salen en varias páginas)
 
 ---
 
 ## Fase 8 — Conversión (servidor opcional)
 
 - [ ] Servicio en `/server` con LibreOffice headless en contenedor Docker
-- [ ] PDF → Word, Excel y PowerPoint
+- [x] PDF → Word y Excel, en el dispositivo y sin servidor (párrafos con su formato, tablas, imágenes; en Excel las cantidades como números). PowerPoint descartado por ahora (12-10-2026)
 - [x] Word, Excel, PowerPoint → PDF (hecho en local en la fase 5, sin servidor; aquí quedaría solo mejorar la fidelidad)
 - [ ] Borrado automático de archivos tras convertir; sin registros de contenido
 - [ ] Aviso claro al usuario de que esta función sí sube el archivo

@@ -3,32 +3,127 @@
 // Web Worker que aloja MuPDF.js
 // Abre el documento, pinta páginas, extrae texto e índice y busca, todo fuera del hilo principal
 // Notas: protocolo { id, accion, datos } -> { id, ok, resultado | error }.
-//        Las anotaciones y el historial viven en anotaciones.js; las operaciones de páginas, en paginas.js.
+//        Las anotaciones y el historial viven en anotaciones.js; las operaciones de páginas, en paginas.js;
+//        los formularios, en formularios.js.
 //        Una acción puede devolver { _transferir: [...] } para ceder buffers/bitmaps sin copiarlos.
-//        Solo hay un documento abierto a la vez.
+//        Puede haber varios documentos abiertos (pestañas): cada uno tiene su sesión con sus propios módulos
+//        (historial, cambios, contraseña...). Las acciones trabajan siempre sobre la sesión activa.
 
 import * as mupdf from 'mupdf';
 import { crearModuloAnotaciones } from './anotaciones.js';
 import { crearModuloPaginas } from './paginas.js';
+import { crearModuloFormularios } from './formularios.js';
+import { crearModuloSeguridad } from './seguridad.js';
+import { comprimir } from './comprimir.js';
+import { crearModuloOcr } from './ocr.js';
+import { crearModuloMarcas } from './marcas.js';
+import { crearModuloRedactar } from './redactar.js';
+import { crearModuloEditar } from './editar.js';
+import { bytesFuenteUnicode } from './fuentesUnicode.js';
+import { crearModuloComparar } from './comparar.js';
+import { crearModuloExportar } from './exportar.js';
+import { extraerPagina } from './convertir/extraer.js';
 import * as firmaDigital from './firmaDigital.js';
 import { convertirOficina } from './oficina/oficina.js';
 
 const MAX_RESULTADOS_BUSQUEDA = 2000;
 
-let documento = null;
-const anotaciones = crearModuloAnotaciones(() => exigirDocumento());
-const paginas = crearModuloPaginas(() => exigirDocumento(), () => anotaciones.marcarCambio());
+const MAX_SESIONES = 12;
 
-function exigirDocumento() {
-    if (!documento) {
-        throw new Error('No hay ningún documento abierto');
+// Las fuentes DejaVu se descargan una vez para todas las pestañas
+const fuentesDescargadas = new Map();
+function obtenerFuenteUnicode(nombre) {
+    if (!fuentesDescargadas.has(nombre)) {
+        fuentesDescargadas.set(nombre, bytesFuenteUnicode(nombre).catch((error) => {
+            fuentesDescargadas.delete(nombre);
+            throw error;
+        }));
     }
-    return documento;
+    return fuentesDescargadas.get(nombre);
 }
 
-function cerrarDocumento() {
-    documento?.destroy();
-    documento = null;
+// Una sesión por documento abierto, con sus módulos atados a él
+function crearSesion(doc) {
+    const exigir = () => doc;
+    const sesion = { doc };
+    const marcarCambio = () => sesion.anotaciones.marcarCambio();
+    sesion.anotaciones = crearModuloAnotaciones(exigir);
+    sesion.paginas = crearModuloPaginas(exigir, marcarCambio);
+    sesion.formularios = crearModuloFormularios(exigir, marcarCambio);
+    sesion.seguridad = crearModuloSeguridad(exigir);
+    sesion.ocr = crearModuloOcr(exigir, marcarCambio);
+    sesion.marcas = crearModuloMarcas(exigir, marcarCambio);
+    sesion.redactar = crearModuloRedactar(exigir, marcarCambio);
+    sesion.editar = crearModuloEditar(exigir, marcarCambio, obtenerFuenteUnicode);
+    sesion.comparar = crearModuloComparar(exigir);
+    sesion.exportar = crearModuloExportar(exigir);
+    return sesion;
+}
+
+const sesiones = new Map();
+let activa = null;
+let siguienteId = 1;
+
+function sesionActiva() {
+    const sesion = sesiones.get(activa);
+    if (!sesion) {
+        throw new Error('No hay ningún documento abierto');
+    }
+    return sesion;
+}
+
+// Cada módulo de la sesión activa, con el mismo nombre que tenía cuando solo había un documento
+const delActivo = (modulo) => new Proxy({}, { get: (_, clave) => sesionActiva()[modulo][clave] });
+const anotaciones = delActivo('anotaciones');
+const paginas = delActivo('paginas');
+const formularios = delActivo('formularios');
+const seguridad = delActivo('seguridad');
+const ocr = delActivo('ocr');
+const marcas = delActivo('marcas');
+const redactar = delActivo('redactar');
+const editar = delActivo('editar');
+
+// Bytes del documento para guardar. Si se ha escrito con DejaVu, se recorta a las letras usadas (si no, cada
+// fuente añadiría cientos de KB); ese guardado ya no es incremental
+function exportarDocumento() {
+    const resultado = anotaciones.exportar();
+    if (!editar.hayFuentesPropias()) {
+        return resultado;
+    }
+    const copia = mupdf.Document.openDocument(resultado.bytes, 'application/pdf');
+    try {
+        copia.subsetFonts();
+        const buffer = copia.saveToBuffer('garbage=compact,compress=yes');
+        const bytes = buffer.asUint8Array().slice();
+        buffer.destroy();
+        return { bytes, _transferir: [bytes.buffer] };
+    } finally {
+        copia.destroy();
+    }
+}
+const comparar = delActivo('comparar');
+const exportar = delActivo('exportar');
+
+function exigirDocumento() {
+    return sesionActiva().doc;
+}
+
+// Cierra una sesión (por defecto la activa) y suelta su memoria
+function cerrarSesion(id = activa) {
+    const sesion = sesiones.get(id);
+    if (!sesion) {
+        return;
+    }
+    try {
+        sesion.comparar.cerrar();
+    } catch {
+        // Sin comparación abierta
+    }
+    sesion.doc.destroy();
+    sesiones.delete(id);
+    if (activa === id) {
+        activa = null;
+    }
 }
 
 // Usar la página y liberarla siempre: la memoria del .wasm no la recoge el recolector de JS
@@ -179,21 +274,40 @@ const acciones = {
         return { version: __VERSION_MUPDF__, paginas };
     },
 
+    // Abre en una pestaña nueva, que pasa a ser la activa. Devuelve su id
     abrir({ buffer }) {
-        cerrarDocumento();
-        documento = mupdf.Document.openDocument(buffer, 'application/pdf');
-        if (documento.needsPassword()) {
-            return { necesitaClave: true };
+        if (sesiones.size >= MAX_SESIONES) {
+            throw new Error('DEMASIADAS');
+        }
+        const doc = mupdf.Document.openDocument(buffer, 'application/pdf');
+        const id = siguienteId++;
+        sesiones.set(id, crearSesion(doc));
+        activa = id;
+        seguridad.registrarApertura(null, 0);
+        if (doc.needsPassword()) {
+            return { id, necesitaClave: true };
         }
         anotaciones.activarHistorial();
-        return { necesitaClave: false, ...datosDocumento() };
+        return { id, necesitaClave: false, ...datosDocumento() };
     },
 
+    // Pestañas: cambiar de documento activo y saber si uno tiene cambios sin guardar
+    'pestanas:activar'({ id }) {
+        if (!sesiones.has(id)) {
+            throw new Error('No existe esa pestaña');
+        }
+        activa = id;
+        return { id, ...anotaciones.historial() };
+    },
+    'pestanas:hayCambios': ({ id }) => sesiones.get(id)?.anotaciones.hayCambios() ?? false,
+
     autenticar({ clave }) {
-        // authenticatePassword devuelve 0 si la clave no vale
-        if (exigirDocumento().authenticatePassword(clave) === 0) {
+        // authenticatePassword devuelve 0 si la clave no vale; 2 si es la de usuario, 4 si es la de propietario
+        const nivel = exigirDocumento().authenticatePassword(clave);
+        if (nivel === 0) {
             return { ok: false };
         }
+        seguridad.registrarApertura(clave, nivel);
         anotaciones.activarHistorial();
         return { ok: true, ...datosDocumento() };
     },
@@ -244,14 +358,90 @@ const acciones = {
     'paginas:unir': (datos) => paginas.unir(datos),
     hayCambios: () => anotaciones.hayCambios(),
     modificado: () => anotaciones.modificado(),
-    exportar: () => anotaciones.exportar(),
+    exportar: () => exportarDocumento(),
     marcarGuardado: () => anotaciones.marcarGuardado(),
+
+    // Formularios (ver formularios.js)
+    'formularios:hay': () => formularios.hay(),
+    'formularios:listar': (datos) => formularios.listar(datos),
+    'formularios:cambiar': (datos) => formularios.cambiar(datos),
+    'formularios:crear': (datos) => formularios.crear(datos),
+    'formularios:borrar': (datos) => formularios.borrar(datos),
+    'formularios:aplanar': () => formularios.aplanar(),
+
+    // Seguridad: contraseña y permisos (ver seguridad.js)
+    'seguridad:estado': () => seguridad.estado(),
+    'seguridad:proteger': (datos) => seguridad.proteger(datos),
+    'seguridad:quitar': (datos) => seguridad.quitarProteccion(datos),
+
+    // OCR: imagen de la página para reconocer, y capa de texto invisible con el resultado (ver ocr.js)
+    async 'ocr:imagen'({ pagina, escala }) {
+        const pixmap = conPagina(pagina, (p) => p.toPixmap(mupdf.Matrix.scale(escala, escala), mupdf.ColorSpace.DeviceRGB, false, true));
+        try {
+            const png = pixmap.asPNG().slice();
+            return { png, _transferir: [png.buffer] };
+        } finally {
+            pixmap.destroy();
+        }
+    },
+    'ocr:tieneTexto': ({ pagina }) => lineasDeTexto(pagina).length > 0,
+    'ocr:anadirTexto': (datos) => ocr.anadirTexto(datos),
+
+    // Números de página, encabezados y marcas de agua (ver marcas.js)
+    'marcas:numerar': (datos) => marcas.numerar(datos),
+    'marcas:marcaAgua': (datos) => marcas.marcaAgua(datos),
+
+    // Ocultar datos de verdad (ver redactar.js)
+    'redactar:pendientes': () => redactar.pendientes(),
+    'redactar:marcarBusqueda': (datos) => redactar.marcarBusqueda(datos),
+    'redactar:aplicar': () => redactar.aplicar(),
+
+    // Editar contenido (ver editar.js)
+    'editar:lineas': (datos) => editar.lineas(datos),
+    'editar:imagenes': (datos) => editar.imagenes(datos),
+    async 'editar:reescribir'(datos) {
+        await editar.prepararFuente(datos);
+        return editar.reescribir(datos);
+    },
+    async 'editar:anadirTexto'(datos) {
+        await editar.prepararFuente(datos);
+        return editar.anadirTexto(datos);
+    },
+    'editar:anadirImagen': (datos) => editar.anadirImagen(datos),
+    'editar:cambiarImagen': (datos) => editar.cambiarImagen(datos),
+    'editar:propiedades': () => editar.propiedades(),
+    'editar:ponerPropiedades': (datos) => editar.ponerPropiedades(datos),
+
+    // Comparar con otro PDF (ver comparar.js)
+    'comparar:cargar': (datos) => comparar.cargar(datos),
+    'comparar:comparar': () => comparar.comparar(),
+    'comparar:cerrar': () => comparar.cerrar(),
+
+    // Exportar (ver exportar.js); los bytes viajan sin copiarse
+    'exportar:paginaImagen': (datos) => {
+        const { bytes } = exportar.paginaImagen(datos);
+        return { bytes, _transferir: [bytes.buffer] };
+    },
+    'exportar:paginaTexto': (datos) => exportar.paginaTexto(datos),
+    // Convertir a Word o Excel: el contenido de una página con su disposición (ver convertir/)
+    'convertir:pagina': ({ pagina }) => {
+        const datos = conPagina(pagina, extraerPagina);
+        const imagenes = datos.bloques.filter((b) => b.tipo === 'imagen').map((b) => b.bytes.buffer);
+        return { ...datos, _transferir: imagenes };
+    },
+    'exportar:paginaImagenes': (datos) => {
+        const resultado = exportar.paginaImagenes(datos);
+        return { ...resultado, _transferir: resultado.imagenes.map((imagen) => imagen.bytes.buffer) };
+    },
+
+    // Comprimir: sobre una copia con los cambios actuales (ver comprimir.js)
+    'comprimir': ({ nivel }) => comprimir(exportarDocumento().bytes, nivel),
 
     // Firma digital con certificado (ver firmaDigital.js)
     'firma:leerCertificado': (datos) => firmaDigital.leerCertificado(datos),
     // Se firma una copia con los cambios actuales: si el usuario no guarda, el documento abierto sigue igual
     async 'firma:firmar'(datos) {
-        const copia = mupdf.Document.openDocument(anotaciones.exportar().bytes, 'application/pdf');
+        const copia = mupdf.Document.openDocument(exportarDocumento().bytes, 'application/pdf');
         try {
             return await firmaDigital.firmar(copia, datos);
         } finally {
@@ -263,8 +453,9 @@ const acciones = {
     // Documentos de Office a PDF (ver oficina/oficina.js)
     'oficina:convertir': (datos) => convertirOficina(datos),
 
-    cerrar() {
-        cerrarDocumento();
+    // Cierra la pestaña pedida (por defecto la activa)
+    cerrar({ id } = {}) {
+        cerrarSesion(id ?? activa);
         return true;
     }
 };

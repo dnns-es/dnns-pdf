@@ -22,6 +22,9 @@ Mira [ROADMAP.md](ROADMAP.md) para ver qué hay hecho y qué viene.
 - Búsqueda de texto con resaltado, seleccionar y copiar texto
 - PDFs protegidos con contraseña, imprimir, guardar (Ctrl+S, encima del archivo abierto cuando el sistema lo permite) y guardar como (Ctrl+Mayús+S)
 - Modo claro y oscuro, y fluido con documentos de cientos de páginas
+- Pestañas: varios documentos abiertos a la vez
+- Abiertos hace poco en la portada, y cada documento se reabre en la página y con el zoom en que se dejó
+- Modo presentación a pantalla completa (F5), con girar la vista
 
 **Anotar:**
 
@@ -39,6 +42,28 @@ Mira [ROADMAP.md](ROADMAP.md) para ver qué hay hecho y qué viene.
 - Extraer páginas o dividir el PDF por rangos («1-3, 5») o cada N páginas
 - Unir varios PDF e imágenes en uno, y pasar fotos (JPG/PNG/BMP) a PDF, desde la portada o soltando varios archivos
 - Todo se puede deshacer, igual que las anotaciones
+
+**Formularios:**
+
+- Rellenar los campos de un PDF (texto, casillas, opciones, desplegables y listas) escribiendo encima de la página; al guardar quedan dentro del PDF en formato estándar
+- Añadir campos de texto y casillas a cualquier PDF, borrarlos y aplanar el formulario (convertirlo en contenido fijo); todo se puede deshacer
+
+**Editar:**
+
+- Cambiar una línea de texto pulsándola, añadir texto con tipo de letra, tamaño y color, y añadir, mover, cambiar de tamaño o borrar imágenes
+- Propiedades del documento: título, autor, asunto y palabras clave
+
+**Herramientas:**
+
+- Convertir a Word y a Excel en tu dispositivo, sin subir el archivo: texto con su formato, tablas e imágenes; en Excel, las cantidades como números
+- Exportar páginas como imagen (PNG o JPG), todo el texto a .txt o las imágenes que lleva dentro
+- Comparar con otro PDF (dos versiones de un contrato, por ejemplo): los cambios palabra a palabra, marcados en la página
+- Ocultar datos de verdad (redacción): marca zonas o busca un texto (un DNI, un nombre) y se borran del archivo, no solo se tapan
+- Numerar páginas y poner encabezados o pies («Página 1 de 10», fecha, nombre o texto propio), y marcas de agua de texto o imagen
+- Reconocer texto (OCR) en escaneados y fotos, en español o inglés, para buscarlo, seleccionarlo y copiarlo (todo en el dispositivo)
+- Comprimir para enviarlo por correo o WhatsApp: tres niveles, guarda una copia y dice cuánto se ha ahorrado
+- Proteger el PDF con contraseña de apertura y permisos (impedir imprimir, copiar o modificar), cifrado AES-256, guardando una copia protegida
+- Quitar la contraseña y las restricciones de un PDF (con la contraseña de propietario si tiene permisos restringidos)
 
 **Firmar:**
 
@@ -67,9 +92,7 @@ El motivo está en [docs/firma-smartscreen.md](docs/firma-smartscreen.md).
 Se registra para «Abrir con» y «Compartir» PDF, y avisa e instala las versiones nuevas desde la propia app.
 
 **En camino:**
-- Formularios: rellenar, crear campos y aplanar
-- Edición de texto e imágenes, redacción
-- Contraseñas, compresión, OCR
+- Publicar en Google Play
 
 Se puede instalar como app (PWA) desde el navegador y funciona sin conexión.
 
@@ -108,7 +131,7 @@ Lee [CONTRIBUTING.md](CONTRIBUTING.md). Toda ayuda es bienvenida: código, tradu
 
 ## Licencia
 
-[AGPL-3.0](LICENSE). Usamos MuPDF.js, que también es AGPL. Además: node-forge (BSD-3) para las firmas digitales, mammoth (BSD-2) para leer documentos de texto y fflate (MIT) para abrir archivos comprimidos. Las letras manuscritas de la firma (Dancing Script, Great Vibes y Allura) son libres, con licencia OFL (en `src/fuentes`).
+[AGPL-3.0](LICENSE). Usamos MuPDF.js, que también es AGPL. Además: node-forge (BSD-3) para las firmas digitales, mammoth (BSD-2) para leer documentos de texto, fflate (MIT) para abrir archivos comprimidos y Tesseract.js (Apache-2.0) con los datos de idioma de Tesseract (Apache-2.0) para el OCR. Las letras manuscritas de la firma (Dancing Script, Great Vibes y Allura) son libres, con licencia OFL (en `src/fuentes`). Para escribir símbolos y otros alfabetos al editar se usan las fuentes DejaVu (licencia libre de Bitstream Vera, paquete `dejavu-fonts-ttf`).
 
 ---
 
@@ -124,11 +147,17 @@ Everything is processed on your device. Your PDFs never leave your browser; neit
 
 ### Features
 
-**Available now (viewer):** open PDFs (button, drag and drop, or "Open with" from the OS when installed), thumbnails, outline, go to page and keyboard shortcuts, zoom (fit width/page, Ctrl+wheel, pinch on mobile), text search with highlights, text selection and copy, password-protected PDFs, print, save (Ctrl+S, over the open file when the system allows it) and save as (Ctrl+Shift+S), light and dark mode, and smooth with documents of hundreds of pages.
+**Available now (viewer):** open PDFs (button, drag and drop, or "Open with" from the OS when installed), thumbnails, outline, go to page and keyboard shortcuts, zoom (fit width/page, Ctrl+wheel, pinch on mobile), text search with highlights, text selection and copy, password-protected PDFs, print, save (Ctrl+S, over the open file when the system allows it) and save as (Ctrl+Shift+S), light and dark mode, smooth with documents of hundreds of pages, tabs for several open documents, recently opened files on the start screen, each document reopens at the page and zoom where you left it, and a full-screen presentation mode (F5) with view rotation.
 
 **Annotate:** highlight, underline and strike out text, sticky notes, text boxes, pen, rectangle, circle, line and arrow (colour, thickness, opacity), stamps (including custom ones), move and delete annotations, annotation list in the side panel, undo and redo. Annotations are saved inside the PDF in the standard format, so any reader shows them.
 
 **Organise pages:** grid view with drag-and-drop reordering (long press on mobile), rotate, delete, duplicate and crop pages, insert blank pages, pages from another PDF or from images, extract pages or split by ranges or every N pages, merge several PDFs and images into one, and turn photos (JPG/PNG/BMP) into a PDF. Everything can be undone.
+
+**Forms:** fill in the fields of a PDF (text, checkboxes, radio buttons, drop-downs and lists) right on the page; Save keeps them inside the PDF in the standard format. Add text fields and checkboxes to any PDF, delete them and flatten the form (turn it into fixed content); everything can be undone.
+
+**Edit:** change a line of text by clicking it, add text with font, size and colour, add, move, resize or delete images, and edit the document properties (title, author, subject, keywords).
+
+**Tools:** convert to Word and Excel on your device, without uploading the file (formatted text, tables and images; amounts as numbers in Excel); export pages as PNG or JPG images, all the text to .txt or the images inside; compare with another PDF (word-by-word changes, marked on the page; scanned pages compared as images); true redaction (mark areas or search for a text such as an ID number and it is erased from the file, not just covered); page numbers, headers and footers ("Page 1 of 10", date, name or custom text) and text or image watermarks; text recognition (OCR) for scans and photos in Spanish or English, so they can be searched and copied (on your device); compress for email or messaging (three levels; saves a copy and shows the saving); protect the PDF with an open password and permissions (prevent printing, copying or editing), AES-256, saving a protected copy; remove the password and restrictions from a PDF (with the owner password when permissions are restricted).
 
 **Sign:** handwritten signature (draw it, type your name in a handwriting font or upload a photo with the background removed; saved on your device for reuse; place, move and resize it), digital signature with your .p12/.pfx certificate (for example the Spanish FNMT one) with an optional visible box, and signature checking of received PDFs (signer, date, whether the file is intact and whether the certificate chains to a recognised Spanish authority). The certificate and its password never leave your device.
 
@@ -140,7 +169,7 @@ Everything is processed on your device. Your PDFs never leave your browser; neit
 
 **Android app:** download the APK from [dnns.es/apps](https://dnns.es/apps.html#dnns-pdf). It handles "Open with" and "Share" for PDFs and updates itself from inside the app.
 
-**Coming next** (see [ROADMAP.md](ROADMAP.md), in Spanish): forms, content editing, security tools and OCR.
+**Coming next** (see [ROADMAP.md](ROADMAP.md), in Spanish): Google Play.
 
 It can be installed as an app (PWA) and works offline.
 
@@ -159,4 +188,4 @@ See [CONTRIBUTING.md](CONTRIBUTING.md). Code, translations, testing and bug repo
 
 ### License
 
-[AGPL-3.0](LICENSE), required by MuPDF.js. Also: node-forge (BSD-3) for digital signatures, mammoth (BSD-2) for text documents and fflate (MIT) for compressed files. The handwriting fonts (Dancing Script, Great Vibes, Allura) are OFL licensed (in `src/fuentes`).
+[AGPL-3.0](LICENSE), required by MuPDF.js. Also: node-forge (BSD-3) for digital signatures, mammoth (BSD-2) for text documents, fflate (MIT) for compressed files and Tesseract.js (Apache-2.0) with the Tesseract language data (Apache-2.0) for OCR. The handwriting fonts (Dancing Script, Great Vibes, Allura) are OFL licensed (in `src/fuentes`). Symbols and other alphabets in edited text use the DejaVu fonts (free Bitstream Vera licence, `dejavu-fonts-ttf` package).

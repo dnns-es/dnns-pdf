@@ -475,3 +475,86 @@ body:not([data-herramienta="sello"]) #selector-sello {
     color: var(--acento);
     pointer-events: none;
 }
+
+/* Pestañas: una por documento abierto (solo con dos o más) */
+.barra-pestanas {
+    display: flex;
+    gap: 2px;
+    padding: 4px 8px 0;
+    overflow-x: auto;
+    scrollbar-width: thin;
+    background: var(--fondo);
+    border-bottom: 1px solid var(--borde);
+}
+
+.pestana {
+    display: flex;
+    align-items: center;
+    flex: 0 1 220px;
+    min-width: 110px;
+    max-width: 240px;
+    border: 1px solid var(--borde);
+    border-bottom: 0;
+    border-radius: 6px 6px 0 0;
+    background: var(--superficie-2);
+}
+
+.pestana[aria-selected="true"] {
+    background: var(--superficie);
+    box-shadow: inset 0 2px 0 var(--acento);
+}
+
+.pestana__nombre {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 4px 6px 10px;
+    border: 0;
+    background: none;
+    color: var(--texto-suave);
+    font: inherit;
+    font-size: 0.85em;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: pointer;
+}
+
+.pestana[aria-selected="true"] .pestana__nombre {
+    color: var(--texto);
+}
+
+.pestana__cambios {
+    flex: none;
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--acento);
+}
+
+.pestana__cerrar {
+    flex: none;
+    width: 26px;
+    height: 26px;
+    margin-right: 2px;
+    border: 0;
+    border-radius: 4px;
+    background: none;
+    color: var(--texto-suave);
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.pestana__cerrar:hover {
+    background: var(--acento-suave);
+    color: var(--texto);
+}
+
+.pestana__texto {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}

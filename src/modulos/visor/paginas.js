@@ -144,6 +144,8 @@ function liberar(numero) {
 function repintar(numero) {
     if (estados[numero]) {
         estados[numero].escalaPintada = -1;
+        // El texto también puede haber cambiado (editar, ocultar): se vuelve a leer
+        estados[numero].conTexto = false;
         programarPintado();
     }
 }
@@ -152,6 +154,7 @@ function repintarTodo() {
     for (const estado of estados) {
         if (estado.escalaPintada > 0) {
             estado.escalaPintada = -1;
+            estado.conTexto = false;
         }
     }
     programarPintado();

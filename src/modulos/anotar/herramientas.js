@@ -1,7 +1,7 @@
 // Fecha: 2026-10-12
 // Ruta: /src/modulos/anotar/herramientas.js
 // Herramientas de dibujo de la capa de anotación
-// Lápiz, formas (rectángulo, círculo, línea, flecha), cuadro de texto, nota y sello
+// Lápiz, formas (rectángulo, círculo, línea, flecha), zona a ocultar, cuadro de texto, nota y sello
 // Notas: cada herramienta recibe puntos en coordenadas de página (puntos PDF, origen arriba-izquierda)
 //        y devuelve los datos que el worker necesita para crear la anotación. La vista previa se dibuja
 //        en SVG mientras se arrastra; MuPDF pinta la versión definitiva al repintar la página.
@@ -176,7 +176,16 @@ export const firma = {
     }
 };
 
-export const DE_ARRASTRE = { lapiz, rectangulo, circulo, linea, flecha };
+// Zona a ocultar: recuadro rojo discontinuo mientras se dibuja; se borra de verdad al aplicar en Herramientas
+export const ocultar = herramientaDeForma(
+    (a, b) => {
+        const [x0, y0, x1, y1] = rectDesde(a, b);
+        return elementoSvg('rect', { stroke: '#d93025', 'stroke-width': 1.5, 'stroke-dasharray': '4 3', fill: 'rgb(0 0 0 / 0.25)', x: x0, y: y0, width: x1 - x0, height: y1 - y0 });
+    },
+    (a, b) => ({ rect: rectDesde(a, b) })
+);
+
+export const DE_ARRASTRE = { lapiz, rectangulo, circulo, linea, flecha, ocultar };
 // Toque sin anotación: capaAnotaciones avisa con 'anotar:punto'
 const punto = { colocar: () => null };
 

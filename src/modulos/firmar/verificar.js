@@ -93,7 +93,7 @@ export function iniciarVerificar() {
     $('verificar-cerrar').addEventListener('click', () => $('dialogo-verificar').close());
     // Un PDF con firmas avisa al abrirlo; el detalle está en Firmar > Comprobar firmas
     escuchar('estado:documento', async (documento) => {
-        if (!documento) {
+        if (!documento || documento.avisado) {
             return;
         }
         try {

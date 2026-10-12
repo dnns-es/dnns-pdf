@@ -4,17 +4,33 @@
 // Oficina y las imágenes por «Crear PDF». Botón Abrir, arrastrar y soltar, y "Abrir con" desde el sistema
 // Notas: el archivo se lee en local y se cede al worker; nunca sale del dispositivo.
 //        Se conserva el File original para poder descargarlo tal cual.
+//        Cada documento se abre en su pestaña; si ese archivo ya está abierto, se va a su pestaña.
 
 import { escuchar, emitir } from '../../nucleo/eventos.js';
 import { cambiar, leer } from '../../nucleo/estado.js';
 import { t } from '../../nucleo/i18n.js';
 import { pedir } from '../../motor/cliente.js';
-import { mostrarAviso, confirmar } from '../../ui/dialogos.js';
+import { mostrarAviso } from '../../ui/dialogos.js';
 import { tipoDeArchivo } from '../../nucleo/utilidades.js';
 import { pedirContrasena } from './contrasena.js';
+import { registrarPestana, pestanaCon } from '../../nucleo/pestanas.js';
 import { archivoInicial, alRecibirArchivo, ponerTitulo, elegirArchivo } from '../../plataforma/index.js';
 
 const CONVERTIBLES = new Set(['zip', 'rtf', 'texto']);
+
+// Si no se llega a abrir (contraseña cancelada, error), se vuelve al documento que había
+async function volverA(anterior) {
+    if (!anterior) {
+        return;
+    }
+    try {
+        await pedir('pestanas:activar', { id: anterior.id });
+        cambiar('documento', anterior);
+        ponerTitulo(`${anterior.titulo || anterior.nombre} · DNNS PDF`);
+    } catch (error) {
+        console.error('No se pudo volver al documento anterior:', error);
+    }
+}
 
 // Devuelve los datos del documento, o null si el usuario cancela la contraseña
 async function abrirEnMotor(archivo) {
@@ -56,28 +72,38 @@ export async function abrirArchivo(archivo) {
         mostrarAviso(t('errores.noEsPdf'));
         return;
     }
-    // Abrir otro documento descarta las anotaciones que no se hayan descargado
-    if (leer('documento') && (await pedir('hayCambios')) && !(await confirmar('anotar.descartar', 'anotar.descartarBoton'))) {
+    const yaAbierto = await pestanaCon(archivo);
+    if (yaAbierto) {
+        emitir('pestanas:ir', yaAbierto.id);
         return;
     }
+    // Mientras se abre, el visor se vacía: el worker ya trabaja con el documento nuevo
+    const anterior = leer('documento');
     cambiar('documento', null);
     ponerTitulo('DNNS PDF');
     try {
         const datos = await abrirEnMotor(archivo);
         if (!datos) {
+            await volverA(anterior);
             return;
         }
-        cambiar('documento', {
+        const documento = {
+            id: datos.id,
             nombre: archivo.name || 'documento.pdf',
             archivo,
             paginas: datos.paginas,
             tamanos: datos.tamanos,
             titulo: datos.titulo
-        });
+        };
+        registrarPestana(documento);
+        cambiar('documento', documento);
+        // Los avisos de «tiene formulario» o «está firmado» solo salen la primera vez, no al volver a la pestaña
+        documento.avisado = true;
         ponerTitulo(`${datos.titulo || archivo.name} · DNNS PDF`);
     } catch (error) {
         console.error('No se pudo abrir el documento:', error);
-        mostrarAviso(t('errores.abrir'));
+        mostrarAviso(t(error.message === 'DEMASIADAS' ? 'pestanas.demasiadas' : 'errores.abrir'));
+        await volverA(anterior);
     }
 }
 

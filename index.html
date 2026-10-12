@@ -70,6 +70,12 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
             <button id="boton-organizar" class="boton-icono" type="button" aria-pressed="false" data-i18n-titulo="organizar.boton" data-requiere-doc>
                 <svg viewBox="0 0 24 24"><rect x="4" y="4" width="7" height="7" rx="1"/><rect x="13" y="4" width="7" height="7" rx="1"/><rect x="4" y="13" width="7" height="7" rx="1"/><rect x="13" y="13" width="7" height="7" rx="1"/></svg>
             </button>
+            <button id="boton-editar" class="boton-icono" type="button" aria-pressed="false" data-i18n-titulo="editar.boton" data-requiere-doc>
+                <svg viewBox="0 0 24 24"><path d="M4 6V4h11v2M9.5 4v14M7 18h5"/><path d="M14 20l1-3 5-5 2 2-5 5z"/></svg>
+            </button>
+            <button id="boton-formularios" class="boton-icono" type="button" aria-pressed="false" data-i18n-titulo="formularios.boton" data-requiere-doc>
+                <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9h6M7 13h10M7 17h4"/><path d="M15.5 8.5l1.5 1.5 3-3"/></svg>
+            </button>
             <div class="menu-contenedor">
                 <button id="boton-firmar" class="boton-icono" type="button" aria-haspopup="menu" aria-expanded="false" data-i18n-titulo="firmar.boton" data-requiere-doc>
                     <svg viewBox="0 0 24 24"><path d="M3 17c2-1 3-5 5-5s0 5 2 5 3-6 5-6 1 4 3 4 2-1 3-2"/><path d="M3 21h18"/></svg>
@@ -89,11 +95,61 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
                     </button>
                 </div>
             </div>
+            <div class="menu-contenedor">
+                <button id="boton-herramientas" class="boton-icono" type="button" aria-haspopup="menu" aria-expanded="false" data-i18n-titulo="herramientas.boton" data-requiere-doc>
+                    <svg viewBox="0 0 24 24"><path d="M14.5 6.5a4 4 0 0 0 5 5L9 22l-3-3L16.5 8.5"/><path d="M14.5 6.5L17 4l3 3-2.5 2.5"/><path d="M3 21l3-3"/></svg>
+                </button>
+                <div id="menu-herramientas" class="menu" role="menu" hidden>
+                    <button type="button" role="menuitem" data-util="ocr">
+                        <svg viewBox="0 0 24 24"><path d="M4 7V4h3M17 4h3v3M20 17v3h-3M7 20H4v-3"/><path d="M8 9h8M8 12h8M8 15h5"/></svg>
+                        <span data-i18n="ocr.menu"></span>
+                    </button>
+                    <button type="button" role="menuitem" data-util="numerar">
+                        <svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 17h6M12 14v-4l-1.5 1"/></svg>
+                        <span data-i18n="marcas.menuNumerar"></span>
+                    </button>
+                    <button type="button" role="menuitem" data-util="marca">
+                        <svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 16l8-8M9 9h2M13 15h2"/></svg>
+                        <span data-i18n="marcas.menuMarca"></span>
+                    </button>
+                    <button type="button" role="menuitem" data-util="ocultar">
+                        <svg viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="6" rx="1" fill="currentColor"/><path d="M3 5h10M3 19h14"/></svg>
+                        <span data-i18n="redactar.menu"></span>
+                    </button>
+                    <button type="button" role="menuitem" data-util="exportar">
+                        <svg viewBox="0 0 24 24"><path d="M12 3v12M8 11l4 4 4-4"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+                        <span data-i18n="exportar.menu"></span>
+                    </button>
+                    <button type="button" role="menuitem" data-util="comparar">
+                        <svg viewBox="0 0 24 24"><rect x="3" y="4" width="7" height="16" rx="1"/><rect x="14" y="4" width="7" height="16" rx="1"/><path d="M5.5 9h2M5.5 13h2M16.5 9h2M16.5 13h2"/></svg>
+                        <span data-i18n="comparar.menu"></span>
+                    </button>
+                    <button type="button" role="menuitem" data-util="propiedades">
+                        <svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M9 8h6M9 12h6M9 16h3"/></svg>
+                        <span data-i18n="editar.menuPropiedades"></span>
+                    </button>
+                    <button type="button" role="menuitem" data-util="comprimir">
+                        <svg viewBox="0 0 24 24"><path d="M12 3v7M9 7l3 3 3-3M12 21v-7M9 17l3-3 3 3M4 12h16"/></svg>
+                        <span data-i18n="comprimir.menu"></span>
+                    </button>
+                    <button type="button" role="menuitem" data-util="proteger">
+                        <svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/><circle cx="12" cy="16" r="1.5"/></svg>
+                        <span data-i18n="seguridad.menuProteger"></span>
+                    </button>
+                    <button type="button" role="menuitem" data-util="desproteger">
+                        <svg viewBox="0 0 24 24"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 7.5-2"/><circle cx="12" cy="16" r="1.5"/></svg>
+                        <span data-i18n="seguridad.menuQuitar"></span>
+                    </button>
+                </div>
+            </div>
         </div>
 
         <div class="barra__grupo barra__grupo--final">
             <button id="boton-buscar" class="boton-icono" type="button" data-i18n-titulo="barra.buscar" data-requiere-doc>
                 <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
+            </button>
+            <button id="boton-presentacion" class="boton-icono" type="button" data-i18n-titulo="presentacion.boton" data-requiere-doc>
+                <svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="1"/><path d="M12 16v4M8 20h8M10 8l4 2-4 2z"/></svg>
             </button>
             <button id="boton-imprimir" class="boton-icono" type="button" data-i18n-titulo="barra.imprimir" data-requiere-doc>
                 <svg viewBox="0 0 24 24"><path d="M7 9V3h10v6M7 17H5a2 2 0 0 1-2-2v-4a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2v4a2 2 0 0 1-2 2h-2"/><rect x="7" y="14" width="10" height="7"/></svg>
@@ -127,6 +183,37 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
             </select>
         </div>
     </header>
+
+    <nav id="barra-pestanas" class="barra-pestanas" role="tablist" data-i18n-titulo="pestanas.titulo" hidden></nav>
+
+    <div id="barra-editar" class="barra-formularios barra-editar" role="toolbar" hidden>
+        <button class="boton-secundario" type="button" aria-pressed="false" data-editar="texto" data-i18n="editar.editarTexto"></button>
+        <button class="boton-secundario" type="button" aria-pressed="false" data-editar="nuevoTexto" data-i18n="editar.anadirTexto"></button>
+        <button class="boton-secundario" type="button" aria-pressed="false" data-editar="imagen" data-i18n="editar.anadirImagen"></button>
+        <button class="boton-secundario" type="button" aria-pressed="false" data-editar="imagenes" data-i18n="editar.imagenes"></button>
+        <input id="editar-entrada-imagen" type="file" accept="image/png,image/jpeg,image/bmp,.png,.jpg,.jpeg,.bmp" hidden>
+        <span id="editar-formato" class="barra-editar__formato" hidden>
+            <select id="editar-familia" class="barra__zoom" data-i18n-titulo="editar.fuente">
+                <option value="sans" data-i18n="editar.sans"></option>
+                <option value="serif" data-i18n="editar.serif"></option>
+                <option value="mono" data-i18n="editar.mono"></option>
+            </select>
+            <input id="editar-tamano" class="barra-editar__tamano" type="number" min="4" max="200" step="0.5" value="12" data-i18n-titulo="editar.tamano">
+            <button id="editar-negrita" class="boton-icono" type="button" aria-pressed="false" data-i18n-titulo="editar.negrita"><svg viewBox="0 0 24 24"><path d="M7 4h6a4 4 0 0 1 0 8H7zM7 12h7a4 4 0 0 1 0 8H7z" stroke-width="2.6"/></svg></button>
+            <button id="editar-cursiva" class="boton-icono" type="button" aria-pressed="false" data-i18n-titulo="editar.cursiva"><svg viewBox="0 0 24 24"><path d="M10 4h8M6 20h8M15 4L9 20"/></svg></button>
+            <input id="editar-color" class="barra-editar__color" type="color" value="#000000" data-i18n-titulo="editar.color">
+        </span>
+        <span id="editar-pista" class="barra-formularios__pista" data-i18n="editar.pista"></span>
+        <button id="editar-cerrar" class="boton-principal" type="button" data-i18n="formularios.cerrar"></button>
+    </div>
+
+    <div id="barra-formularios" class="barra-formularios" role="toolbar" hidden>
+        <span id="formularios-pista" class="barra-formularios__pista" data-i18n="formularios.pista"></span>
+        <button class="boton-secundario" type="button" aria-pressed="false" data-campo-nuevo="texto" data-i18n="formularios.anadirTexto"></button>
+        <button class="boton-secundario" type="button" aria-pressed="false" data-campo-nuevo="casilla" data-i18n="formularios.anadirCasilla"></button>
+        <button id="formularios-aplanar" class="boton-secundario" type="button" data-i18n="formularios.aplanar"></button>
+        <button id="formularios-cerrar" class="boton-principal" type="button" data-i18n="formularios.cerrar"></button>
+    </div>
 
     <div id="barra-anotar" class="barra-anotar" role="toolbar" hidden>
         <div class="barra__grupo">
@@ -164,6 +251,9 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
             </button>
             <button class="boton-icono" type="button" data-herramienta="flecha" data-i18n-titulo="anotar.herramientas.flecha">
                 <svg viewBox="0 0 24 24"><path d="M5 19L19 5M10 5h9v9"/></svg>
+            </button>
+            <button class="boton-icono" type="button" data-herramienta="ocultar" data-i18n-titulo="anotar.herramientas.ocultar">
+                <svg viewBox="0 0 24 24"><rect x="3" y="8" width="18" height="8" rx="1" fill="currentColor"/><path d="M3 5h8M3 19h12"/></svg>
             </button>
             <button class="boton-icono" type="button" data-herramienta="sello" data-i18n-titulo="anotar.herramientas.sello">
                 <svg viewBox="0 0 24 24"><path d="M9 3h6v5l-1 4h5v4H5v-4h5L9 8zM5 20h14"/></svg>
@@ -254,6 +344,13 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
                     <button id="portada-imagenes" class="boton-secundario" type="button" data-i18n="organizar.imagenesAPdf"></button>
                     <button id="portada-escanear" class="boton-secundario" type="button" data-i18n="escanear.boton"></button>
                 </div>
+                <section id="portada-recientes" class="recientes" hidden>
+                    <div class="recientes__cabecera">
+                        <h2 data-i18n="recientes.titulo"></h2>
+                        <button id="recientes-borrar" class="boton-enlace" type="button" data-i18n="recientes.borrar"></button>
+                    </div>
+                    <ul id="recientes-lista" class="recientes__lista"></ul>
+                </section>
                 <p class="portada__estado">
                     <span data-i18n="motor.etiqueta"></span>
                     <strong id="estado-motor" data-i18n="motor.cargando"></strong>
@@ -264,6 +361,41 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
             </section>
             <div id="paginas" class="paginas" hidden></div>
         </main>
+
+        <aside id="panel-comparar" class="comparar" hidden>
+            <div class="comparar__cabecera">
+                <h2 data-i18n="comparar.titulo"></h2>
+                <button id="comparar-cerrar" class="boton-icono" type="button" data-i18n-titulo="comparar.cerrar">
+                    <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+                </button>
+            </div>
+            <p id="comparar-con" class="comparar__con"></p>
+            <p id="comparar-resumen" class="comparar__resumen"></p>
+            <p class="comparar__leyenda">
+                <span class="comparar__muestra comparar__muestra--quitado"></span><span data-i18n="comparar.quitado"></span>
+                <span class="comparar__muestra comparar__muestra--anadido"></span><span data-i18n="comparar.anadido"></span>
+            </p>
+            <ol id="comparar-lista" class="comparar__lista"></ol>
+        </aside>
+
+        <div id="presentacion" class="presentacion" tabindex="-1" hidden>
+            <canvas id="presentacion-lienzo" class="presentacion__lienzo"></canvas>
+            <div class="presentacion__controles" role="toolbar">
+                <button id="presentacion-anterior" class="boton-icono" type="button" data-i18n-titulo="barra.anterior">
+                    <svg viewBox="0 0 24 24"><path d="M15 6l-6 6 6 6"/></svg>
+                </button>
+                <span id="presentacion-pagina" class="presentacion__pagina"></span>
+                <button id="presentacion-siguiente" class="boton-icono" type="button" data-i18n-titulo="barra.siguiente">
+                    <svg viewBox="0 0 24 24"><path d="M9 6l6 6-6 6"/></svg>
+                </button>
+                <button id="presentacion-girar" class="boton-icono" type="button" data-i18n-titulo="presentacion.girar">
+                    <svg viewBox="0 0 24 24"><path d="M20 12a8 8 0 1 1-2.3-5.7"/><path d="M20 4v5h-5"/></svg>
+                </button>
+                <button id="presentacion-salir" class="boton-icono" type="button" data-i18n-titulo="presentacion.salir">
+                    <svg viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg>
+                </button>
+            </div>
+        </div>
 
         <section id="vista-organizar" class="organizar" hidden>
             <div class="organizar__barra" role="toolbar">
@@ -517,6 +649,283 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
             <div class="dialogo__botones">
                 <button id="cert-cancelar" type="button" data-i18n="comun.cancelar"></button>
                 <button class="boton-principal" type="submit" data-i18n="firmar.certFirmar"></button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="dialogo-proteger" class="dialogo">
+        <form id="formulario-proteger" method="dialog" autocomplete="off">
+            <h2 data-i18n="seguridad.protegerTitulo"></h2>
+            <p class="firma__pista" data-i18n="seguridad.protegerTexto"></p>
+            <label class="cert__etiqueta" for="proteger-clave" data-i18n="seguridad.claveApertura"></label>
+            <div class="caja-clave">
+                <input id="proteger-clave" class="dialogo__campo" type="password" autocomplete="new-password">
+                <button class="caja-clave__ojo" type="button" aria-pressed="false" data-i18n-titulo="firmar.mostrarClave">
+                    <svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+            </div>
+            <label class="cert__etiqueta" for="proteger-clave2" data-i18n="seguridad.claveRepetir"></label>
+            <div class="caja-clave">
+                <input id="proteger-clave2" class="dialogo__campo" type="password" autocomplete="new-password">
+                <button class="caja-clave__ojo" type="button" aria-pressed="false" data-i18n-titulo="firmar.mostrarClave">
+                    <svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+            </div>
+            <p class="cert__etiqueta" data-i18n="seguridad.permisos"></p>
+            <label class="dialogo__opcion">
+                <input id="proteger-imprimir" type="checkbox">
+                <span data-i18n="seguridad.impedirImprimir"></span>
+            </label>
+            <label class="dialogo__opcion">
+                <input id="proteger-copiar" type="checkbox">
+                <span data-i18n="seguridad.impedirCopiar"></span>
+            </label>
+            <label class="dialogo__opcion">
+                <input id="proteger-modificar" type="checkbox">
+                <span data-i18n="seguridad.impedirModificar"></span>
+            </label>
+            <label class="cert__etiqueta" for="proteger-propietario" data-i18n="seguridad.clavePropietario"></label>
+            <div class="caja-clave">
+                <input id="proteger-propietario" class="dialogo__campo" type="password" autocomplete="new-password">
+                <button class="caja-clave__ojo" type="button" aria-pressed="false" data-i18n-titulo="firmar.mostrarClave">
+                    <svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+                </button>
+            </div>
+            <p class="firma__pista" data-i18n="seguridad.propietarioPista"></p>
+            <p id="proteger-error" class="dialogo__error" hidden></p>
+            <div class="dialogo__botones">
+                <button id="proteger-cancelar" type="button" data-i18n="comun.cancelar"></button>
+                <button class="boton-principal" type="submit" data-i18n="seguridad.protegerBoton"></button>
+            </div>
+        </form>
+    </dialog>
+
+    <input id="comparar-entrada" type="file" accept="application/pdf,.pdf" hidden>
+
+    <dialog id="dialogo-propiedades" class="dialogo">
+        <form id="formulario-propiedades" method="dialog">
+            <h2 data-i18n="editar.propiedadesTitulo"></h2>
+            <label class="cert__etiqueta" for="propiedades-titulo" data-i18n="editar.titulo"></label>
+            <input id="propiedades-titulo" class="dialogo__campo" type="text" maxlength="500">
+            <label class="cert__etiqueta" for="propiedades-autor" data-i18n="editar.autor"></label>
+            <input id="propiedades-autor" class="dialogo__campo" type="text" maxlength="500">
+            <label class="cert__etiqueta" for="propiedades-asunto" data-i18n="editar.asunto"></label>
+            <input id="propiedades-asunto" class="dialogo__campo" type="text" maxlength="500">
+            <label class="cert__etiqueta" for="propiedades-claves" data-i18n="editar.claves"></label>
+            <input id="propiedades-claves" class="dialogo__campo" type="text" maxlength="500">
+            <div class="dialogo__botones">
+                <button id="propiedades-cancelar" type="button" data-i18n="comun.cancelar"></button>
+                <button class="boton-principal" type="submit" data-i18n="comun.aceptar"></button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="dialogo-ocultar" class="dialogo">
+        <form id="formulario-ocultar" method="dialog">
+            <h2 data-i18n="redactar.titulo"></h2>
+            <p class="firma__pista" data-i18n="redactar.texto"></p>
+            <label class="cert__etiqueta" for="ocultar-buscar" data-i18n="redactar.buscar"></label>
+            <div class="marcas__fila">
+                <input id="ocultar-buscar" class="dialogo__campo" type="text" maxlength="200" data-i18n-placeholder="redactar.ejemplo">
+                <button id="ocultar-marcar" class="boton-secundario" type="button" data-i18n="redactar.marcar"></button>
+            </div>
+            <p id="ocultar-pendientes" class="firma__pista"></p>
+            <p class="dialogo__error" data-i18n="redactar.aviso"></p>
+            <div class="dialogo__botones">
+                <button id="ocultar-cancelar" type="button" data-i18n="comun.cerrar"></button>
+                <button id="ocultar-aplicar" class="boton-principal" type="submit" data-i18n="redactar.aplicar"></button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="dialogo-numerar" class="dialogo">
+        <form id="formulario-numerar" method="dialog">
+            <h2 data-i18n="marcas.numerarTitulo"></h2>
+            <p class="firma__pista" data-i18n="marcas.numerarTexto"></p>
+            <label class="cert__etiqueta" for="numerar-formato" data-i18n="marcas.formato"></label>
+            <select id="numerar-formato" class="dialogo__campo">
+                <option value="numero" data-i18n="marcas.formatoNumero"></option>
+                <option value="pagina" data-i18n="marcas.formatoPagina"></option>
+                <option value="paginaDe" data-i18n="marcas.formatoPaginaDe" selected></option>
+                <option value="barra" data-i18n="marcas.formatoBarra"></option>
+                <option value="propio" data-i18n="marcas.formatoPropio"></option>
+            </select>
+            <input id="numerar-texto" class="dialogo__campo" type="text" maxlength="200" aria-label="Texto">
+            <p class="firma__pista" data-i18n="marcas.comodines"></p>
+            <label class="cert__etiqueta" for="numerar-posicion" data-i18n="marcas.posicion"></label>
+            <select id="numerar-posicion" class="dialogo__campo">
+                <option value="arriba-izquierda" data-i18n="marcas.arribaIzquierda"></option>
+                <option value="arriba-centro" data-i18n="marcas.arribaCentro"></option>
+                <option value="arriba-derecha" data-i18n="marcas.arribaDerecha"></option>
+                <option value="abajo-izquierda" data-i18n="marcas.abajoIzquierda"></option>
+                <option value="abajo-centro" data-i18n="marcas.abajoCentro" selected></option>
+                <option value="abajo-derecha" data-i18n="marcas.abajoDerecha"></option>
+            </select>
+            <div class="marcas__fila">
+                <label><span data-i18n="marcas.tamano"></span> <input id="numerar-tamano" class="dialogo__campo" type="number" min="5" max="48" value="10"></label>
+                <label><span data-i18n="marcas.empezarEn"></span> <input id="numerar-inicio" class="dialogo__campo" type="number" min="0" value="1"></label>
+                <label><span data-i18n="marcas.color"></span> <input id="numerar-color" type="color" value="#000000"></label>
+            </div>
+            <label class="cert__etiqueta" for="numerar-paginas" data-i18n="marcas.paginas"></label>
+            <input id="numerar-paginas" class="dialogo__campo" type="text" inputmode="numeric" data-i18n-placeholder="marcas.todas">
+            <p id="numerar-error" class="dialogo__error" hidden></p>
+            <div class="dialogo__botones">
+                <button id="numerar-cancelar" type="button" data-i18n="comun.cancelar"></button>
+                <button class="boton-principal" type="submit" data-i18n="marcas.anadir"></button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="dialogo-marca" class="dialogo">
+        <form id="formulario-marca" method="dialog">
+            <h2 data-i18n="marcas.marcaTitulo"></h2>
+            <label class="cert__etiqueta" for="marca-texto" data-i18n="marcas.texto"></label>
+            <input id="marca-texto" class="dialogo__campo" type="text" maxlength="80">
+            <div class="cert__archivo">
+                <button id="marca-elegir-imagen" class="boton-secundario" type="button" data-i18n="marcas.imagen"></button>
+                <span id="marca-imagen-nombre" class="cert__nombre"></span>
+                <button id="marca-quitar-imagen" class="boton-secundario" type="button" data-i18n="marcas.quitarImagen" hidden></button>
+            </div>
+            <div class="marcas__fila">
+                <label><span data-i18n="marcas.tamano"></span> <input id="marca-tamano" class="dialogo__campo" type="number" min="10" max="200" value="64"></label>
+                <label><span data-i18n="marcas.color"></span> <input id="marca-color" type="color" value="#cc0000"></label>
+                <label><span data-i18n="marcas.angulo"></span>
+                    <select id="marca-angulo" class="dialogo__campo">
+                        <option value="45" data-i18n="marcas.diagonal" selected></option>
+                        <option value="0" data-i18n="marcas.horizontal"></option>
+                        <option value="90" data-i18n="marcas.vertical"></option>
+                    </select>
+                </label>
+            </div>
+            <label class="marcas__fila"><span data-i18n="marcas.opacidad"></span> <input id="marca-opacidad" type="range" min="5" max="100" value="25"> <span id="marca-opacidad-valor">25 %</span></label>
+            <label class="dialogo__opcion">
+                <input id="marca-debajo" type="checkbox">
+                <span data-i18n="marcas.debajo"></span>
+            </label>
+            <label class="cert__etiqueta" for="marca-paginas" data-i18n="marcas.paginas"></label>
+            <input id="marca-paginas" class="dialogo__campo" type="text" inputmode="numeric" data-i18n-placeholder="marcas.todas">
+            <p id="marca-error" class="dialogo__error" hidden></p>
+            <div class="dialogo__botones">
+                <button id="marca-cancelar" type="button" data-i18n="comun.cancelar"></button>
+                <button class="boton-principal" type="submit" data-i18n="marcas.anadir"></button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="dialogo-ocr" class="dialogo">
+        <form id="formulario-ocr" method="dialog">
+            <h2 data-i18n="ocr.titulo"></h2>
+            <p class="firma__pista" data-i18n="ocr.texto"></p>
+            <p class="cert__etiqueta" data-i18n="ocr.idioma"></p>
+            <label class="dialogo__opcion">
+                <input type="radio" name="idioma-ocr" value="spa" checked>
+                <span data-i18n="ocr.espanol"></span>
+            </label>
+            <label class="dialogo__opcion">
+                <input type="radio" name="idioma-ocr" value="eng">
+                <span data-i18n="ocr.ingles"></span>
+            </label>
+            <label class="dialogo__opcion">
+                <input type="radio" name="idioma-ocr" value="spa+eng">
+                <span data-i18n="ocr.ambos"></span>
+            </label>
+            <label class="dialogo__opcion">
+                <input id="ocr-solo-sin-texto" type="checkbox" checked>
+                <span data-i18n="ocr.soloSinTexto"></span>
+            </label>
+            <div class="dialogo__botones">
+                <button id="ocr-cancelar" type="button" data-i18n="comun.cancelar"></button>
+                <button class="boton-principal" type="submit" data-i18n="ocr.boton"></button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="dialogo-exportar" class="dialogo">
+        <form id="formulario-exportar" method="dialog">
+            <h2 data-i18n="exportar.titulo"></h2>
+            <label class="dialogo__opcion">
+                <input type="radio" name="que-exportar" value="word" checked>
+                <span data-i18n="exportar.word"></span>
+            </label>
+            <label class="dialogo__opcion">
+                <input type="radio" name="que-exportar" value="excel">
+                <span data-i18n="exportar.excel"></span>
+            </label>
+            <label class="dialogo__opcion">
+                <input type="radio" name="que-exportar" value="paginas">
+                <span data-i18n="exportar.paginas"></span>
+            </label>
+            <label class="dialogo__opcion">
+                <input type="radio" name="que-exportar" value="texto">
+                <span data-i18n="exportar.texto"></span>
+            </label>
+            <label class="dialogo__opcion">
+                <input type="radio" name="que-exportar" value="imagenes">
+                <span data-i18n="exportar.imagenes"></span>
+            </label>
+            <div id="exportar-opciones-imagen" class="marcas__fila">
+                <select id="exportar-formato" class="dialogo__campo" data-i18n-titulo="exportar.formato">
+                    <option value="png">PNG</option>
+                    <option value="jpg">JPG</option>
+                </select>
+                <select id="exportar-ppp" class="dialogo__campo" data-i18n-titulo="exportar.resolucion">
+                    <option value="72" data-i18n="exportar.ppp72"></option>
+                    <option value="150" data-i18n="exportar.ppp150" selected></option>
+                    <option value="300" data-i18n="exportar.ppp300"></option>
+                </select>
+            </div>
+            <label class="cert__etiqueta" for="exportar-rango" data-i18n="exportar.rango"></label>
+            <input id="exportar-rango" class="dialogo__campo" type="text" data-i18n-placeholder="exportar.rangoEjemplo">
+            <p id="exportar-nota" class="firma__pista" hidden></p>
+            <p id="exportar-error" class="dialogo__error" role="alert"></p>
+            <div class="dialogo__botones">
+                <button id="exportar-cancelar" type="button" data-i18n="comun.cancelar"></button>
+                <button class="boton-principal" type="submit" data-i18n="exportar.boton"></button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="dialogo-comprimir" class="dialogo">
+        <form id="formulario-comprimir" method="dialog">
+            <h2 data-i18n="comprimir.titulo"></h2>
+            <p class="firma__pista" data-i18n="comprimir.texto"></p>
+            <p id="comprimir-actual" class="firma__pista"></p>
+            <label class="dialogo__opcion">
+                <input type="radio" name="nivel-comprimir" value="ligero">
+                <span data-i18n="comprimir.ligero"></span>
+            </label>
+            <label class="dialogo__opcion">
+                <input type="radio" name="nivel-comprimir" value="medio" checked>
+                <span data-i18n="comprimir.medio"></span>
+            </label>
+            <label class="dialogo__opcion">
+                <input type="radio" name="nivel-comprimir" value="fuerte">
+                <span data-i18n="comprimir.fuerte"></span>
+            </label>
+            <div class="dialogo__botones">
+                <button id="comprimir-cancelar" type="button" data-i18n="comun.cancelar"></button>
+                <button class="boton-principal" type="submit" data-i18n="comprimir.boton"></button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="dialogo-quitar" class="dialogo">
+        <form id="formulario-quitar" method="dialog" autocomplete="off">
+            <h2 data-i18n="seguridad.quitarTitulo"></h2>
+            <p id="quitar-texto" class="firma__pista" data-i18n="seguridad.quitarTexto"></p>
+            <div id="quitar-clave-bloque">
+                <label class="cert__etiqueta" for="quitar-clave" data-i18n="seguridad.clavePropietario"></label>
+                <div class="caja-clave">
+                    <input id="quitar-clave" class="dialogo__campo" type="password" autocomplete="off">
+                    <button class="caja-clave__ojo" type="button" aria-pressed="false" data-i18n-titulo="firmar.mostrarClave">
+                        <svg viewBox="0 0 24 24"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg>
+                    </button>
+                </div>
+            </div>
+            <p id="quitar-error" class="dialogo__error" hidden></p>
+            <div class="dialogo__botones">
+                <button id="quitar-cancelar" type="button" data-i18n="comun.cancelar"></button>
+                <button class="boton-principal" type="submit" data-i18n="seguridad.quitarBoton"></button>
             </div>
         </form>
     </dialog>

@@ -2,6 +2,33 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versionado semántico.
 
+## [0.9.0] - 2026-10-12
+
+### Añadido
+- Fase 5 (segunda parte): formularios. Botón «Rellenar» en la barra: los campos del PDF (texto, casillas, opciones, desplegables y listas) se rellenan encima de la página y quedan dentro del PDF al guardar. Al abrir un PDF con formulario, aviso.
+- Añadir campos nuevos a cualquier PDF: campo de texto (dibujando un recuadro; los altos admiten varias líneas) y casilla; cada campo se puede borrar.
+- Aplanar: los campos pasan a ser contenido fijo de la página. Todo (rellenar, crear, borrar, aplanar) se puede deshacer.
+- Menú «Herramientas» en la barra, con: proteger el PDF con contraseña de apertura y permisos (impedir imprimir, copiar o modificar; cifrado AES-256; contraseña de propietario para poder quitarlo después) guardando una copia protegida; y quitar la contraseña y las restricciones de un PDF abierto (con la de propietario si tiene permisos restringidos).
+- Comprimir (menú Herramientas): tres niveles (ligera, media, fuerte) que reducen y recomprimen las imágenes, recortan las fuentes y limpian el archivo; guarda una copia y dice cuánto se ha ahorrado.
+- Reconocer texto (OCR, menú Herramientas): con Tesseract en el dispositivo, en español, inglés o ambos; añade el texto como capa invisible para buscar, seleccionar y copiar en escaneados y fotos, sin tocar la imagen. Por defecto solo las páginas sin texto; se puede cancelar y deshacer. El motor y los idiomas van dentro de la app y se descargan la primera vez que se usa.
+- Numerar páginas, encabezado y pie (menú Herramientas): «1», «Página 1», «Página 1 de 10», «1 / 10» o texto propio con {n}, {total}, {fecha} y {nombre}; seis posiciones, tamaño, color, número inicial y páginas elegidas. Sale derecho también en páginas giradas.
+- Marca de agua (menú Herramientas): texto o imagen (logo), en diagonal, horizontal o vertical, con color, tamaño y opacidad; encima o detrás del contenido.
+- Ocultar datos de verdad (redacción): herramienta «Ocultar» en Anotar para marcar zonas, y en Herramientas buscar y marcar un texto en todo el documento (un DNI, un nombre) y aplicarlo: el texto, las imágenes y los dibujos de debajo se borran del archivo y queda un recuadro negro.
+- Editar texto e imágenes (botón «Editar» en la barra): pulsar una línea y reescribirla en su sitio (se borra el texto original de esa línea sin tocar el fondo); añadir texto nuevo en una o varias líneas con tipo de letra (Helvetica, Times o Courier), tamaño, negrita, cursiva y color; añadir imágenes (PNG, JPG, BMP) con un toque o dibujando el recuadro; mover, cambiar de tamaño y borrar imágenes, también las que ya traía el PDF. Todo se puede deshacer. El texto nuevo usa Helvetica, Times o Courier; si lleva símbolos u otros alfabetos (✓, →, griego, cirílico...) se escribe con DejaVu, que se descarga solo la primera vez que hace falta y se guarda en el PDF recortada a las letras usadas (unos 30 KB).
+- Convertir a Word (.docx) y a Excel (.xlsx) en el propio dispositivo, sin subir el archivo a ningún sitio (menú Herramientas > Exportar o convertir). Word: texto con su letra, tamaño, negrita, cursiva y color, párrafos unidos para editar seguido, alineación y sangrías, listas, tablas sencillas, imágenes y el tamaño de cada página. Excel: una hoja por página, filas y columnas según cómo está alineado el texto y las cantidades («1.234,56 €», «21 %») como números con su formato, para poder sumar. Los escaneados necesitan antes Reconocer texto.
+- Exportar (menú Herramientas): páginas como imagen PNG o JPG a 72, 150 o 300 ppp, todo el texto en un .txt, o las imágenes que lleva el PDF (sin repetir un mismo logotipo); de todas las páginas o de las elegidas. Varios archivos se guardan juntos en un .zip.
+- Comparar con otro PDF (menú Herramientas): panel con los cambios de cada página, palabra a palabra, en rojo lo que solo está en este y en verde lo que añade el otro, marcados también sobre las páginas; un clic lleva a cada cambio. Las páginas escaneadas se comparan por imagen y se marca la zona que cambia. Avisa de páginas que sobran o faltan.
+- Propiedades del documento (menú Herramientas): título, autor, asunto y palabras clave.
+- Abiertos hace poco: la portada lista los últimos documentos para reabrirlos con un clic (app de Windows; en Chrome y Edge, con permiso del navegador). Se pueden quitar de uno en uno o vaciar la lista.
+- Pestañas: varios documentos abiertos a la vez. Cada archivo se abre en su pestaña (si ya está abierto, se va a ella); un clic cambia de documento y vuelve a su página y zoom; la × o el clic con la rueda lo cierran, preguntando si tiene cambios sin guardar, que se marcan con un punto. Ctrl+Alt+Av Pág / Re Pág pasan de una a otra. Deshacer y rehacer van por documento.
+- Cada documento se vuelve a abrir en la página y con el zoom en que se dejó.
+- Modo presentación (botón de la barra o F5): una página cada vez a pantalla completa; se pasa con las flechas, el espacio, un clic o deslizando, R gira la vista y Esc sale dejando el visor en la misma página.
+- Pruebas automáticas de formularios, seguridad, compresión, OCR, marcas, redacción, edición, comparación y exportación (`npm test`).
+
+### Cambiado
+- Abrir otro documento ya no cierra el que estaba abierto: se abre en otra pestaña.
+- Los avisos de «tiene formulario» y «está firmado» salen al abrir el documento, no cada vez que se vuelve a su pestaña.
+
 ## [0.8.0] - 2026-10-12
 
 ### Añadido

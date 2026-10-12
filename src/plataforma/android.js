@@ -50,6 +50,12 @@ export async function guardarComo(blob, nombre) {
     return guardado ? new File([blob], nombre, { type: 'application/pdf' }) : null;
 }
 
+// Cualquier otro archivo (exportar): el selector del sistema con su tipo
+export async function guardarArchivo(blob, nombre) {
+    const { guardado } = await Archivos.guardar({ nombre, datos: await aBase64(blob), tipo: blob.type || 'application/octet-stream' });
+    return Boolean(guardado);
+}
+
 export async function imprimirPdf(blob, nombre) {
     await Archivos.imprimir({ nombre, datos: await aBase64(blob) });
 }

@@ -14,6 +14,7 @@ import { iniciarMiniaturas } from './miniaturas.js';
 import { iniciarIndice } from './indice.js';
 import { iniciarImprimir } from './imprimir.js';
 import { iniciarGuardar } from './guardar.js';
+import { iniciarPosicion } from './posicion.js';
 
 export function iniciarVisor() {
     iniciarPaginas();
@@ -25,4 +26,6 @@ export function iniciarVisor() {
     iniciarIndice();
     iniciarImprimir();
     iniciarGuardar();
+    // La última: vuelve a la página y zoom recordados después del zoom inicial
+    iniciarPosicion();
 }

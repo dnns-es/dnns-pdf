@@ -59,6 +59,12 @@ export async function archivoInicial() {
     return (await app())?.archivoInicial() ?? null;
 }
 
+// Vuelve a leer un archivo por su ruta (archivos recientes del escritorio). null si no es el escritorio
+export async function abrirRuta(ruta) {
+    const leerRuta = (await app())?.archivoDesdeRuta;
+    return leerRuta ? leerRuta(ruta) : null;
+}
+
 // Llama a callback(File) cada vez que el sistema manda otro PDF a la app ya abierta
 export async function alRecibirArchivo(callback) {
     (await app())?.alRecibirArchivo(callback);
@@ -139,6 +145,32 @@ export async function guardarComo(blob, nombre, archivo) {
     }
     descargarBlob(blob, nombre);
     return archivoDe(blob, nombre, { descargado: true });
+}
+
+// Guarda un archivo que no es el PDF (imágenes, texto, ZIP al exportar) preguntando dónde; en navegadores
+// sin diálogo de guardar, se descarga. archivo: el documento abierto, para proponer su carpeta.
+// Devuelve false si el usuario cancela
+export async function guardarArchivo(blob, nombre, archivo) {
+    const propio = (await app())?.guardarArchivo;
+    if (propio) {
+        return propio(blob, nombre, archivo);
+    }
+    if (typeof window.showSaveFilePicker === 'function') {
+        const extension = nombre.includes('.') ? `.${nombre.split('.').pop()}` : '';
+        try {
+            const tipos = extension && blob.type ? [{ description: extension.slice(1).toUpperCase(), accept: { [blob.type]: [extension] } }] : undefined;
+            const manejador = await window.showSaveFilePicker({ suggestedName: nombre, types: tipos });
+            await escribirEnManejador(manejador, blob);
+            return true;
+        } catch (error) {
+            if (cancelado(error)) {
+                return false;
+            }
+            console.warn('No se pudo usar el diálogo de guardar; se descarga:', error);
+        }
+    }
+    descargarBlob(blob, nombre);
+    return true;
 }
 
 // Imprime el PDF directamente con el sistema si la plataforma lo permite (Android).

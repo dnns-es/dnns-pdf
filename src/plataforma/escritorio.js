@@ -32,7 +32,7 @@ function carpetaDeRuta(ruta) {
     return corte > 0 ? ruta.slice(0, corte + 1) : '';
 }
 
-async function archivoDesdeRuta(ruta) {
+export async function archivoDesdeRuta(ruta) {
     const bytes = await invoke('leer_archivo', { ruta });
     const archivo = new File([bytes], nombreDeRuta(ruta), { type: 'application/pdf' });
     archivo.ruta = ruta;
@@ -82,6 +82,18 @@ export async function guardarComo(blob, nombre, archivo) {
     const guardado = new File([blob], nombreDeRuta(ruta), { type: 'application/pdf' });
     guardado.ruta = ruta;
     return guardado;
+}
+
+// Cualquier otro archivo (exportar): diálogo de guardar con el filtro de su extensión
+export async function guardarArchivo(blob, nombre, archivo) {
+    const extension = nombre.includes('.') ? nombre.split('.').pop() : '';
+    const filtros = extension ? [{ name: extension.toUpperCase(), extensions: [extension] }] : [];
+    const ruta = await save({ defaultPath: `${carpetaDeRuta(archivo?.ruta ?? '')}${nombre}`, filters: filtros });
+    if (!ruta) {
+        return false;
+    }
+    await escribirArchivo(ruta, blob);
+    return true;
 }
 
 // Devuelve null si no hay versión nueva, o { version, notas, instalar(alProgresar) }

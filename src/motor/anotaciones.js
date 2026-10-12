@@ -25,10 +25,12 @@ const TIPOS = {
     flecha: 'Line',
     texto: 'FreeText',
     sello: 'Stamp',
-    firma: 'Stamp'
+    firma: 'Stamp',
+    // Zona a ocultar de verdad: se aplica desde Herramientas → Ocultar datos (ver redactar.js)
+    ocultar: 'Redact'
 };
 
-const MOVIBLES = new Set(['Text', 'FreeText', 'Stamp', 'Square', 'Circle']);
+const MOVIBLES = new Set(['Text', 'FreeText', 'Stamp', 'Square', 'Circle', 'Redact']);
 
 // Clave propia en el diccionario de la anotación con la imagen de la firma,
 // para poder repintarla al moverla o cambiarle el tamaño. Los lectores ignoran claves que no conocen.
