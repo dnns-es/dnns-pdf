@@ -141,12 +141,12 @@ test('extraer crea un PDF aparte sin tocar el abierto', () => {
     assert.deepEqual(textos(doc), antes);
 });
 
-test('unir junta PDF e imágenes en el orden de la lista', () => {
+test('unir junta PDF e imágenes (PNG y BMP) en el orden de la lista', () => {
     const { motor } = abrir();
     const unoTexto = textos(abrirBytes(leer('texto.pdf')));
-    const { bytes } = motor.unir({ piezas: [{ pdf: leer('texto.pdf') }, { imagen: png() }, { pdf: leer('texto.pdf') }], modo: 'a4' });
+    const { bytes } = motor.unir({ piezas: [{ pdf: leer('texto.pdf') }, { imagen: png() }, { imagen: leer('mapa.bmp') }, { pdf: leer('texto.pdf') }], modo: 'a4' });
     const unido = abrirBytes(bytes);
-    assert.equal(unido.countPages(), unoTexto.length * 2 + 1);
+    assert.equal(unido.countPages(), unoTexto.length * 2 + 2);
     assert.deepEqual(textos(unido).slice(0, unoTexto.length), unoTexto);
 });
 

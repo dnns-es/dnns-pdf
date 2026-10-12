@@ -142,6 +142,7 @@ Se eligió Capacitor en vez de Tauri porque el actualizador de Tauri no funciona
 - [x] Verificar firmas digitales de PDFs recibidos (integridad, firmante, fecha y confianza FNMT/DNIe; sin consultar revocación)
 - [x] Escanear documentos con la cámara (sobre todo en el móvil): recortar y enderezar la hoja y guardarla como PDF (pedido por Antonio el 12-10-2026, tras las firmas)
 - [x] Abrir documentos .docx, .xlsx y .pptx convertidos a PDF en el dispositivo (pedido por un probador el 12-10-2026)
+- [x] Abrir .rtf (lector propio), .txt, archivos de código y .bmp (pedido por Antonio el 12-10-2026: «lo que abre Word»; el .doc antiguo queda para el servicio de la fase 8)
 
 ---
 

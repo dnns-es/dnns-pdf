@@ -18,11 +18,12 @@ fn pdf_en_argumentos<I: IntoIterator<Item = String>>(argumentos: I) -> Option<Pa
         .find(|ruta| ruta.is_file() && es_documento(ruta))
 }
 
-/// PDF, o documento de texto, hoja de cálculo o presentación (la web los convierte a PDF)
+/// PDF, o documento de texto, hoja de cálculo, presentación, RTF, texto o imagen (la web los convierte a PDF)
 fn es_documento(ruta: &Path) -> bool {
+    const CONOCIDAS: [&str; 11] = ["pdf", "docx", "xlsx", "pptx", "rtf", "txt", "py", "bmp", "jpg", "jpeg", "png"];
     ruta.extension()
         .and_then(|ext| ext.to_str())
-        .map(|ext| ["pdf", "docx", "xlsx", "pptx"].iter().any(|conocida| ext.eq_ignore_ascii_case(conocida)))
+        .map(|ext| CONOCIDAS.iter().any(|conocida| ext.eq_ignore_ascii_case(conocida)))
         .unwrap_or(false)
 }
 

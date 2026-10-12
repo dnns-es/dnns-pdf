@@ -1,7 +1,7 @@
 // Fecha: 2026-10-12
 // Ruta: /src/modulos/visor/abrir.js
-// Apertura de documentos PDF (y de .docx, .xlsx y .pptx, que pasan por el módulo Oficina)
-// Botón Abrir, arrastrar y soltar, y "Abrir con" desde el sistema cuando la PWA está instalada
+// Apertura de documentos PDF; los demás formatos (.docx, .xlsx, .pptx, .rtf, .txt, código) pasan por el módulo
+// Oficina y las imágenes por «Crear PDF». Botón Abrir, arrastrar y soltar, y "Abrir con" desde el sistema
 // Notas: el archivo se lee en local y se cede al worker; nunca sale del dispositivo.
 //        Se conserva el File original para poder descargarlo tal cual.
 
@@ -10,20 +10,11 @@ import { cambiar, leer } from '../../nucleo/estado.js';
 import { t } from '../../nucleo/i18n.js';
 import { pedir } from '../../motor/cliente.js';
 import { mostrarAviso, confirmar } from '../../ui/dialogos.js';
-import { esArchivoZip } from '../../nucleo/utilidades.js';
+import { tipoDeArchivo } from '../../nucleo/utilidades.js';
 import { pedirContrasena } from './contrasena.js';
 import { archivoInicial, alRecibirArchivo, ponerTitulo } from '../../plataforma/index.js';
 
-const BYTES_CABECERA = 1024;
-
-// Algunos PDF traen basura antes de '%PDF-'; MuPDF los abre igual, así que se busca en el primer KB
-async function pareceUnPdf(archivo) {
-    if (archivo.type === 'application/pdf' || /\.pdf$/i.test(archivo.name)) {
-        return true;
-    }
-    const inicio = new TextDecoder('latin1').decode(await archivo.slice(0, BYTES_CABECERA).arrayBuffer());
-    return inicio.includes('%PDF-');
-}
+const CONVERTIBLES = new Set(['zip', 'rtf', 'texto']);
 
 // Devuelve los datos del documento, o null si el usuario cancela la contraseña
 async function abrirEnMotor(archivo) {
@@ -51,12 +42,17 @@ export async function abrirArchivo(archivo) {
     if (!archivo) {
         return;
     }
-    // Los documentos de texto, hojas y presentaciones son ZIP: el módulo Oficina los convierte y los devuelve como PDF
-    if (await esArchivoZip(archivo)) {
+    const tipo = await tipoDeArchivo(archivo);
+    // Documentos de Office, RTF y texto: el módulo Oficina los convierte y los devuelve como PDF por 'archivo:abrir'
+    if (CONVERTIBLES.has(tipo)) {
         emitir('oficina:abrir', archivo);
         return;
     }
-    if (!(await pareceUnPdf(archivo))) {
+    if (tipo === 'imagen') {
+        emitir('organizar:crearCon', [archivo]);
+        return;
+    }
+    if (!tipo) {
         mostrarAviso(t('errores.noEsPdf'));
         return;
     }
@@ -130,8 +126,8 @@ function prepararArrastrar() {
         profundidad = 0;
         zona.hidden = true;
         const archivos = [...evento.dataTransfer.files];
-        // Un solo PDF se abre; varios archivos o imágenes van a «Crear PDF» (unir / imágenes a PDF)
-        if (archivos.length === 1 && !/^image\//.test(archivos[0].type)) {
+        // Un solo archivo se abre (una imagen acaba en «Crear PDF»); varios van a «Crear PDF» (unir / imágenes a PDF)
+        if (archivos.length === 1) {
             abrirArchivo(archivos[0]);
         } else if (archivos.length) {
             emitir('organizar:crearCon', archivos);

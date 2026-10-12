@@ -37,7 +37,7 @@ Mira [ROADMAP.md](ROADMAP.md) para ver qué hay hecho y qué viene.
 - Girar, borrar, duplicar y recortar márgenes de una o varias páginas
 - Insertar páginas en blanco, de otro PDF o desde imágenes
 - Extraer páginas o dividir el PDF por rangos («1-3, 5») o cada N páginas
-- Unir varios PDF e imágenes en uno, y pasar fotos (JPG/PNG) a PDF, desde la portada o soltando varios archivos
+- Unir varios PDF e imágenes en uno, y pasar fotos (JPG/PNG/BMP) a PDF, desde la portada o soltando varios archivos
 - Todo se puede deshacer, igual que las anotaciones
 
 **Firmar:**
@@ -46,10 +46,11 @@ Mira [ROADMAP.md](ROADMAP.md) para ver qué hay hecho y qué viene.
 - Firma digital con tu certificado .p12/.pfx (por ejemplo, el de persona física de la FNMT), con recuadro visible, motivo y lugar. El certificado y su contraseña no salen del dispositivo
 - Comprobar las firmas de un PDF recibido: quién firma, cuándo, si el documento sigue intacto y si el certificado es de una autoridad española reconocida (FNMT, DNIe). Al abrir un PDF firmado te avisa
 
-**Abrir documentos de texto, hojas de cálculo y presentaciones (.docx, .xlsx, .pptx):**
+**Abrir documentos de texto, hojas de cálculo, presentaciones y otros formatos (.docx, .xlsx, .pptx, .rtf, .txt, código, imágenes):**
 
 - Se convierten a PDF en tu dispositivo y se abren como un PDF más; con Descargar los guardas ya convertidos
 - Se conserva el contenido (texto, negritas, listas, tablas, imágenes; una página por hoja y por diapositiva), no la maquetación exacta
+- Texto enriquecido (.rtf) con su formato básico, texto plano (.txt, respetando su codificación) y archivos de código (.py y similares) con letra de ancho fijo; las imágenes BMP, JPG y PNG pasan a PDF
 
 **Escanear con la cámara:**
 
@@ -127,11 +128,11 @@ Everything is processed on your device. Your PDFs never leave your browser; neit
 
 **Annotate:** highlight, underline and strike out text, sticky notes, text boxes, pen, rectangle, circle, line and arrow (colour, thickness, opacity), stamps (including custom ones), move and delete annotations, annotation list in the side panel, undo and redo. Annotations are saved inside the PDF in the standard format, so any reader shows them.
 
-**Organise pages:** grid view with drag-and-drop reordering (long press on mobile), rotate, delete, duplicate and crop pages, insert blank pages, pages from another PDF or from images, extract pages or split by ranges or every N pages, merge several PDFs and images into one, and turn photos (JPG/PNG) into a PDF. Everything can be undone.
+**Organise pages:** grid view with drag-and-drop reordering (long press on mobile), rotate, delete, duplicate and crop pages, insert blank pages, pages from another PDF or from images, extract pages or split by ranges or every N pages, merge several PDFs and images into one, and turn photos (JPG/PNG/BMP) into a PDF. Everything can be undone.
 
 **Sign:** handwritten signature (draw it, type your name in a handwriting font or upload a photo with the background removed; saved on your device for reuse; place, move and resize it), digital signature with your .p12/.pfx certificate (for example the Spanish FNMT one) with an optional visible box, and signature checking of received PDFs (signer, date, whether the file is intact and whether the certificate chains to a recognised Spanish authority). The certificate and its password never leave your device.
 
-**Open text documents, spreadsheets and presentations (.docx, .xlsx, .pptx):** converted to PDF on your device and opened like any PDF (text, bold, lists, tables, images; one page per sheet and per slide; content is kept, exact layout is not). Download saves them already converted.
+**Open text documents, spreadsheets, presentations and other formats (.docx, .xlsx, .pptx, .rtf, .txt, code, images):** converted to PDF on your device and opened like any PDF (text, bold, lists, tables, images; one page per sheet and per slide; content is kept, exact layout is not). Rich text (.rtf) keeps its basic formatting, plain text (.txt) its encoding, code files (.py and similar) use a monospaced font, and BMP/JPG/PNG images become a PDF. Download saves them already converted.
 
 **Scan with the camera:** take a photo of a document (or pick one from the gallery), edges are detected, the four corners can be adjusted, the page is straightened and cleaned up (enhanced, colour, grey or black-and-white text). Several pages into a new PDF, or added to an open document from Organise.
 

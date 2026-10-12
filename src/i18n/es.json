@@ -3,7 +3,7 @@
         "titulo": "Editor de PDF libre y gratuito",
         "texto": "Tus documentos nunca salen de tu dispositivo: todo se procesa aquí, en tu navegador.",
         "abrir": "Abrir PDF",
-        "soltar": "o arrastra aquí un PDF, un .docx, un .xlsx o un .pptx",
+        "soltar": "o arrastra aquí un PDF, un documento (.docx, .xlsx, .pptx, .rtf, .txt) o una imagen",
         "sueltaAqui": "Suelta el archivo para abrirlo"
     },
     "barra": {
@@ -92,7 +92,7 @@
         "preparando": "Preparando página {actual} de {total}…"
     },
     "errores": {
-        "noEsPdf": "Ese archivo no es un PDF ni un documento .docx, .xlsx o .pptx.",
+        "noEsPdf": "Ese archivo no es un PDF ni un documento que se pueda convertir (.docx, .xlsx, .pptx, .rtf, .txt, imagen).",
         "abrir": "No se pudo abrir el documento. Puede que esté dañado.",
         "imprimir": "No se pudo preparar la impresión.",
         "motor": "El motor PDF no está disponible."

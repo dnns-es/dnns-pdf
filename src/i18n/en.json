@@ -3,7 +3,7 @@
         "titulo": "Free and open PDF editor",
         "texto": "Your documents never leave your device: everything is processed here, in your browser.",
         "abrir": "Open PDF",
-        "soltar": "or drop a PDF, .docx, .xlsx or .pptx file here",
+        "soltar": "or drop a PDF, a document (.docx, .xlsx, .pptx, .rtf, .txt) or an image here",
         "sueltaAqui": "Drop the file to open it"
     },
     "barra": {
@@ -92,7 +92,7 @@
         "preparando": "Preparing page {actual} of {total}…"
     },
     "errores": {
-        "noEsPdf": "That file is not a PDF or a .docx, .xlsx or .pptx document.",
+        "noEsPdf": "That file is not a PDF or a document that can be converted (.docx, .xlsx, .pptx, .rtf, .txt, image).",
         "abrir": "The document could not be opened. It may be damaged.",
         "imprimir": "Printing could not be prepared.",
         "motor": "The PDF engine is not available."
