@@ -147,6 +147,32 @@ export async function guardarComo(blob, nombre, archivo) {
     return archivoDe(blob, nombre, { descargado: true });
 }
 
+// Guarda un archivo que no es el PDF (imágenes, texto, ZIP al exportar) preguntando dónde; en navegadores
+// sin diálogo de guardar, se descarga. archivo: el documento abierto, para proponer su carpeta.
+// Devuelve false si el usuario cancela
+export async function guardarArchivo(blob, nombre, archivo) {
+    const propio = (await app())?.guardarArchivo;
+    if (propio) {
+        return propio(blob, nombre, archivo);
+    }
+    if (typeof window.showSaveFilePicker === 'function') {
+        const extension = nombre.includes('.') ? `.${nombre.split('.').pop()}` : '';
+        try {
+            const tipos = extension && blob.type ? [{ description: extension.slice(1).toUpperCase(), accept: { [blob.type]: [extension] } }] : undefined;
+            const manejador = await window.showSaveFilePicker({ suggestedName: nombre, types: tipos });
+            await escribirEnManejador(manejador, blob);
+            return true;
+        } catch (error) {
+            if (cancelado(error)) {
+                return false;
+            }
+            console.warn('No se pudo usar el diálogo de guardar; se descarga:', error);
+        }
+    }
+    descargarBlob(blob, nombre);
+    return true;
+}
+
 // Imprime el PDF directamente con el sistema si la plataforma lo permite (Android).
 // Devuelve false si no: entonces se imprime desde el navegador.
 export async function imprimirPdf(blob, nombre) {

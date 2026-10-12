@@ -116,6 +116,10 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
                         <svg viewBox="0 0 24 24"><rect x="3" y="9" width="18" height="6" rx="1" fill="currentColor"/><path d="M3 5h10M3 19h14"/></svg>
                         <span data-i18n="redactar.menu"></span>
                     </button>
+                    <button type="button" role="menuitem" data-util="exportar">
+                        <svg viewBox="0 0 24 24"><path d="M12 3v12M8 11l4 4 4-4"/><path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/></svg>
+                        <span data-i18n="exportar.menu"></span>
+                    </button>
                     <button type="button" role="menuitem" data-util="comparar">
                         <svg viewBox="0 0 24 24"><rect x="3" y="4" width="7" height="16" rx="1"/><rect x="14" y="4" width="7" height="16" rx="1"/><path d="M5.5 9h2M5.5 13h2M16.5 9h2M16.5 13h2"/></svg>
                         <span data-i18n="comparar.menu"></span>
@@ -830,6 +834,42 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
             <div class="dialogo__botones">
                 <button id="ocr-cancelar" type="button" data-i18n="comun.cancelar"></button>
                 <button class="boton-principal" type="submit" data-i18n="ocr.boton"></button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="dialogo-exportar" class="dialogo">
+        <form id="formulario-exportar" method="dialog">
+            <h2 data-i18n="exportar.titulo"></h2>
+            <label class="dialogo__opcion">
+                <input type="radio" name="que-exportar" value="paginas" checked>
+                <span data-i18n="exportar.paginas"></span>
+            </label>
+            <label class="dialogo__opcion">
+                <input type="radio" name="que-exportar" value="texto">
+                <span data-i18n="exportar.texto"></span>
+            </label>
+            <label class="dialogo__opcion">
+                <input type="radio" name="que-exportar" value="imagenes">
+                <span data-i18n="exportar.imagenes"></span>
+            </label>
+            <div id="exportar-opciones-imagen" class="marcas__fila">
+                <select id="exportar-formato" class="dialogo__campo" data-i18n-titulo="exportar.formato">
+                    <option value="png">PNG</option>
+                    <option value="jpg">JPG</option>
+                </select>
+                <select id="exportar-ppp" class="dialogo__campo" data-i18n-titulo="exportar.resolucion">
+                    <option value="72" data-i18n="exportar.ppp72"></option>
+                    <option value="150" data-i18n="exportar.ppp150" selected></option>
+                    <option value="300" data-i18n="exportar.ppp300"></option>
+                </select>
+            </div>
+            <label class="cert__etiqueta" for="exportar-rango" data-i18n="exportar.rango"></label>
+            <input id="exportar-rango" class="dialogo__campo" type="text" data-i18n-placeholder="exportar.rangoEjemplo">
+            <p id="exportar-error" class="dialogo__error" role="alert"></p>
+            <div class="dialogo__botones">
+                <button id="exportar-cancelar" type="button" data-i18n="comun.cancelar"></button>
+                <button class="boton-principal" type="submit" data-i18n="exportar.boton"></button>
             </div>
         </form>
     </dialog>

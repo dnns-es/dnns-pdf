@@ -19,6 +19,7 @@ import { crearModuloMarcas } from './marcas.js';
 import { crearModuloRedactar } from './redactar.js';
 import { crearModuloEditar } from './editar.js';
 import { crearModuloComparar } from './comparar.js';
+import { crearModuloExportar } from './exportar.js';
 import * as firmaDigital from './firmaDigital.js';
 import { convertirOficina } from './oficina/oficina.js';
 
@@ -34,6 +35,7 @@ const marcas = crearModuloMarcas(() => exigirDocumento(), () => anotaciones.marc
 const redactar = crearModuloRedactar(() => exigirDocumento(), () => anotaciones.marcarCambio());
 const editar = crearModuloEditar(() => exigirDocumento(), () => anotaciones.marcarCambio());
 const comparar = crearModuloComparar(() => exigirDocumento());
+const exportar = crearModuloExportar(() => exigirDocumento());
 
 function exigirDocumento() {
     if (!documento) {
@@ -315,6 +317,17 @@ const acciones = {
     'comparar:cargar': (datos) => comparar.cargar(datos),
     'comparar:comparar': () => comparar.comparar(),
     'comparar:cerrar': () => comparar.cerrar(),
+
+    // Exportar (ver exportar.js); los bytes viajan sin copiarse
+    'exportar:paginaImagen': (datos) => {
+        const { bytes } = exportar.paginaImagen(datos);
+        return { bytes, _transferir: [bytes.buffer] };
+    },
+    'exportar:paginaTexto': (datos) => exportar.paginaTexto(datos),
+    'exportar:paginaImagenes': (datos) => {
+        const resultado = exportar.paginaImagenes(datos);
+        return { ...resultado, _transferir: resultado.imagenes.map((imagen) => imagen.bytes.buffer) };
+    },
 
     // Comprimir: sobre una copia con los cambios actuales (ver comprimir.js)
     'comprimir': ({ nivel }) => comprimir(anotaciones.exportar().bytes, nivel),

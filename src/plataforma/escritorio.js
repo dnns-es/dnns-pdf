@@ -84,6 +84,18 @@ export async function guardarComo(blob, nombre, archivo) {
     return guardado;
 }
 
+// Cualquier otro archivo (exportar): diálogo de guardar con el filtro de su extensión
+export async function guardarArchivo(blob, nombre, archivo) {
+    const extension = nombre.includes('.') ? nombre.split('.').pop() : '';
+    const filtros = extension ? [{ name: extension.toUpperCase(), extensions: [extension] }] : [];
+    const ruta = await save({ defaultPath: `${carpetaDeRuta(archivo?.ruta ?? '')}${nombre}`, filters: filtros });
+    if (!ruta) {
+        return false;
+    }
+    await escribirArchivo(ruta, blob);
+    return true;
+}
+
 // Devuelve null si no hay versión nueva, o { version, notas, instalar(alProgresar) }
 export async function comprobarActualizacion() {
     const actualizacion = await check();

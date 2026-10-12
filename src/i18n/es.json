@@ -485,5 +485,26 @@
         "imagen": "La imagen de la página cambia",
         "protegido": "El otro PDF tiene contraseña: quítala antes de comparar.",
         "error": "No se ha podido comparar."
+    },
+    "exportar": {
+        "menu": "Exportar páginas, texto o imágenes",
+        "titulo": "Exportar",
+        "paginas": "Páginas como imagen (una por página)",
+        "texto": "Todo el texto (.txt)",
+        "imagenes": "Las imágenes que lleva dentro",
+        "formato": "Formato",
+        "resolucion": "Resolución",
+        "ppp72": "72 ppp (pantalla)",
+        "ppp150": "150 ppp (normal)",
+        "ppp300": "300 ppp (imprimir)",
+        "rango": "Páginas (vacío = todas)",
+        "rangoEjemplo": "Todas, o por ejemplo 1-3, 5",
+        "boton": "Exportar",
+        "progreso": "Exportando página {n} de {total}…",
+        "hecho": "Exportado: {nombre}",
+        "sinImagenes": "Este documento no lleva imágenes dentro.",
+        "sinTexto": "Estas páginas no tienen texto (si es un escaneado, usa antes Reconocer texto).",
+        "error": "No se ha podido exportar.",
+        "pagina": "Página {n}"
     }
 }

@@ -485,5 +485,26 @@
         "imagen": "The page image changes",
         "protegido": "The other PDF has a password: remove it before comparing.",
         "error": "The documents could not be compared."
+    },
+    "exportar": {
+        "menu": "Export pages, text or images",
+        "titulo": "Export",
+        "paginas": "Pages as images (one per page)",
+        "texto": "All the text (.txt)",
+        "imagenes": "The images inside it",
+        "formato": "Format",
+        "resolucion": "Resolution",
+        "ppp72": "72 dpi (screen)",
+        "ppp150": "150 dpi (normal)",
+        "ppp300": "300 dpi (print)",
+        "rango": "Pages (empty = all)",
+        "rangoEjemplo": "All, or for example 1-3, 5",
+        "boton": "Export",
+        "progreso": "Exporting page {n} of {total}…",
+        "hecho": "Exported: {nombre}",
+        "sinImagenes": "This document has no images inside.",
+        "sinTexto": "These pages have no text (if it is a scan, use Recognise text first).",
+        "error": "The export failed.",
+        "pagina": "Page {n}"
     }
 }

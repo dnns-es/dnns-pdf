@@ -150,7 +150,8 @@ public class Archivos extends Plugin {
         bytesPorGuardar = Base64.decode(datos, Base64.DEFAULT);
         Intent intent = new Intent(Intent.ACTION_CREATE_DOCUMENT);
         intent.addCategory(Intent.CATEGORY_OPENABLE);
-        intent.setType("application/pdf");
+        // Por defecto PDF; exportar manda otros tipos (imágenes, texto, ZIP)
+        intent.setType(call.getString("tipo", "application/pdf"));
         intent.putExtra(Intent.EXTRA_TITLE, nombre);
         startActivityForResult(call, intent, "alElegirDestino");
     }
