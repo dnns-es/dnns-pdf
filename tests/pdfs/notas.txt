@@ -1,0 +1,5 @@
+﻿Notas de prueba
+
+Línea con acentos: áéíóú ñ €
+	Tabulado  dos espacios
+Segunda página del texto

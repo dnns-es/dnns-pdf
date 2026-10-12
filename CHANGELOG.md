@@ -2,6 +2,17 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versionado semántico.
 
+## [0.7.0] - 2026-10-12
+
+### Añadido
+- Abrir texto enriquecido (.rtf): lector propio que conserva negritas, cursivas, subrayados, tamaños, colores, alineación, sangrías, viñetas, tablas, imágenes PNG/JPEG, saltos de página y el tamaño de página.
+- Abrir texto plano (.txt) respetando su codificación (UTF-8, UTF-16 o ANSI) y los saltos de página; los archivos de código (.py y similares) salen con letra de ancho fijo.
+- Abrir imágenes BMP (además de JPG y PNG) como PDF, también desde el botón Abrir, arrastrando una sola imagen o con «Abrir con» en Android y Windows.
+- El tipo de archivo se reconoce por su contenido, así que funciona aunque llegue con otro nombre (Android renombra lo que comparte).
+
+### Cambiado
+- El botón Abrir, la portada y la zona de soltar aceptan los formatos nuevos.
+
 ## [0.6.1] - 2026-10-12
 
 ### Corregido

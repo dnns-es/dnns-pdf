@@ -29,7 +29,7 @@ Notas: sin copia de seguridad en la nube de Google: la app no debe sacar nada de
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
-            <!-- «Abrir con DNNS PDF» desde el gestor de archivos, el correo, WhatsApp... (PDF y documentos de Office) -->
+            <!-- «Abrir con DNNS PDF» desde el gestor de archivos, el correo, WhatsApp... (PDF, documentos de Office, RTF, texto y BMP) -->
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -40,9 +40,14 @@ Notas: sin copia de seguridad en la nube de Google: la app no debe sacar nada de
                 <data android:mimeType="application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
                 <data android:mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
                 <data android:mimeType="application/vnd.openxmlformats-officedocument.presentationml.presentation" />
+                <data android:mimeType="application/rtf" />
+                <data android:mimeType="text/rtf" />
+                <data android:mimeType="text/plain" />
+                <data android:mimeType="text/x-python" />
+                <data android:mimeType="image/bmp" />
             </intent-filter>
 
-            <!-- «Compartir» un PDF con DNNS PDF -->
+            <!-- «Compartir» con DNNS PDF (también fotos JPG/PNG, que pasan a PDF) -->
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -50,6 +55,13 @@ Notas: sin copia de seguridad en la nube de Google: la app no debe sacar nada de
                 <data android:mimeType="application/vnd.openxmlformats-officedocument.wordprocessingml.document" />
                 <data android:mimeType="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
                 <data android:mimeType="application/vnd.openxmlformats-officedocument.presentationml.presentation" />
+                <data android:mimeType="application/rtf" />
+                <data android:mimeType="text/rtf" />
+                <data android:mimeType="text/plain" />
+                <data android:mimeType="text/x-python" />
+                <data android:mimeType="image/bmp" />
+                <data android:mimeType="image/jpeg" />
+                <data android:mimeType="image/png" />
             </intent-filter>
 
         </activity>

@@ -3,10 +3,11 @@
 // Elegir varios archivos (PDF e imágenes) y prepararlos para el worker
 // Notas: todo se lee en local; nada sale del dispositivo
 
-const TIPOS_IMAGEN = /^image\/(jpeg|png)$/;
+const TIPOS_IMAGEN = /^image\/(jpeg|png|bmp)$/;
+const ACEPTAR_IMAGENES = 'image/jpeg,image/png,image/bmp,.jpg,.jpeg,.png,.bmp';
 
 export function esImagen(archivo) {
-    return TIPOS_IMAGEN.test(archivo.type) || /\.(jpe?g|png)$/i.test(archivo.name);
+    return TIPOS_IMAGEN.test(archivo.type) || /\.(jpe?g|png|bmp)$/i.test(archivo.name);
 }
 
 export function esPdf(archivo) {
@@ -17,7 +18,7 @@ export function esPdf(archivo) {
 export function elegirArchivos({ multiple = true, soloImagenes = false } = {}) {
     const entrada = document.getElementById('entrada-varios');
     entrada.multiple = multiple;
-    entrada.accept = soloImagenes ? 'image/jpeg,image/png' : 'application/pdf,.pdf,image/jpeg,image/png';
+    entrada.accept = soloImagenes ? ACEPTAR_IMAGENES : `application/pdf,.pdf,${ACEPTAR_IMAGENES}`;
     return new Promise((resolver) => {
         const alCambiar = () => {
             entrada.removeEventListener('change', alCambiar);

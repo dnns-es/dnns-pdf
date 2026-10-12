@@ -2,6 +2,7 @@
 * text=auto eol=lf
 *.pdf binary
 *.png binary
+*.bmp binary
 *.wasm binary
 *.bat text eol=crlf
 *.jar binary
