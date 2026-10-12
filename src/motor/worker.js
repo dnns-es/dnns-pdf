@@ -16,6 +16,7 @@ import { crearModuloSeguridad } from './seguridad.js';
 import { comprimir } from './comprimir.js';
 import { crearModuloOcr } from './ocr.js';
 import { crearModuloMarcas } from './marcas.js';
+import { crearModuloRedactar } from './redactar.js';
 import * as firmaDigital from './firmaDigital.js';
 import { convertirOficina } from './oficina/oficina.js';
 
@@ -28,6 +29,7 @@ const formularios = crearModuloFormularios(() => exigirDocumento(), () => anotac
 const seguridad = crearModuloSeguridad(() => exigirDocumento());
 const ocr = crearModuloOcr(() => exigirDocumento(), () => anotaciones.marcarCambio());
 const marcas = crearModuloMarcas(() => exigirDocumento(), () => anotaciones.marcarCambio());
+const redactar = crearModuloRedactar(() => exigirDocumento(), () => anotaciones.marcarCambio());
 
 function exigirDocumento() {
     if (!documento) {
@@ -289,6 +291,11 @@ const acciones = {
     // Números de página, encabezados y marcas de agua (ver marcas.js)
     'marcas:numerar': (datos) => marcas.numerar(datos),
     'marcas:marcaAgua': (datos) => marcas.marcaAgua(datos),
+
+    // Ocultar datos de verdad (ver redactar.js)
+    'redactar:pendientes': () => redactar.pendientes(),
+    'redactar:marcarBusqueda': (datos) => redactar.marcarBusqueda(datos),
+    'redactar:aplicar': () => redactar.aplicar(),
 
     // Comprimir: sobre una copia con los cambios actuales (ver comprimir.js)
     'comprimir': ({ nivel }) => comprimir(anotaciones.exportar().bytes, nivel),

@@ -70,6 +70,7 @@
             "circulo": "Círculo",
             "linea": "Línea",
             "flecha": "Flecha",
+            "ocultar": "Ocultar datos: marca una zona que se borrará de verdad (se aplica en Herramientas)",
             "sello": "Sello"
         },
         "sellos": {
@@ -107,7 +108,8 @@
     },
     "comun": {
         "aceptar": "Aceptar",
-        "cancelar": "Cancelar"
+        "cancelar": "Cancelar",
+        "cerrar": "Cerrar"
     },
     "motor": {
         "etiqueta": "Motor PDF:",
@@ -266,6 +268,22 @@
     "herramientas": {
         "boton": "Herramientas: OCR, comprimir, proteger…"
     },
+    "redactar": {
+        "menu": "Ocultar datos (redacción)…",
+        "titulo": "Ocultar datos",
+        "texto": "Borra de verdad del archivo el texto, las imágenes y los dibujos de las zonas marcadas y deja un recuadro negro: no se puede recuperar copiando ni con otro programa. Marca zonas con la herramienta «Ocultar» de Anotar o buscando un texto.",
+        "buscar": "Buscar y marcar un texto en todo el documento",
+        "ejemplo": "Por ejemplo, un DNI o un nombre",
+        "marcar": "Marcar",
+        "marcadas": "Zonas marcadas: {zonas} (páginas: {paginas}).",
+        "ninguna": "Aún no hay zonas marcadas.",
+        "encontradas": "Apariciones marcadas: {zonas}.",
+        "noEncontrado": "No aparece en el documento.",
+        "aviso": "Al guardar, lo ocultado ya no se puede recuperar. Hasta entonces se puede deshacer.",
+        "aplicar": "Ocultar definitivamente",
+        "hecho": "Datos ocultados (páginas: {paginas}). Guarda para que el cambio quede en el archivo.",
+        "error": "No se pudieron ocultar los datos."
+    },
     "marcas": {
         "menuNumerar": "Numerar páginas, encabezado y pie…",
         "menuMarca": "Marca de agua…",
@@ -305,7 +323,7 @@
         "opacidad": "Opacidad",
         "debajo": "Detrás del contenido (no tapa el texto; en escaneados no se vería)",
         "faltaMarca": "Escribe un texto o elige una imagen.",
-        "hecho": "Añadido a {total} páginas. Se puede deshacer; guarda para conservarlo.",
+        "hecho": "Añadido (páginas: {total}). Se puede deshacer; guarda para conservarlo.",
         "error": "No se pudo añadir a las páginas."
     },
     "ocr": {

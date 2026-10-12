@@ -70,6 +70,7 @@
             "circulo": "Circle",
             "linea": "Line",
             "flecha": "Arrow",
+            "ocultar": "Hide data: mark an area that will be truly erased (applied from Tools)",
             "sello": "Stamp"
         },
         "sellos": {
@@ -107,7 +108,8 @@
     },
     "comun": {
         "aceptar": "OK",
-        "cancelar": "Cancel"
+        "cancelar": "Cancel",
+        "cerrar": "Close"
     },
     "motor": {
         "etiqueta": "PDF engine:",
@@ -266,6 +268,22 @@
     "herramientas": {
         "boton": "Tools: OCR, compress, protect…"
     },
+    "redactar": {
+        "menu": "Hide data (redaction)…",
+        "titulo": "Hide data",
+        "texto": "Truly erases from the file the text, images and drawings in the marked areas and leaves a black box: it cannot be recovered by copying or with another program. Mark areas with the Annotate “Hide” tool or by searching for a text.",
+        "buscar": "Find and mark a text in the whole document",
+        "ejemplo": "For example, an ID number or a name",
+        "marcar": "Mark",
+        "marcadas": "Areas marked: {zonas} (pages: {paginas}).",
+        "ninguna": "No areas marked yet.",
+        "encontradas": "Matches marked: {zonas}.",
+        "noEncontrado": "Not found in the document.",
+        "aviso": "Once saved, hidden data cannot be recovered. Until then it can be undone.",
+        "aplicar": "Hide permanently",
+        "hecho": "Data hidden (pages: {paginas}). Save so the change stays in the file.",
+        "error": "The data could not be hidden."
+    },
     "marcas": {
         "menuNumerar": "Page numbers, header and footer…",
         "menuMarca": "Watermark…",
@@ -305,7 +323,7 @@
         "opacidad": "Opacity",
         "debajo": "Behind the content (does not cover the text; not visible on scans)",
         "faltaMarca": "Type a text or choose an image.",
-        "hecho": "Added to {total} pages. It can be undone; save to keep it.",
+        "hecho": "Added (pages: {total}). It can be undone; save to keep it.",
         "error": "Could not add to the pages."
     },
     "ocr": {

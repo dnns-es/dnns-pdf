@@ -152,7 +152,7 @@ Se eligió Capacitor en vez de Tauri porque el actualizador de Tauri no funciona
 - [ ] Añadir texto nuevo con fuente, tamaño y color
 - [ ] Añadir, mover, redimensionar y borrar imágenes
 - [ ] Editar texto existente (método "tapar y reescribir": detectar línea, cubrir y reescribir)
-- [ ] Redacción real: borra el contenido de verdad, no solo lo tapa
+- [x] Redacción real: borra el contenido de verdad, no solo lo tapa (zonas a mano o buscando un texto)
 - [x] Encabezados, pies y numeración de páginas
 - [x] Marca de agua de texto o imagen
 - [ ] Editar metadatos (título, autor, palabras clave)
