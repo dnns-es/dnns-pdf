@@ -135,6 +135,7 @@
         "boton": "Organizar páginas: mover, girar, borrar, unir y dividir",
         "cerrar": "Volver al documento (Esc)",
         "pista": "Toca o haz clic para elegir páginas (Ctrl o Mayús para varias). Arrástralas para cambiar el orden; en el móvil, mantén pulsado y arrastra.",
+        "seleccionada": "1 seleccionada",
         "seleccionadas": "{total} seleccionadas",
         "girarIzquierda": "Girar a la izquierda",
         "girarDerecha": "Girar a la derecha",

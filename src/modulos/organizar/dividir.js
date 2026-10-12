@@ -4,36 +4,9 @@
 // Devuelve la lista de partes (cada parte, sus páginas desde 0) o null si se cancela
 
 import { t } from '../../nucleo/i18n.js';
+import { leerRangos, cadaN } from './rangos.js';
 
 const $ = (id) => document.getElementById(id);
-
-// «1-3, 5, 8-10» -> [[0,1,2],[4],[7,8,9]]; lanza un error con la clave de texto si no vale
-export function leerRangos(texto, total) {
-    const partes = texto.split(/[,;]/).map((s) => s.trim()).filter(Boolean);
-    if (!partes.length) {
-        throw new Error('organizar.rangosVacios');
-    }
-    return partes.map((parte) => {
-        const m = /^(\d+)\s*(?:-\s*(\d+))?$/.exec(parte);
-        if (!m) {
-            throw new Error('organizar.rangosMal');
-        }
-        const desde = Number(m[1]);
-        const hasta = m[2] ? Number(m[2]) : desde;
-        if (desde < 1 || hasta > total || desde > hasta) {
-            throw new Error('organizar.rangosFuera');
-        }
-        return Array.from({ length: hasta - desde + 1 }, (_, i) => desde - 1 + i);
-    });
-}
-
-function cadaN(n, total) {
-    const partes = [];
-    for (let inicio = 0; inicio < total; inicio += n) {
-        partes.push(Array.from({ length: Math.min(n, total - inicio) }, (_, i) => inicio + i));
-    }
-    return partes;
-}
 
 export function pedirDivision(total) {
     const dialogo = $('dialogo-dividir');

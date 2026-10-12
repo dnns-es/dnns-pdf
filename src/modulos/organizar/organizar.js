@@ -175,7 +175,7 @@ function actualizarBarra(sel) {
     for (const boton of document.querySelectorAll('[data-requiere-seleccion]')) {
         boton.disabled = ninguna;
     }
-    $('organizar-seleccion').textContent = ninguna ? '' : t('organizar.seleccionadas', { total: sel.length });
+    $('organizar-seleccion').textContent = ninguna ? '' : (sel.length === 1 ? t('organizar.seleccionada') : t('organizar.seleccionadas', { total: sel.length }));
 }
 
 function alTecla(evento) {

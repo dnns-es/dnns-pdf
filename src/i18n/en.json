@@ -135,6 +135,7 @@
         "boton": "Organise pages: move, rotate, delete, merge and split",
         "cerrar": "Back to the document (Esc)",
         "pista": "Tap or click to pick pages (Ctrl or Shift for several). Drag them to change the order; on mobile, press and hold, then drag.",
+        "seleccionada": "1 selected",
         "seleccionadas": "{total} selected",
         "girarIzquierda": "Rotate left",
         "girarDerecha": "Rotate right",
