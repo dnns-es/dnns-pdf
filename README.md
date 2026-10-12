@@ -47,6 +47,11 @@ Mira [ROADMAP.md](ROADMAP.md) para ver qué hay hecho y qué viene.
 - Rellenar los campos de un PDF (texto, casillas, opciones, desplegables y listas) escribiendo encima de la página; al guardar quedan dentro del PDF en formato estándar
 - Añadir campos de texto y casillas a cualquier PDF, borrarlos y aplanar el formulario (convertirlo en contenido fijo); todo se puede deshacer
 
+**Editar:**
+
+- Cambiar una línea de texto pulsándola, añadir texto con tipo de letra, tamaño y color, y añadir, mover, cambiar de tamaño o borrar imágenes
+- Propiedades del documento: título, autor, asunto y palabras clave
+
 **Herramientas:**
 
 - Ocultar datos de verdad (redacción): marca zonas o busca un texto (un DNI, un nombre) y se borran del archivo, no solo se tapan
@@ -83,7 +88,6 @@ El motivo está en [docs/firma-smartscreen.md](docs/firma-smartscreen.md).
 Se registra para «Abrir con» y «Compartir» PDF, y avisa e instala las versiones nuevas desde la propia app.
 
 **En camino:**
-- Editar texto e imágenes del PDF
 - Comparar dos PDF
 - Exportar páginas a imagen y extraer texto e imágenes
 
@@ -148,6 +152,8 @@ Everything is processed on your device. Your PDFs never leave your browser; neit
 
 **Forms:** fill in the fields of a PDF (text, checkboxes, radio buttons, drop-downs and lists) right on the page; Save keeps them inside the PDF in the standard format. Add text fields and checkboxes to any PDF, delete them and flatten the form (turn it into fixed content); everything can be undone.
 
+**Edit:** change a line of text by clicking it, add text with font, size and colour, add, move, resize or delete images, and edit the document properties (title, author, subject, keywords).
+
 **Tools:** true redaction (mark areas or search for a text such as an ID number and it is erased from the file, not just covered); page numbers, headers and footers ("Page 1 of 10", date, name or custom text) and text or image watermarks; text recognition (OCR) for scans and photos in Spanish or English, so they can be searched and copied (on your device); compress for email or messaging (three levels; saves a copy and shows the saving); protect the PDF with an open password and permissions (prevent printing, copying or editing), AES-256, saving a protected copy; remove the password and restrictions from a PDF (with the owner password when permissions are restricted).
 
 **Sign:** handwritten signature (draw it, type your name in a handwriting font or upload a photo with the background removed; saved on your device for reuse; place, move and resize it), digital signature with your .p12/.pfx certificate (for example the Spanish FNMT one) with an optional visible box, and signature checking of received PDFs (signer, date, whether the file is intact and whether the certificate chains to a recognised Spanish authority). The certificate and its password never leave your device.
@@ -160,7 +166,7 @@ Everything is processed on your device. Your PDFs never leave your browser; neit
 
 **Android app:** download the APK from [dnns.es/apps](https://dnns.es/apps.html#dnns-pdf). It handles "Open with" and "Share" for PDFs and updates itself from inside the app.
 
-**Coming next** (see [ROADMAP.md](ROADMAP.md), in Spanish): editing text and images, comparing two PDFs, exporting pages as images and extracting text and images.
+**Coming next** (see [ROADMAP.md](ROADMAP.md), in Spanish): comparing two PDFs, exporting pages as images and extracting text and images.
 
 It can be installed as an app (PWA) and works offline.
 

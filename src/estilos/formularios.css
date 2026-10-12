@@ -150,3 +150,132 @@ body.formularios--diseno .campo__borrar {
 .marcas__fila input[type="number"] {
     width: 70px;
 }
+
+/* Editar contenido: barra y capa (solo mientras se edita) */
+.barra-editar__formato {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+}
+
+.barra-editar__tamano {
+    width: 4.5em;
+    padding: 4px;
+    border: 1px solid var(--borde);
+    border-radius: 6px;
+    background: var(--superficie);
+    color: var(--texto);
+    font: inherit;
+}
+
+.barra-editar__color {
+    width: 32px;
+    height: 28px;
+    padding: 0;
+    border: 1px solid var(--borde);
+    border-radius: 6px;
+    background: none;
+}
+
+.capa-editar {
+    position: absolute;
+    inset: 0;
+    display: none;
+    z-index: 3;
+}
+
+body.editando .capa-editar {
+    display: block;
+}
+
+body[data-editar="nuevoTexto"] .capa-editar,
+body[data-editar="imagen"] .capa-editar {
+    cursor: crosshair;
+    touch-action: none;
+}
+
+.editar-linea {
+    position: absolute;
+    cursor: text;
+    border-radius: 2px;
+}
+
+.editar-linea:hover {
+    background: var(--acento-suave);
+    outline: 1px dashed var(--acento);
+}
+
+.editar-campo {
+    position: absolute;
+    box-sizing: border-box;
+    min-width: 40px;
+    margin: 0;
+    padding: 0 2px;
+    border: 1px solid var(--acento);
+    border-radius: 2px;
+    background: #fff;
+    font-size: calc(var(--tamano) * var(--escala) * 1px);
+    line-height: 1.2;
+    outline: none;
+    box-shadow: 0 0 0 3px var(--acento-suave);
+}
+
+.editar-campo--nuevo {
+    min-width: 160px;
+    resize: both;
+    background: rgb(255 255 255 / 0.9);
+}
+
+.editar-imagen,
+.editar-marco {
+    position: absolute;
+    box-sizing: border-box;
+    border: 1px dashed var(--acento);
+}
+
+.editar-imagen {
+    cursor: move;
+    touch-action: none;
+}
+
+.editar-imagen:hover,
+.editar-imagen--elegida {
+    border-style: solid;
+    background: var(--acento-suave);
+}
+
+.editar-marco {
+    background: var(--acento-suave);
+}
+
+.editar-imagen__asa {
+    position: absolute;
+    right: -6px;
+    bottom: -6px;
+    width: 12px;
+    height: 12px;
+    border-radius: 2px;
+    background: var(--acento);
+    cursor: nwse-resize;
+}
+
+.editar-imagen__borrar {
+    position: absolute;
+    top: -12px;
+    right: -12px;
+    display: none;
+    width: 24px;
+    height: 24px;
+    border: 0;
+    border-radius: 50%;
+    background: var(--error);
+    color: #fff;
+    font-size: 16px;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.editar-imagen:hover .editar-imagen__borrar,
+.editar-imagen--elegida .editar-imagen__borrar {
+    display: block;
+}

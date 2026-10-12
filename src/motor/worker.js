@@ -17,6 +17,7 @@ import { comprimir } from './comprimir.js';
 import { crearModuloOcr } from './ocr.js';
 import { crearModuloMarcas } from './marcas.js';
 import { crearModuloRedactar } from './redactar.js';
+import { crearModuloEditar } from './editar.js';
 import * as firmaDigital from './firmaDigital.js';
 import { convertirOficina } from './oficina/oficina.js';
 
@@ -30,6 +31,7 @@ const seguridad = crearModuloSeguridad(() => exigirDocumento());
 const ocr = crearModuloOcr(() => exigirDocumento(), () => anotaciones.marcarCambio());
 const marcas = crearModuloMarcas(() => exigirDocumento(), () => anotaciones.marcarCambio());
 const redactar = crearModuloRedactar(() => exigirDocumento(), () => anotaciones.marcarCambio());
+const editar = crearModuloEditar(() => exigirDocumento(), () => anotaciones.marcarCambio());
 
 function exigirDocumento() {
     if (!documento) {
@@ -296,6 +298,16 @@ const acciones = {
     'redactar:pendientes': () => redactar.pendientes(),
     'redactar:marcarBusqueda': (datos) => redactar.marcarBusqueda(datos),
     'redactar:aplicar': () => redactar.aplicar(),
+
+    // Editar contenido (ver editar.js)
+    'editar:lineas': (datos) => editar.lineas(datos),
+    'editar:imagenes': (datos) => editar.imagenes(datos),
+    'editar:reescribir': (datos) => editar.reescribir(datos),
+    'editar:anadirTexto': (datos) => editar.anadirTexto(datos),
+    'editar:anadirImagen': (datos) => editar.anadirImagen(datos),
+    'editar:cambiarImagen': (datos) => editar.cambiarImagen(datos),
+    'editar:propiedades': () => editar.propiedades(),
+    'editar:ponerPropiedades': (datos) => editar.ponerPropiedades(datos),
 
     // Comprimir: sobre una copia con los cambios actuales (ver comprimir.js)
     'comprimir': ({ nivel }) => comprimir(anotaciones.exportar().bytes, nivel),

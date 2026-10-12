@@ -41,9 +41,27 @@ export function textoPdf(texto) {
     }).join('');
 }
 
-// Ancho del texto a cuerpo 1 (en unidades de cuerpo)
-export function anchoTexto(texto, negrita = false) {
-    const fuente = fuenteHelvetica(negrita);
+// Las 12 fuentes estándar de texto de PDF (no hace falta incrustarlas): familia sans, serif o mono
+const ESTANDAR = {
+    sans: ['Helvetica', 'Helvetica-Bold', 'Helvetica-Oblique', 'Helvetica-BoldOblique'],
+    serif: ['Times-Roman', 'Times-Bold', 'Times-Italic', 'Times-BoldItalic'],
+    mono: ['Courier', 'Courier-Bold', 'Courier-Oblique', 'Courier-BoldOblique']
+};
+const fuentesEstandar = new Map();
+
+export function nombreFuenteEstandar(familia = 'sans', negrita = false, cursiva = false) {
+    return (ESTANDAR[familia] ?? ESTANDAR.sans)[(negrita ? 1 : 0) + (cursiva ? 2 : 0)];
+}
+
+export function fuenteEstandar(nombre) {
+    if (!fuentesEstandar.has(nombre)) {
+        fuentesEstandar.set(nombre, new mupdf.Font(nombre));
+    }
+    return fuentesEstandar.get(nombre);
+}
+
+// Ancho del texto a cuerpo 1 (en unidades de cuerpo). fuente: un mupdf.Font; por defecto Helvetica
+export function anchoTexto(texto, negrita = false, fuente = fuenteHelvetica(negrita)) {
     let ancho = 0;
     for (const c of texto) {
         ancho += fuente.advanceGlyph(fuente.encodeCharacter(c));
