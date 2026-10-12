@@ -1,0 +1,51 @@
+<!--
+Fecha: 2026-10-12
+Ruta: /index.html
+Página principal de DNNS PDF
+Punto de entrada de la PWA; los textos se rellenan desde i18n (atributo data-i18n)
+-->
+<!doctype html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+    <meta name="theme-color" content="#1f6feb">
+    <meta name="description" content="Editor de PDF libre y gratuito. Todo se procesa en tu dispositivo.">
+    <title>DNNS PDF</title>
+    <link rel="manifest" href="./manifest.json">
+    <link rel="icon" type="image/png" href="./icons/icon-192.png">
+    <link rel="apple-touch-icon" href="./icons/icon-192.png">
+</head>
+<body>
+    <header class="barra">
+        <h1 class="barra__titulo">DNNS PDF</h1>
+        <select id="selector-idioma" class="barra__idioma" aria-label="Idioma / Language">
+            <option value="es">Español</option>
+            <option value="en">English</option>
+        </select>
+    </header>
+
+    <main class="principal">
+        <section class="bienvenida">
+            <h2 data-i18n="bienvenida.titulo"></h2>
+            <p data-i18n="bienvenida.texto"></p>
+            <p class="estado-motor">
+                <span data-i18n="motor.etiqueta"></span>
+                <strong id="estado-motor" data-i18n="motor.cargando"></strong>
+            </p>
+        </section>
+    </main>
+
+    <footer class="pie">
+        <span data-i18n="pie.licencia"></span>
+        <span id="version-app"></span>
+    </footer>
+
+    <div id="banner-actualizacion" class="banner" hidden>
+        <span data-i18n="actualizacion.texto"></span>
+        <button id="boton-actualizar" type="button" data-i18n="actualizacion.boton"></button>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+</body>
+</html>

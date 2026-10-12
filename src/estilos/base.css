@@ -1,0 +1,131 @@
+/*
+Fecha: 2026-10-12
+Ruta: /src/estilos/base.css
+Estilos base de DNNS PDF
+Variables de color (claro y oscuro), estructura de página y banner de actualización
+*/
+
+:root {
+    --fondo: #f6f7f9;
+    --superficie: #ffffff;
+    --texto: #1c2128;
+    --texto-suave: #57606a;
+    --borde: #d0d7de;
+    --acento: #1f6feb;
+    --acento-texto: #ffffff;
+    --ok: #1a7f37;
+    --error: #cf222e;
+    color-scheme: light dark;
+}
+
+@media (prefers-color-scheme: dark) {
+    :root {
+        --fondo: #0d1117;
+        --superficie: #161b22;
+        --texto: #e6edf3;
+        --texto-suave: #8d96a0;
+        --borde: #30363d;
+        --acento: #4493f8;
+        --ok: #3fb950;
+        --error: #f85149;
+    }
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100dvh;
+    display: flex;
+    flex-direction: column;
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+    background: var(--fondo);
+    color: var(--texto);
+}
+
+.barra {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 10px 16px;
+    background: var(--superficie);
+    border-bottom: 1px solid var(--borde);
+}
+
+.barra__titulo {
+    margin: 0;
+    font-size: 1.1rem;
+}
+
+.barra__idioma {
+    padding: 4px 8px;
+    border: 1px solid var(--borde);
+    border-radius: 6px;
+    background: var(--superficie);
+    color: var(--texto);
+}
+
+.principal {
+    flex: 1;
+    display: grid;
+    place-items: center;
+    padding: 24px 16px;
+}
+
+.bienvenida {
+    max-width: 560px;
+    text-align: center;
+}
+
+.bienvenida p {
+    color: var(--texto-suave);
+    line-height: 1.5;
+}
+
+.estado-motor strong {
+    color: var(--texto);
+}
+
+.pie {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 8px 16px;
+    font-size: 0.8rem;
+    color: var(--texto-suave);
+    border-top: 1px solid var(--borde);
+}
+
+.banner {
+    position: fixed;
+    left: 50%;
+    bottom: 16px;
+    transform: translateX(-50%);
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    max-width: calc(100% - 32px);
+    padding: 10px 14px;
+    background: var(--superficie);
+    border: 1px solid var(--acento);
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgb(0 0 0 / 0.2);
+}
+
+.banner[hidden] {
+    display: none;
+}
+
+.banner button {
+    padding: 6px 14px;
+    border: 0;
+    border-radius: 6px;
+    background: var(--acento);
+    color: var(--acento-texto);
+    font-weight: 600;
+    cursor: pointer;
+}
