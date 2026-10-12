@@ -98,6 +98,58 @@ input:disabled {
     width: 150px;
 }
 
+/* Barra de anotación (segunda fila, solo en modo Anotar) */
+
+.barra-anotar {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 8px;
+    background: var(--superficie);
+    border-bottom: 1px solid var(--borde);
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.barra-anotar .barra__zoom {
+    width: auto;
+}
+
+.barra-anotar__color {
+    width: 34px;
+    height: 30px;
+    padding: 2px;
+    border: 1px solid var(--borde);
+    border-radius: 6px;
+    background: var(--superficie-2);
+    cursor: pointer;
+}
+
+.barra-anotar__ajuste {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 0 4px;
+}
+
+.barra-anotar__ajuste svg {
+    width: 18px;
+    height: 18px;
+    fill: none;
+    stroke: var(--texto-suave);
+    stroke-width: 1.8;
+}
+
+.barra-anotar__ajuste input {
+    width: 80px;
+}
+
+/* El tamaño del texto solo tiene sentido con el cuadro de texto, y el selector de sello con el sello */
+body:not([data-herramienta="texto"]) #tamano-anotar,
+body:not([data-herramienta="sello"]) #selector-sello {
+    display: none;
+}
+
 /* Búsqueda */
 
 .busqueda {
@@ -226,6 +278,69 @@ input:disabled {
     color: var(--texto-suave);
 }
 
+/* Lista de anotaciones */
+
+.anotaciones__lista {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.anotacion-fila {
+    display: flex;
+    align-items: flex-start;
+    border-bottom: 1px solid var(--borde);
+}
+
+.anotacion-fila__ir {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px 4px;
+    border: 0;
+    border-radius: 4px;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+}
+
+.anotacion-fila__ir:hover {
+    background: var(--acento-suave);
+}
+
+.anotacion-fila__tipo {
+    color: var(--texto-suave);
+    font-size: 0.85em;
+}
+
+.anotacion-fila__texto {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    white-space: pre-wrap;
+}
+
+.anotacion-fila__borrar {
+    width: 28px;
+    height: 28px;
+    margin-top: 6px;
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--texto-suave);
+    font-size: 1.2em;
+    cursor: pointer;
+}
+
+.anotacion-fila__borrar:hover {
+    background: var(--acento-suave);
+    color: var(--error);
+}
+
 /* Diálogos */
 
 .dialogo {
@@ -245,6 +360,16 @@ input:disabled {
 .dialogo h2 {
     margin: 0 0 8px;
     font-size: 1.15rem;
+}
+
+.dialogo__campo {
+    width: 100%;
+    padding: 8px 10px;
+    border: 1px solid var(--borde);
+    border-radius: 6px;
+    background: var(--superficie-2);
+    font: inherit;
+    resize: vertical;
 }
 
 .dialogo input[type="password"] {

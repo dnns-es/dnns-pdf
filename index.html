@@ -63,6 +63,12 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
             </button>
         </div>
 
+        <div class="barra__grupo">
+            <button id="boton-anotar" class="boton-icono" type="button" aria-pressed="false" data-i18n-titulo="anotar.boton" data-requiere-doc>
+                <svg viewBox="0 0 24 24"><path d="M4 20h4L19 9l-4-4L4 16z"/><path d="M13.5 6.5l4 4"/></svg>
+            </button>
+        </div>
+
         <div class="barra__grupo barra__grupo--final">
             <button id="boton-buscar" class="boton-icono" type="button" data-i18n-titulo="barra.buscar" data-requiere-doc>
                 <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg>
@@ -86,6 +92,88 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
         </div>
     </header>
 
+    <div id="barra-anotar" class="barra-anotar" role="toolbar" hidden>
+        <div class="barra__grupo">
+            <button class="boton-icono" type="button" data-herramienta="seleccionar" data-i18n-titulo="anotar.herramientas.seleccionar">
+                <svg viewBox="0 0 24 24"><path d="M5 3l14 8-6 2-2 6z"/></svg>
+            </button>
+            <button class="boton-icono" type="button" data-herramienta="resaltar" data-i18n-titulo="anotar.herramientas.resaltar">
+                <svg viewBox="0 0 24 24"><path d="M9 15l-3 3h5l1-1M9 15l8-8 3 3-8 8z"/><path d="M3 21h18"/></svg>
+            </button>
+            <button class="boton-icono" type="button" data-herramienta="subrayar" data-i18n-titulo="anotar.herramientas.subrayar">
+                <svg viewBox="0 0 24 24"><path d="M7 4v6a5 5 0 0 0 10 0V4M5 20h14"/></svg>
+            </button>
+            <button class="boton-icono" type="button" data-herramienta="tachar" data-i18n-titulo="anotar.herramientas.tachar">
+                <svg viewBox="0 0 24 24"><path d="M16 6a4 3 0 0 0-8 1c0 4 8 3 8 7a4 3 0 0 1-8 1M4 12h16"/></svg>
+            </button>
+        </div>
+        <div class="barra__grupo">
+            <button class="boton-icono" type="button" data-herramienta="nota" data-i18n-titulo="anotar.herramientas.nota">
+                <svg viewBox="0 0 24 24"><path d="M4 4h16v12H9l-5 4z"/></svg>
+            </button>
+            <button class="boton-icono" type="button" data-herramienta="texto" data-i18n-titulo="anotar.herramientas.texto">
+                <svg viewBox="0 0 24 24"><path d="M5 6V4h14v2M12 4v16M9 20h6"/></svg>
+            </button>
+            <button class="boton-icono" type="button" data-herramienta="lapiz" data-i18n-titulo="anotar.herramientas.lapiz">
+                <svg viewBox="0 0 24 24"><path d="M3 17c3-6 5-8 7-5s3 3 5-1 4-4 6-2"/></svg>
+            </button>
+            <button class="boton-icono" type="button" data-herramienta="rectangulo" data-i18n-titulo="anotar.herramientas.rectangulo">
+                <svg viewBox="0 0 24 24"><rect x="4" y="6" width="16" height="12"/></svg>
+            </button>
+            <button class="boton-icono" type="button" data-herramienta="circulo" data-i18n-titulo="anotar.herramientas.circulo">
+                <svg viewBox="0 0 24 24"><ellipse cx="12" cy="12" rx="8" ry="6"/></svg>
+            </button>
+            <button class="boton-icono" type="button" data-herramienta="linea" data-i18n-titulo="anotar.herramientas.linea">
+                <svg viewBox="0 0 24 24"><path d="M5 19L19 5"/></svg>
+            </button>
+            <button class="boton-icono" type="button" data-herramienta="flecha" data-i18n-titulo="anotar.herramientas.flecha">
+                <svg viewBox="0 0 24 24"><path d="M5 19L19 5M10 5h9v9"/></svg>
+            </button>
+            <button class="boton-icono" type="button" data-herramienta="sello" data-i18n-titulo="anotar.herramientas.sello">
+                <svg viewBox="0 0 24 24"><path d="M9 3h6v5l-1 4h5v4H5v-4h5L9 8zM5 20h14"/></svg>
+            </button>
+        </div>
+        <div class="barra__grupo">
+            <input id="color-anotar" class="barra-anotar__color" type="color" value="#e00000" data-i18n-titulo="anotar.color">
+            <label class="barra-anotar__ajuste" data-i18n-titulo="anotar.grosor">
+                <svg viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16" /></svg>
+                <input id="grosor-anotar" type="range" min="1" max="12" step="1" value="3">
+            </label>
+            <label class="barra-anotar__ajuste" data-i18n-titulo="anotar.opacidad">
+                <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="8"/><path d="M12 4v16a8 8 0 0 0 0-16z"/></svg>
+                <input id="opacidad-anotar" type="range" min="10" max="100" step="5" value="100">
+            </label>
+            <select id="tamano-anotar" class="barra__zoom" data-i18n-titulo="anotar.tamano">
+                <option value="10">10</option>
+                <option value="12">12</option>
+                <option value="14" selected>14</option>
+                <option value="18">18</option>
+                <option value="24">24</option>
+                <option value="36">36</option>
+            </select>
+            <select id="selector-sello" class="barra__zoom" data-i18n-titulo="anotar.herramientas.sello">
+                <option value="APROBADO" data-i18n="anotar.sellos.aprobado"></option>
+                <option value="REVISADO" data-i18n="anotar.sellos.revisado"></option>
+                <option value="BORRADOR" data-i18n="anotar.sellos.borrador"></option>
+                <option value="CONFIDENCIAL" data-i18n="anotar.sellos.confidencial"></option>
+                <option value="URGENTE" data-i18n="anotar.sellos.urgente"></option>
+                <option value="propio" hidden></option>
+                <option value="personalizado" data-i18n="anotar.sellos.personalizado"></option>
+            </select>
+        </div>
+        <div class="barra__grupo barra__grupo--final">
+            <button id="boton-deshacer" class="boton-icono" type="button" data-i18n-titulo="anotar.deshacer" disabled>
+                <svg viewBox="0 0 24 24"><path d="M9 14L4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-3"/></svg>
+            </button>
+            <button id="boton-rehacer" class="boton-icono" type="button" data-i18n-titulo="anotar.rehacer" disabled>
+                <svg viewBox="0 0 24 24"><path d="M15 14l5-5-5-5"/><path d="M20 9H9a5 5 0 0 0 0 10h3"/></svg>
+            </button>
+            <button id="boton-guardar" class="boton-icono" type="button" data-i18n-titulo="anotar.guardar">
+                <svg viewBox="0 0 24 24"><path d="M5 3h11l3 3v13a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2z"/><path d="M7 3v6h8V3M7 21v-7h10v7"/></svg>
+            </button>
+        </div>
+    </div>
+
     <div id="barra-busqueda" class="busqueda" hidden>
         <input id="texto-busqueda" type="search" data-i18n-placeholder="busqueda.placeholder" data-i18n-titulo="busqueda.placeholder">
         <span id="contador-busqueda" class="busqueda__contador" aria-live="polite"></span>
@@ -105,11 +193,16 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
             <div class="panel__pestanas" role="tablist">
                 <button id="pestana-miniaturas" class="panel__pestana" type="button" role="tab" aria-selected="true" data-i18n="panel.miniaturas"></button>
                 <button id="pestana-indice" class="panel__pestana" type="button" role="tab" aria-selected="false" data-i18n="panel.indice"></button>
+                <button id="pestana-anotaciones" class="panel__pestana" type="button" role="tab" aria-selected="false" data-i18n="panel.anotaciones"></button>
             </div>
             <div id="lista-miniaturas" class="panel__contenido miniaturas" role="tabpanel"></div>
             <div id="lista-indice" class="panel__contenido indice" role="tabpanel" hidden>
                 <p id="indice-vacio" class="indice__vacio" data-i18n="panel.sinIndice" hidden></p>
                 <ul id="arbol-indice" class="indice__arbol"></ul>
+            </div>
+            <div id="lista-anotaciones-panel" class="panel__contenido anotaciones" role="tabpanel" hidden>
+                <p id="anotaciones-vacio" class="indice__vacio" data-i18n="panel.sinAnotaciones" hidden></p>
+                <ul id="lista-anotaciones" class="anotaciones__lista"></ul>
             </div>
         </aside>
 
@@ -180,6 +273,26 @@ Notas: los textos se rellenan desde i18n (data-i18n, data-i18n-titulo, data-i18n
         <div class="dialogo__botones">
             <button id="ajustes-cerrar" type="button" data-i18n="ajustes.cerrar"></button>
             <button id="ajustes-buscar" class="boton-principal" type="button" data-i18n="ajustes.buscar"></button>
+        </div>
+    </dialog>
+
+    <dialog id="dialogo-texto" class="dialogo">
+        <form id="formulario-texto" method="dialog">
+            <h2 id="titulo-texto"></h2>
+            <textarea id="campo-texto" class="dialogo__campo" rows="4"></textarea>
+            <input id="campo-texto-linea" class="dialogo__campo" type="text" maxlength="40" hidden>
+            <div class="dialogo__botones">
+                <button id="texto-cancelar" type="button" data-i18n="comun.cancelar"></button>
+                <button class="boton-principal" type="submit" data-i18n="comun.aceptar"></button>
+            </div>
+        </form>
+    </dialog>
+
+    <dialog id="dialogo-confirmar" class="dialogo">
+        <p id="texto-confirmar"></p>
+        <div class="dialogo__botones">
+            <button id="confirmar-cancelar" type="button" data-i18n="comun.cancelar"></button>
+            <button id="confirmar-aceptar" class="boton-principal" type="button"></button>
         </div>
     </dialog>
 

@@ -126,6 +126,60 @@ Notas: el tamaño de cada página sale de --ancho/--alto (puntos PDF) por --esca
     background: transparent;
 }
 
+/* Capa de anotación: solo recibe el puntero en modo Anotar y con herramientas que no son de texto */
+
+.capa-anotar {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    overflow: visible;
+    pointer-events: none;
+    touch-action: none;
+}
+
+.anotando--capa .capa-anotar {
+    pointer-events: auto;
+    cursor: crosshair;
+}
+
+.anotando--capa[data-herramienta="seleccionar"] .capa-anotar {
+    cursor: default;
+}
+
+.anotacion-hit {
+    fill: transparent;
+    stroke: none;
+    vector-effect: non-scaling-stroke;
+}
+
+.anotando[data-herramienta="seleccionar"] .anotacion-hit {
+    cursor: pointer;
+}
+
+.anotando[data-herramienta="seleccionar"] .anotacion-hit:hover {
+    stroke: var(--acento);
+    stroke-width: 1;
+    stroke-dasharray: 4 3;
+}
+
+.anotacion-hit--seleccionada,
+.anotando[data-herramienta="seleccionar"] .anotacion-hit--seleccionada:hover {
+    fill: var(--acento-suave);
+    stroke: var(--acento);
+    stroke-width: 2;
+    stroke-dasharray: none;
+}
+
+.anotacion-hit[data-movible="true"].anotacion-hit--seleccionada {
+    cursor: move;
+}
+
+/* Fuera del modo seleccionar las anotaciones existentes no se marcan */
+.anotando:not([data-herramienta="seleccionar"]) .anotacion-hit {
+    pointer-events: none;
+}
+
 /* Miniaturas */
 
 .miniaturas {
