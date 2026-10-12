@@ -177,13 +177,23 @@ Diálogo a pantalla completa con la cámara, el ajuste de esquinas, los filtros 
 
 .escanear__pie {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
     justify-content: space-between;
     gap: 8px;
     padding: 8px 12px 14px;
 }
 
+/* En pantallas estrechas el tamaño de página baja a su propia línea y el disparador no se aplasta */
+@media (max-width: 600px) {
+    #escanear-modo {
+        order: 1;
+        flex-basis: 100%;
+    }
+}
+
 .escanear__disparador {
+    flex-shrink: 0;
     width: 64px;
     height: 64px;
     border: 4px solid #ffffff;
