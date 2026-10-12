@@ -2,7 +2,7 @@
 
 **Español** · [English](#english)
 
-Editor de PDF libre y gratuito, al estilo de Adobe Acrobat. Sin registro, sin anuncios y sin subir tus documentos a ningún sitio.
+Editor de PDF libre y gratuito, con las funciones de los editores comerciales. Sin registro, sin anuncios y sin subir tus documentos a ningún sitio.
 
 **Pruébalo:** https://dnns-es.github.io/dnns-pdf/
 
@@ -55,7 +55,7 @@ Lee [CONTRIBUTING.md](CONTRIBUTING.md). Toda ayuda es bienvenida: código, tradu
 
 ## English
 
-Free and open source PDF editor, similar to Adobe Acrobat. No sign-up, no ads, and your documents are never uploaded anywhere.
+Free and open source PDF editor with the features of commercial editors. No sign-up, no ads, and your documents are never uploaded anywhere.
 
 **Try it:** https://dnns-es.github.io/dnns-pdf/
 
