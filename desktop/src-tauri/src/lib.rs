@@ -9,18 +9,20 @@
 use std::path::{Path, PathBuf};
 use tauri::{AppHandle, Emitter, Manager};
 
-/// Busca entre los argumentos el primer PDF que exista de verdad en disco.
+/// Busca entre los argumentos el primer documento que exista de verdad en disco.
 fn pdf_en_argumentos<I: IntoIterator<Item = String>>(argumentos: I) -> Option<PathBuf> {
     argumentos
         .into_iter()
         .skip(1)
         .map(PathBuf::from)
-        .find(|ruta| ruta.is_file() && es_pdf(ruta))
+        .find(|ruta| ruta.is_file() && es_documento(ruta))
 }
 
-fn es_pdf(ruta: &Path) -> bool {
+/// PDF, o documento de texto, hoja de cálculo o presentación (la web los convierte a PDF)
+fn es_documento(ruta: &Path) -> bool {
     ruta.extension()
-        .map(|ext| ext.eq_ignore_ascii_case("pdf"))
+        .and_then(|ext| ext.to_str())
+        .map(|ext| ["pdf", "docx", "xlsx", "pptx"].iter().any(|conocida| ext.eq_ignore_ascii_case(conocida)))
         .unwrap_or(false)
 }
 

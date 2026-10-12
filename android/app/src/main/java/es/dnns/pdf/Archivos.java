@@ -133,7 +133,8 @@ public class Archivos extends Plugin {
         if (nombre == null || nombre.isEmpty()) {
             nombre = "documento.pdf";
         }
-        return nombre.toLowerCase().endsWith(".pdf") ? nombre : nombre + ".pdf";
+        // Los documentos de texto, hojas y presentaciones conservan su nombre: la web los convierte a PDF
+        return nombre.toLowerCase().matches(".*\\.(pdf|docx|xlsx|pptx)$") ? nombre : nombre + ".pdf";
     }
 
     // ---- Guardar: el usuario elige carpeta y nombre con el selector del sistema

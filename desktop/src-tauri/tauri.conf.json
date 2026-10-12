@@ -53,6 +53,27 @@
                 "name": "Documento PDF",
                 "description": "Documento PDF",
                 "role": "Viewer"
+            },
+            {
+                "ext": ["docx"],
+                "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+                "name": "Documento de texto",
+                "description": "Documento de texto (se abre convertido a PDF)",
+                "role": "Viewer"
+            },
+            {
+                "ext": ["xlsx"],
+                "mimeType": "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+                "name": "Hoja de cálculo",
+                "description": "Hoja de cálculo (se abre convertida a PDF)",
+                "role": "Viewer"
+            },
+            {
+                "ext": ["pptx"],
+                "mimeType": "application/vnd.openxmlformats-officedocument.presentationml.presentation",
+                "name": "Presentación",
+                "description": "Presentación (se abre convertida a PDF)",
+                "role": "Viewer"
             }
         ],
         "windows": {
