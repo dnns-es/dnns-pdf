@@ -1,0 +1,331 @@
+/*
+Fecha: 2026-10-12
+Ruta: /src/estilos/ui.css
+Estilos de la interfaz: barra de herramientas, búsqueda, panel lateral, diálogos y avisos
+Notas: en pantallas estrechas la barra se desplaza en horizontal y el panel flota sobre el visor
+*/
+
+.barra {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    min-height: var(--alto-barra);
+    padding: 4px 8px;
+    background: var(--superficie);
+    border-bottom: 1px solid var(--borde);
+    overflow-x: auto;
+    scrollbar-width: none;
+}
+
+.barra__grupo {
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    flex-shrink: 0;
+    padding: 0 6px;
+    border-right: 1px solid var(--borde);
+}
+
+.barra__grupo:last-child {
+    border-right: 0;
+}
+
+.barra__grupo--final {
+    margin-left: auto;
+}
+
+.boton-icono {
+    display: inline-grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    border: 0;
+    border-radius: 8px;
+    background: transparent;
+    cursor: pointer;
+}
+
+.boton-icono svg {
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.boton-icono:hover:not(:disabled),
+.boton-icono[aria-pressed="true"] {
+    background: var(--acento-suave);
+    color: var(--acento);
+}
+
+.boton-icono:disabled,
+select:disabled,
+input:disabled {
+    opacity: 0.4;
+    cursor: default;
+}
+
+.barra__pagina {
+    width: 52px;
+    height: 30px;
+    text-align: center;
+    border: 1px solid var(--borde);
+    border-radius: 6px;
+    background: var(--superficie-2);
+}
+
+.barra__total {
+    min-width: 48px;
+    padding: 0 4px;
+    color: var(--texto-suave);
+    white-space: nowrap;
+}
+
+.barra__zoom,
+.barra__idioma {
+    height: 30px;
+    padding: 0 6px;
+    border: 1px solid var(--borde);
+    border-radius: 6px;
+    background: var(--superficie-2);
+}
+
+.barra__zoom {
+    width: 150px;
+}
+
+/* Búsqueda */
+
+.busqueda {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 12px;
+    background: var(--superficie);
+    border-bottom: 1px solid var(--borde);
+}
+
+.busqueda input {
+    flex: 1;
+    max-width: 360px;
+    height: 32px;
+    padding: 0 10px;
+    border: 1px solid var(--borde);
+    border-radius: 6px;
+    background: var(--superficie-2);
+}
+
+.busqueda__contador {
+    min-width: 90px;
+    color: var(--texto-suave);
+    font-size: 0.9em;
+}
+
+/* Panel lateral */
+
+.panel {
+    display: flex;
+    flex-direction: column;
+    width: 220px;
+    flex-shrink: 0;
+    background: var(--superficie);
+    border-right: 1px solid var(--borde);
+}
+
+.panel__pestanas {
+    display: flex;
+    border-bottom: 1px solid var(--borde);
+}
+
+.panel__pestana {
+    flex: 1;
+    padding: 10px 4px;
+    border: 0;
+    border-bottom: 2px solid transparent;
+    background: transparent;
+    cursor: pointer;
+}
+
+.panel__pestana[aria-selected="true"] {
+    border-bottom-color: var(--acento);
+    color: var(--acento);
+    font-weight: 600;
+}
+
+.panel__contenido {
+    flex: 1;
+    overflow-y: auto;
+    padding: 12px;
+}
+
+@media (max-width: 899px) {
+    .panel {
+        position: absolute;
+        inset: 0 auto 0 0;
+        z-index: 20;
+        width: min(260px, 80vw);
+        box-shadow: 4px 0 16px rgb(0 0 0 / 0.25);
+    }
+}
+
+/* Índice */
+
+.indice__arbol,
+.indice__arbol ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.indice__arbol ul {
+    padding-left: 14px;
+}
+
+.indice__fila {
+    display: flex;
+    align-items: flex-start;
+}
+
+.indice__plegar {
+    width: 20px;
+    flex-shrink: 0;
+    padding: 6px 0;
+    border: 0;
+    background: transparent;
+    color: var(--texto-suave);
+    cursor: pointer;
+}
+
+.indice__plegar[aria-expanded="true"] {
+    transform: rotate(90deg);
+}
+
+.indice__plegar--vacio {
+    visibility: hidden;
+}
+
+.indice__enlace {
+    flex: 1;
+    padding: 6px 4px;
+    border: 0;
+    border-radius: 4px;
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+}
+
+.indice__enlace:hover {
+    background: var(--acento-suave);
+}
+
+.indice__vacio {
+    color: var(--texto-suave);
+}
+
+/* Diálogos */
+
+.dialogo {
+    width: min(400px, calc(100vw - 32px));
+    padding: 20px;
+    border: 1px solid var(--borde);
+    border-radius: 12px;
+    background: var(--superficie);
+    color: var(--texto);
+    box-shadow: 0 10px 40px rgb(0 0 0 / 0.3);
+}
+
+.dialogo::backdrop {
+    background: rgb(0 0 0 / 0.4);
+}
+
+.dialogo h2 {
+    margin: 0 0 8px;
+    font-size: 1.15rem;
+}
+
+.dialogo input[type="password"] {
+    width: 100%;
+    height: 36px;
+    padding: 0 10px;
+    border: 1px solid var(--borde);
+    border-radius: 6px;
+    background: var(--superficie-2);
+}
+
+.dialogo progress {
+    width: 100%;
+}
+
+.dialogo__error {
+    color: var(--error);
+}
+
+.dialogo__botones {
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.dialogo__botones button:not(.boton-principal) {
+    padding: 8px 14px;
+    border: 1px solid var(--borde);
+    border-radius: 8px;
+    background: transparent;
+    cursor: pointer;
+}
+
+/* Avisos */
+
+.aviso,
+.banner {
+    position: fixed;
+    left: 50%;
+    bottom: 16px;
+    z-index: 50;
+    transform: translateX(-50%);
+    max-width: calc(100% - 32px);
+    padding: 10px 14px;
+    border-radius: 10px;
+    background: var(--superficie);
+    box-shadow: 0 6px 20px rgb(0 0 0 / 0.25);
+}
+
+.aviso {
+    border: 1px solid var(--error);
+}
+
+.banner {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    border: 1px solid var(--acento);
+}
+
+.banner button {
+    padding: 6px 14px;
+    border: 0;
+    border-radius: 6px;
+    background: var(--acento);
+    color: var(--acento-texto);
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.zona-soltar {
+    position: fixed;
+    inset: 0;
+    z-index: 40;
+    display: grid;
+    place-items: center;
+    background: rgb(31 111 235 / 0.15);
+    border: 3px dashed var(--acento);
+    font-size: 1.4rem;
+    font-weight: 600;
+    color: var(--acento);
+    pointer-events: none;
+}

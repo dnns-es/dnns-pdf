@@ -1,15 +1,21 @@
 // Fecha: 2026-10-12
 // Ruta: /src/main.js
 // Punto de entrada de DNNS PDF
-// Arranca idioma, motor MuPDF y service worker
-// Notas: los módulos de cada fase (visor, anotar...) se iniciarán desde aquí
+// Arranca idioma, tema, interfaz, visor, motor MuPDF y service worker
+// Notas: los módulos de cada fase (anotar, organizar...) se iniciarán desde aquí
 
 import './estilos/base.css';
+import './estilos/ui.css';
+import './estilos/visor.css';
 import { idiomaInicial, ponerIdioma, traducirPagina } from './nucleo/i18n.js';
 import { cambiar } from './nucleo/estado.js';
 import { emitir } from './nucleo/eventos.js';
 import { iniciarMotor, pedir } from './motor/cliente.js';
 import { registrarServiceWorker } from './nucleo/actualizacion.js';
+import { iniciarTema } from './ui/tema.js';
+import { iniciarBarra } from './ui/barra.js';
+import { iniciarPanelLateral } from './ui/panelLateral.js';
+import { iniciarVisor } from './modulos/visor/visor.js';
 
 function prepararIdioma() {
     const selector = document.getElementById('selector-idioma');
@@ -38,5 +44,10 @@ async function arrancarMotor() {
 
 document.getElementById('version-app').textContent = `v${__VERSION_APP__}`;
 prepararIdioma();
+iniciarTema();
+// El panel escucha 'estado:documento' antes que el visor: así el zoom inicial ya mide el ancho real
+iniciarPanelLateral();
+iniciarVisor();
+iniciarBarra();
 arrancarMotor();
 registrarServiceWorker().catch((error) => console.error('Service worker no registrado:', error));
