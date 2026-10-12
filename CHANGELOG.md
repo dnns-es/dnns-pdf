@@ -2,6 +2,11 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versionado semántico.
 
+## [0.6.1] - 2026-10-12
+
+### Corregido
+- Escanear en móvil: el botón de capturar ya no se aplasta y el tamaño de página baja a su propia línea.
+
 ## [0.6.0] - 2026-10-12
 
 ### Añadido
