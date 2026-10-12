@@ -107,14 +107,16 @@ avisa y se actualiza sola sin desinstalar nada.
 
 ## Fase 3b — App de Android (prioridad alta, pedida por Antonio el 12-10-2026)
 
-**Objetivo:** APK nativa con Tauri v2 (mismo código web) en descargas.dnns.es y, más adelante, Google Play.
-Mientras tanto, la PWA ya se instala en Android desde Chrome.
+**Objetivo:** APK nativa (mismo código web, empaquetado con Capacitor) en descargas.dnns.es y, más adelante, Google Play.
+Se eligió Capacitor en vez de Tauri porque el actualizador de Tauri no funciona en Android y Capacitor reutiliza el probado en OberDomo.
 
-- [ ] Inicializar Tauri Android en `desktop/` (SDK/NDK ya instalados con Android Studio)
-- [ ] Abrir PDF desde «Compartir» / «Abrir con» en Android
-- [ ] Firma con clave propia (guardada con `proteger-llaves.sh`) y publicación en descargas.dnns.es + `latest.json`
-- [ ] Actualización desde la app (como OberDomo/BovedaDnns)
-- [ ] Ficha en dnns.es/apps.html y alta en apps.json
+- [x] Proyecto Android con Capacitor en `android/` (`npm run apk`)
+- [x] Abrir PDF desde «Compartir» / «Abrir con» en Android
+- [x] Firma con clave propia (guardada con `proteger-llaves.sh`) y publicación en descargas.dnns.es + `latest.json`
+- [x] Actualización desde la app (como OberDomo/BovedaDnns)
+- [x] Ficha en dnns.es/apps.html y alta en apps.json
+- [x] Guardar con el selector del sistema e imprimir el PDF con la impresión de Android
+- [ ] Publicar en Google Play
 
 ---
 
