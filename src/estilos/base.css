@@ -49,8 +49,11 @@ body {
     height: 100%;
 }
 
+/* En iPhone con muesca o isla (viewport-fit=cover) se deja libre la zona del sistema; en el resto vale 0 */
 body {
     margin: 0;
+    box-sizing: border-box;
+    padding: env(safe-area-inset-top, 0) env(safe-area-inset-right, 0) env(safe-area-inset-bottom, 0) env(safe-area-inset-left, 0);
     display: flex;
     flex-direction: column;
     overflow: hidden;

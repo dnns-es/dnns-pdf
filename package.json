@@ -22,6 +22,7 @@
     "dependencies": {
         "@capacitor/android": "^8.5.3",
         "@capacitor/core": "^8.5.3",
+        "@capacitor/ios": "^8.5.3",
         "@tauri-apps/api": "^2.12.3",
         "@tauri-apps/plugin-cli": "^2.5.0",
         "@tauri-apps/plugin-dialog": "^2.8.2",
