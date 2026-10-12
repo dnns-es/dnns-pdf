@@ -2,6 +2,11 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versionado semántico.
 
+## [0.9.1] - 2026-10-12
+
+### Añadido
+- Acerca de, en Ajustes: versión y dónde se usa (web, Windows o Android), motor, licencia, código fuente y web. El botón de Ajustes sale ahora en todas las versiones, también en la web; las opciones de actualización siguen solo en las apps.
+
 ## [0.9.0] - 2026-10-12
 
 ### Añadido

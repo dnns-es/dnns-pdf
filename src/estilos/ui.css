@@ -558,3 +558,44 @@ body:not([data-herramienta="sello"]) #selector-sello {
     overflow: hidden;
     text-overflow: ellipsis;
 }
+
+/* Acerca de (en Ajustes) */
+.acerca {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.acerca__icono {
+    border-radius: 10px;
+}
+
+.acerca__nombre {
+    margin: 0;
+    font-weight: 700;
+    font-size: 1.1rem;
+}
+
+.acerca__version {
+    margin: 2px 0 0;
+    color: var(--texto-suave);
+    font-size: 0.9em;
+}
+
+.acerca__datos {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 4px 12px;
+    margin: 8px 0;
+    font-size: 0.9em;
+}
+
+.acerca__datos dt {
+    color: var(--texto-suave);
+}
+
+.acerca__datos dd {
+    margin: 0;
+    overflow-wrap: anywhere;
+}
