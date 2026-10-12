@@ -3,14 +3,17 @@
 // Web Worker que aloja MuPDF.js
 // Abre el documento, pinta páginas, extrae texto e índice y busca, todo fuera del hilo principal
 // Notas: protocolo { id, accion, datos } -> { id, ok, resultado | error }.
+//        Las anotaciones y el historial viven en anotaciones.js.
 //        Una acción puede devolver { _transferir: [...] } para ceder buffers/bitmaps sin copiarlos.
 //        Solo hay un documento abierto a la vez.
 
 import * as mupdf from 'mupdf';
+import { crearModuloAnotaciones } from './anotaciones.js';
 
 const MAX_RESULTADOS_BUSQUEDA = 2000;
 
 let documento = null;
+const anotaciones = crearModuloAnotaciones(() => exigirDocumento());
 
 function exigirDocumento() {
     if (!documento) {
@@ -162,6 +165,7 @@ const acciones = {
         if (documento.needsPassword()) {
             return { necesitaClave: true };
         }
+        anotaciones.activarHistorial();
         return { necesitaClave: false, ...datosDocumento() };
     },
 
@@ -170,6 +174,7 @@ const acciones = {
         if (exigirDocumento().authenticatePassword(clave) === 0) {
             return { ok: false };
         }
+        anotaciones.activarHistorial();
         return { ok: true, ...datosDocumento() };
     },
 
@@ -193,6 +198,20 @@ const acciones = {
     async imprimir({ pagina, escala }) {
         return { imagen: await imagenParaImprimir(pagina, escala) };
     },
+
+    // Anotaciones e historial (ver anotaciones.js)
+    'anotaciones:listar': (datos) => anotaciones.listar(datos),
+    'anotaciones:listarTodas': () => anotaciones.listarTodas(),
+    'anotaciones:crear': (datos) => anotaciones.crear(datos),
+    'anotaciones:modificar': (datos) => anotaciones.modificar(datos),
+    'anotaciones:borrar': (datos) => anotaciones.borrar(datos),
+    'anotaciones:quadsEntre': (datos) => anotaciones.quadsEntre(datos),
+    'historial:estado': () => anotaciones.historial(),
+    'historial:deshacer': () => anotaciones.deshacer(),
+    'historial:rehacer': () => anotaciones.rehacer(),
+    hayCambios: () => anotaciones.hayCambios(),
+    modificado: () => anotaciones.modificado(),
+    guardar: () => anotaciones.guardar(),
 
     cerrar() {
         cerrarDocumento();
