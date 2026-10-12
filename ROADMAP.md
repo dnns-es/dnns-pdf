@@ -40,6 +40,7 @@ Cada fase se trabaja en su propia rama y termina con un PR y una versión public
 - [x] Seleccionar y copiar texto
 - [x] Modo oscuro y modo claro
 - [x] Imprimir y descargar
+- [x] Guardar y Guardar como de verdad (sobrescribir el archivo abierto en Windows y en Chrome/Edge; diálogo del sistema) (pedido por Antonio el 12-10-2026)
 - [x] Pedir contraseña al abrir PDFs protegidos
 - [x] Rendimiento aceptable con un PDF de 300+ páginas
 

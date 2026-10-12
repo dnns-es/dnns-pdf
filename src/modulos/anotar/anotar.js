@@ -132,8 +132,6 @@ function prepararBarra() {
     $('selector-sello').addEventListener('change', (evento) => elegirSello(evento.target.value));
     $('boton-deshacer').addEventListener('click', () => emitir('historial:deshacer'));
     $('boton-rehacer').addEventListener('click', () => emitir('historial:rehacer'));
-    // Guardar = descargar la versión editada (el visor decide si hay cambios)
-    $('boton-guardar').addEventListener('click', () => emitir('descargar:pedir'));
 
     escuchar('historial:cambiado', ({ puedeDeshacer, puedeRehacer }) => {
         $('boton-deshacer').disabled = !puedeDeshacer;

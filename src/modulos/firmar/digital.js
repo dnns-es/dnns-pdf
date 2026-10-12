@@ -10,7 +10,7 @@ import { leer } from '../../nucleo/estado.js';
 import { t } from '../../nucleo/i18n.js';
 import { pedir } from '../../motor/cliente.js';
 import { mostrarAviso } from '../../ui/dialogos.js';
-import { guardarArchivo } from '../../plataforma/index.js';
+import { guardarComo } from '../../plataforma/index.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -130,14 +130,15 @@ async function firmarYGuardar() {
     try {
         const { bytes } = await pedir('firma:firmar', { p12: copiaP12(), clave, ...sitio, motivo, lugar, lineas: lineasVisibles(motivo) });
         const nombre = nombreFirmado();
-        const guardado = await guardarArchivo(new Blob([bytes], { type: 'application/pdf' }), nombre);
+        // La copia firmada se guarda aparte, eligiendo dónde: el original nunca se sobrescribe
+        const guardado = await guardarComo(new Blob([bytes], { type: 'application/pdf' }), nombre, leer('documento').archivo);
         if (!guardado) {
             return;
         }
         // Lo que había sin guardar ya va dentro del PDF firmado: se abre ese sin preguntar
         await pedir('marcarGuardado');
         emitir('documento:guardado');
-        emitir('archivo:abrir', new File([bytes], nombre, { type: 'application/pdf' }));
+        emitir('archivo:abrir', guardado);
         mostrarAviso(t('firmar.firmadoOk'));
     } catch (error) {
         console.error('No se pudo firmar:', error);

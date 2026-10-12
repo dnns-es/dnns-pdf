@@ -12,7 +12,7 @@ import { pedir } from '../../motor/cliente.js';
 import { mostrarAviso, confirmar } from '../../ui/dialogos.js';
 import { tipoDeArchivo } from '../../nucleo/utilidades.js';
 import { pedirContrasena } from './contrasena.js';
-import { archivoInicial, alRecibirArchivo, ponerTitulo } from '../../plataforma/index.js';
+import { archivoInicial, alRecibirArchivo, ponerTitulo, elegirArchivo } from '../../plataforma/index.js';
 
 const CONVERTIBLES = new Set(['zip', 'rtf', 'texto']);
 
@@ -83,7 +83,15 @@ export async function abrirArchivo(archivo) {
 
 function prepararSelector() {
     const entrada = document.getElementById('entrada-archivo');
-    const elegir = () => entrada.click();
+    // Primero el selector del sistema (da la ruta o el permiso para «Guardar» encima); si no hay, el input
+    const elegir = async () => {
+        const archivo = await elegirArchivo();
+        if (archivo === undefined) {
+            entrada.click();
+        } else if (archivo) {
+            abrirArchivo(archivo);
+        }
+    };
     document.getElementById('portada-abrir').addEventListener('click', elegir);
     escuchar('archivo:elegir', elegir);
     // Otros módulos que crean un PDF nuevo (unir, imágenes a PDF) lo abren por aquí
@@ -93,6 +101,19 @@ function prepararSelector() {
         // Vaciar permite volver a elegir el mismo archivo
         entrada.value = '';
     });
+}
+
+// En Chrome y Edge lo soltado trae un manejador de archivo: con él «Guardar» puede escribir encima
+async function abrirSoltado(archivo, item) {
+    try {
+        const manejador = await item?.getAsFileSystemHandle?.();
+        if (manejador?.kind === 'file') {
+            archivo.manejador = manejador;
+        }
+    } catch (error) {
+        console.warn('Sin manejador para el archivo soltado:', error);
+    }
+    abrirArchivo(archivo);
 }
 
 function prepararArrastrar() {
@@ -128,7 +149,7 @@ function prepararArrastrar() {
         const archivos = [...evento.dataTransfer.files];
         // Un solo archivo se abre (una imagen acaba en «Crear PDF»); varios van a «Crear PDF» (unir / imágenes a PDF)
         if (archivos.length === 1) {
-            abrirArchivo(archivos[0]);
+            abrirSoltado(archivos[0], evento.dataTransfer.items[0]);
         } else if (archivos.length) {
             emitir('organizar:crearCon', archivos);
         }
@@ -141,7 +162,9 @@ function prepararAbrirCon() {
         window.launchQueue.setConsumer(async (parametros) => {
             const [manejador] = parametros.files ?? [];
             if (manejador) {
-                abrirArchivo(await manejador.getFile());
+                const archivo = await manejador.getFile();
+                archivo.manejador = manejador;
+                abrirArchivo(archivo);
             }
         });
     }

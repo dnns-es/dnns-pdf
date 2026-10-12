@@ -18,8 +18,16 @@
         "zoom": "Zoom",
         "buscar": "Buscar (Ctrl+F)",
         "imprimir": "Imprimir (Ctrl+P)",
-        "descargar": "Descargar (Ctrl+S)",
+        "guardar": "Guardar (Ctrl+S) o guardar como",
         "tema": "Cambiar entre modo claro y oscuro"
+    },
+    "guardar": {
+        "guardar": "Guardar",
+        "como": "Guardar como…",
+        "atajoGuardar": "Ctrl+S",
+        "atajoComo": "Ctrl+Mayús+S",
+        "hecho": "Guardado: {nombre}",
+        "descargado": "Descargado: {nombre}"
     },
     "zoom": {
         "ancho": "Ajustar al ancho",
@@ -41,7 +49,7 @@
         "tamano": "Tamaño del texto",
         "deshacer": "Deshacer (Ctrl+Z)",
         "rehacer": "Rehacer (Ctrl+Y)",
-        "guardar": "Guardar el PDF con las anotaciones",
+        "guardar": "Guardar el PDF con las anotaciones (Ctrl+S) o guardar como",
         "borrar": "Borrar anotación",
         "pedirNota": "Escribe la nota",
         "pedirTexto": "Escribe el texto",

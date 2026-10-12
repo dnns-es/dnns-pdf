@@ -84,7 +84,6 @@ export function iniciarBarra() {
     alClic('boton-acercar', 'zoom:acercar');
     alClic('boton-buscar', 'busqueda:abrir');
     alClic('boton-imprimir', 'imprimir:pedir');
-    alClic('boton-descargar', 'descargar:pedir');
     $('selector-zoom').addEventListener('change', (evento) => {
         const valor = evento.target.value;
         if (valor !== 'libre') {

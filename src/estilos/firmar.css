@@ -179,7 +179,7 @@ Diálogo de firma (dibujar, escribir, subir), firmas guardadas y asa para cambia
     display: none;
 }
 
-/* Menú del botón Firmar */
+/* Menús desplegables de los botones Firmar y Guardar */
 .menu {
     position: fixed;
     z-index: 40;
@@ -209,6 +209,15 @@ Diálogo de firma (dibujar, escribir, subir), firmas guardadas y asa para cambia
 .menu button:hover,
 .menu button:focus-visible {
     background: var(--acento-suave);
+}
+
+/* Atajo de teclado a la derecha de la opción */
+.menu kbd {
+    margin-left: auto;
+    padding-left: 16px;
+    font: inherit;
+    font-size: 0.85em;
+    opacity: 0.6;
 }
 
 .menu svg {
