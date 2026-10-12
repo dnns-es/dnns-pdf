@@ -4,9 +4,10 @@
 // Abre el PDF recibido por doble clic o línea de comandos, lee y escribe archivos y registra los plugins
 // Notas: la interfaz es la misma web de /dist. Lo que necesita del sistema lo pide por `invoke`.
 //        Una sola instancia: si ya está abierta y se hace doble clic en otro PDF, se lo pasa
-//        a la ventana existente con el evento 'archivo-recibido'.
+//        a la ventana existente con el evento 'archivo-recibido'. En macOS llega por el evento `Opened`.
 
 use std::path::{Path, PathBuf};
+use std::sync::Mutex;
 use tauri::{AppHandle, Emitter, Manager};
 
 /// Busca entre los argumentos el primer documento que exista de verdad en disco.
@@ -27,10 +28,43 @@ fn es_documento(ruta: &Path) -> bool {
         .unwrap_or(false)
 }
 
-/// Ruta del PDF con el que se arrancó la app (doble clic o línea de comandos), si lo hubo.
+/// En macOS el Finder no pasa el documento por argumentos: llega con el evento `Opened`, a veces antes de
+/// que la interfaz esté escuchando. Hasta que la interfaz pide el archivo inicial se guarda aquí.
+#[derive(Default)]
+struct Recibidos {
+    interfaz_lista: bool,
+    pendiente: Option<String>,
+}
+
+/// Ruta del PDF con el que se arrancó la app (doble clic, línea de comandos o Finder), si lo hubo.
 #[tauri::command]
-fn archivo_inicial() -> Option<String> {
-    pdf_en_argumentos(std::env::args()).map(|ruta| ruta.to_string_lossy().into_owned())
+fn archivo_inicial(recibidos: tauri::State<'_, Mutex<Recibidos>>) -> Option<String> {
+    let mut recibidos = recibidos.lock().unwrap();
+    recibidos.interfaz_lista = true;
+    recibidos
+        .pendiente
+        .take()
+        .or_else(|| pdf_en_argumentos(std::env::args()).map(|ruta| ruta.to_string_lossy().into_owned()))
+}
+
+#[cfg(target_os = "macos")]
+fn recibir_del_finder(app: &AppHandle, urls: Vec<tauri::Url>) {
+    let Some(ruta) = urls
+        .into_iter()
+        .filter_map(|url| url.to_file_path().ok())
+        .find(|ruta| ruta.is_file() && es_documento(ruta))
+    else {
+        return;
+    };
+    let ruta = ruta.to_string_lossy().into_owned();
+    let estado = app.state::<Mutex<Recibidos>>();
+    let mut recibidos = estado.lock().unwrap();
+    if recibidos.interfaz_lista {
+        enfocar_ventana(app);
+        let _ = app.emit("archivo-recibido", ruta);
+    } else {
+        recibidos.pendiente = Some(ruta);
+    }
 }
 
 /// Devuelve el contenido de un archivo en binario (la UI lo pasa al worker de MuPDF).
@@ -83,7 +117,14 @@ pub fn run() {
         .plugin(tauri_plugin_updater::Builder::new().build())
         .plugin(tauri_plugin_process::init())
         .plugin(tauri_plugin_dialog::init())
+        .manage(Mutex::new(Recibidos::default()))
         .invoke_handler(tauri::generate_handler![archivo_inicial, leer_archivo, escribir_archivo])
-        .run(tauri::generate_context!())
-        .expect("No se pudo arrancar DNNS PDF");
+        .build(tauri::generate_context!())
+        .expect("No se pudo arrancar DNNS PDF")
+        .run(|_app, _evento| {
+            #[cfg(target_os = "macos")]
+            if let tauri::RunEvent::Opened { urls } = _evento {
+                recibir_del_finder(_app, urls);
+            }
+        });
 }

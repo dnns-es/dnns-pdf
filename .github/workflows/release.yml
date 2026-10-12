@@ -1,12 +1,15 @@
 # Fecha: 2026-10-12
 # Ruta: /.github/workflows/release.yml
-# Publicación de la app de Windows
-# Con una etiqueta vX.Y.Z compila con Tauri, firma la actualización y crea la Release
-# con el instalador .exe y el latest.json que lee el actualizador de las apps instaladas.
+# Publicación de las apps de Windows y Mac
+# Con una etiqueta vX.Y.Z compila con Tauri en Windows y en macOS, firma la actualización y crea la Release
+# con el instalador .exe, el .dmg y el latest.json que lee el actualizador de las apps instaladas.
 # Notas: las notas de la versión salen de la sección [X.Y.Z] de CHANGELOG.md.
-#        La clave de firma viene de los secretos del repo; sin ella el build falla a propósito.
+#        La clave de firma de actualizaciones viene de los secretos del repo; sin ella el build falla a propósito.
+#        Mac: un solo .dmg universal (Intel y Apple Silicon). Si están los secretos del certificado
+#        Developer ID se firma y se notariza; si no, sale con firma local y macOS avisa al abrirlo.
+#        Los dos trabajos suben a la misma Release; tauri-action junta sus latest.json en uno.
 
-name: Publicar app de Windows
+name: Publicar apps de Windows y Mac
 
 on:
   push:
@@ -16,8 +19,16 @@ permissions:
   contents: write
 
 jobs:
-  windows:
-    runs-on: windows-latest
+  publicar:
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - sistema: windows-latest
+            argumentos: --bundles nsis
+          - sistema: macos-latest
+            argumentos: --target universal-apple-darwin --bundles app,dmg
+    runs-on: ${{ matrix.sistema }}
     steps:
       - uses: actions/checkout@v4
 
@@ -27,6 +38,8 @@ jobs:
           cache: npm
 
       - uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: ${{ runner.os == 'macOS' && 'aarch64-apple-darwin,x86_64-apple-darwin' || '' }}
 
       - uses: swatinem/rust-cache@v2
         with:
@@ -50,6 +63,42 @@ jobs:
             echo "FIN_NOTAS"
           } >> "$GITHUB_OUTPUT"
 
+      # Solo se pasan a Tauri si existen: una variable vacía haría que intentase firmar sin certificado
+      - name: Firma de Apple (si hay certificado Developer ID)
+        if: runner.os == 'macOS'
+        env:
+          CERTIFICADO: ${{ secrets.APPLE_DEVELOPER_ID_P12 }}
+          CLAVE_CERTIFICADO: ${{ secrets.APPLE_DEVELOPER_ID_PASSWORD }}
+          ASC_P8: ${{ secrets.APPLE_ASC_KEY_P8 }}
+          ASC_ID: ${{ secrets.APPLE_ASC_KEY_ID }}
+          ASC_EMISOR: ${{ secrets.APPLE_ASC_ISSUER_ID }}
+        run: |
+          if [ -z "$CERTIFICADO" ]; then
+            echo "::notice::Sin certificado Developer ID: el .dmg sale sin firmar y macOS avisará al abrirlo."
+            exit 0
+          fi
+          LLAVERO="$RUNNER_TEMP/firma.keychain-db"
+          CLAVE_LLAVERO="$(uuidgen)"
+          security create-keychain -p "$CLAVE_LLAVERO" "$LLAVERO"
+          security set-keychain-settings -lut 21600 "$LLAVERO"
+          security unlock-keychain -p "$CLAVE_LLAVERO" "$LLAVERO"
+          echo "$CERTIFICADO" | base64 --decode > "$RUNNER_TEMP/developer-id.p12"
+          security import "$RUNNER_TEMP/developer-id.p12" -P "$CLAVE_CERTIFICADO" -A -t cert -f pkcs12 -k "$LLAVERO"
+          rm -f "$RUNNER_TEMP/developer-id.p12"
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$CLAVE_LLAVERO" "$LLAVERO" > /dev/null
+          security list-keychains -d user -s "$LLAVERO" $(security list-keychains -d user | tr -d '"')
+          IDENTIDAD=$(security find-identity -v -p codesigning "$LLAVERO" | grep 'Developer ID Application' | head -1 | sed 's/.*"\(.*\)"/\1/')
+          [ -n "$IDENTIDAD" ] || { echo "El certificado no es Developer ID Application"; exit 1; }
+          echo "APPLE_SIGNING_IDENTITY=$IDENTIDAD" >> "$GITHUB_ENV"
+          if [ -n "$ASC_P8" ]; then
+            echo "$ASC_P8" > "$RUNNER_TEMP/AuthKey.p8"
+            {
+              echo "APPLE_API_KEY=$ASC_ID"
+              echo "APPLE_API_ISSUER=$ASC_EMISOR"
+              echo "APPLE_API_KEY_PATH=$RUNNER_TEMP/AuthKey.p8"
+            } >> "$GITHUB_ENV"
+          fi
+
       - uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -58,6 +107,7 @@ jobs:
         with:
           projectPath: desktop
           tauriScript: npx tauri
+          args: ${{ matrix.argumentos }}
           tagName: ${{ github.ref_name }}
           releaseName: DNNS PDF ${{ github.ref_name }}
           releaseBody: ${{ steps.notas.outputs.cuerpo }}

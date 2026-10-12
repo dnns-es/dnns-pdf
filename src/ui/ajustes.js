@@ -1,6 +1,6 @@
 // Fecha: 2026-10-12
 // Ruta: /src/ui/ajustes.js
-// Ajustes y «Acerca de»: versión de la app y dónde se usa (web, Windows, Android), motor, licencia,
+// Ajustes y «Acerca de»: versión de la app y dónde se usa (web, Windows, Mac, Android, iPhone), motor, licencia,
 // código fuente y web
 // Notas: el botón está en todas las plataformas; las opciones de actualización las añade actualizador.js
 //        solo en las apps. En las apps no hay navegador para abrir enlaces: las direcciones salen como texto.
@@ -8,22 +8,28 @@
 import { emitir } from '../nucleo/eventos.js';
 import { t } from '../nucleo/i18n.js';
 import { pedir } from '../motor/cliente.js';
-import { esEscritorio, esAndroid } from '../plataforma/index.js';
+import { esApp, esEscritorio, esMac, esAndroid, esIOS } from '../plataforma/index.js';
 
 const $ = (id) => document.getElementById(id);
 const CODIGO = 'https://github.com/dnns-es/dnns-pdf';
 const WEB = 'https://dnns.es/apps.html#dnns-pdf';
 
 function plataforma() {
+    if (esMac()) {
+        return t('acerca.mac');
+    }
     if (esEscritorio()) {
         return t('acerca.windows');
+    }
+    if (esIOS()) {
+        return t('acerca.ios');
     }
     return esAndroid() ? t('acerca.android') : t('acerca.navegador');
 }
 
 function direccion(elemento, url) {
     const texto = url.replace('https://', '');
-    if (esEscritorio() || esAndroid()) {
+    if (esApp()) {
         elemento.textContent = texto;
         return;
     }
