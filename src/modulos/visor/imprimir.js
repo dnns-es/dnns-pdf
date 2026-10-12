@@ -1,7 +1,8 @@
 // Fecha: 2026-10-12
 // Ruta: /src/modulos/visor/imprimir.js
 // Imprimir el documento
-// Convierte cada página en imagen a 150 ppp, las pone en una zona oculta y abre el diálogo del sistema
+// Convierte cada página en imagen a 150 ppp, las pone en una zona oculta y abre el diálogo del sistema.
+// En Android manda el PDF directamente al sistema de impresión.
 // Notas: un PDF grande tarda (cada página se pinta en el worker); por eso hay barra de progreso
 //        y se puede cancelar. Las imágenes se liberan al cerrar el diálogo de impresión.
 
@@ -10,6 +11,7 @@ import { leer } from '../../nucleo/estado.js';
 import { t } from '../../nucleo/i18n.js';
 import { pedir } from '../../motor/cliente.js';
 import { abrirProgreso, mostrarAviso } from '../../ui/dialogos.js';
+import { esAndroid, imprimirPdf } from '../../plataforma/index.js';
 
 const PUNTOS_POR_PULGADA = 150;
 const ESCALA_IMPRESION = PUNTOS_POR_PULGADA / 72;
@@ -42,12 +44,36 @@ async function prepararImagenes(documento, progreso, cancelado) {
     return true;
 }
 
+// Android imprime el PDF tal cual (con las anotaciones), sin pasar por imágenes
+async function imprimirConSistema(documento) {
+    const blob = (await pedir('modificado'))
+        ? new Blob([(await pedir('exportar')).bytes], { type: 'application/pdf' })
+        : documento.archivo;
+    return imprimirPdf(blob, documento.nombre);
+}
+
 async function imprimir() {
     const documento = leer('documento');
     if (!documento || imprimiendo) {
         return;
     }
     imprimiendo = true;
+    try {
+        if (esAndroid()) {
+            await imprimirConSistema(documento);
+        } else {
+            await imprimirConImagenes(documento);
+        }
+    } catch (error) {
+        console.error('No se pudo imprimir:', error);
+        mostrarAviso(t('errores.imprimir'));
+    } finally {
+        imprimiendo = false;
+    }
+}
+
+// Navegador y Windows: cada página como imagen en una zona oculta y el diálogo de impresión
+async function imprimirConImagenes(documento) {
     let cancelado = false;
     const progreso = abrirProgreso(() => {
         cancelado = true;
@@ -65,10 +91,7 @@ async function imprimir() {
     } catch (error) {
         progreso.cerrar();
         vaciarZona();
-        console.error('No se pudo imprimir:', error);
-        mostrarAviso(t('errores.imprimir'));
-    } finally {
-        imprimiendo = false;
+        throw error;
     }
 }
 
