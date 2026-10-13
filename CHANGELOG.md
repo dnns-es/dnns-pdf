@@ -6,6 +6,7 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). V
 
 ### Corregido
 - Escanear, «Unir varios PDF» e «Imágenes a PDF» desde la portada fallaban con «No hay ningún documento abierto» al crear el PDF.
+- Escáner: las esquinas de los bordes se podían quedar fuera de la pantalla en el móvil; ahora hay margen y asas más grandes para el dedo.
 - Escáner: las imágenes se liberan en cuanto se usan (en iPhone hay un tope de memoria) y, si algo falla, el aviso dice el motivo.
 
 ## [0.9.2] - 2026-10-13
