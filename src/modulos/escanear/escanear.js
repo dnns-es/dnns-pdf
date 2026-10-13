@@ -194,22 +194,22 @@ async function crearDeTexto(imagenes) {
     try {
         // Se carga al usarlo: trae el OCR
         const { paginasDeTexto } = await import('./texto.js');
-        const documentos = await paginasDeTexto(imagenes, {
+        const paginas = await paginasDeTexto(imagenes, {
             lectorNativo: await lectorDeTextoNativo(),
             alProgresar: (hechas, total) => progreso.actualizar(t('ocr.pagina', { actual: hechas + 1, total }), hechas / total),
             estaCancelado: () => cancelado
         });
-        if (cancelado || !documentos) {
+        if (cancelado || !paginas) {
             progreso.cerrar();
             return;
         }
-        if (!documentos.length) {
+        if (!paginas.length) {
             progreso.cerrar();
             mostrarAviso(t('escanear.sinTexto'));
             return;
         }
         progreso.actualizar(t('organizar.creando'), null);
-        const { bytes } = await pedir('oficina:html', { documentos });
+        const { bytes } = await pedir('escanear:pdfTexto', { paginas });
         progreso.cerrar();
         emitir('archivo:abrir', new File([bytes], t('escanear.nombre'), { type: 'application/pdf' }));
     } catch (error) {
