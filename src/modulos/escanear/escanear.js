@@ -1,7 +1,8 @@
-// Fecha: 2026-10-12
+// Fecha: 2026-10-13
 // Ruta: /src/modulos/escanear/escanear.js
 // Módulo Escanear: fotografiar documentos con la cámara y convertirlos en PDF
 // Vista de cámara (o foto de la galería), ajuste de esquinas y filtro por página, y PDF con todas las páginas
+// como fotos o, en «solo texto», con el texto que se lee en ellas (OCR)
 // Notas: se abre con 'escanear:abrir' { destino: 'nuevo' | 'insertar' }. Con 'nuevo' crea y abre un PDF;
 //        con 'insertar' devuelve las páginas por 'escanear:paginas' para que Organizar las meta en el documento.
 //        Todo el tratamiento es local: las fotos no salen del dispositivo.
@@ -16,6 +17,7 @@ import { crearEditorEsquinas } from './esquinas.js';
 
 const $ = (id) => document.getElementById(id);
 
+const CLAVE_TIPO = 'dnns-pdf:escanear-tipo';
 const LADO_VISTA = 900;
 const LADO_MINIATURA = 120;
 const CALIDAD_JPEG = 0.85;
@@ -181,15 +183,73 @@ function cerrar() {
     $('dialogo-escanear').close();
 }
 
+// «Solo texto»: se lee el texto de las fotos y se crea un PDF con ese texto, sin las fotos
+async function crearDeTexto(imagenes) {
+    let cancelado = false;
+    const progreso = abrirProgreso(() => {
+        cancelado = true;
+    });
+    progreso.actualizar(t('ocr.preparando'), null);
+    try {
+        // Se carga al usarlo: trae el OCR
+        const { paginasDeTexto } = await import('./texto.js');
+        const documentos = await paginasDeTexto(imagenes, {
+            alProgresar: (hechas, total) => progreso.actualizar(t('ocr.pagina', { actual: hechas + 1, total }), hechas / total),
+            estaCancelado: () => cancelado
+        });
+        if (cancelado || !documentos) {
+            progreso.cerrar();
+            return;
+        }
+        if (!documentos.length) {
+            progreso.cerrar();
+            mostrarAviso(t('escanear.sinTexto'));
+            return;
+        }
+        progreso.actualizar(t('organizar.creando'), null);
+        const { bytes } = await pedir('oficina:html', { documentos });
+        progreso.cerrar();
+        emitir('archivo:abrir', new File([bytes], t('escanear.nombre'), { type: 'application/pdf' }));
+    } catch (error) {
+        progreso.cerrar();
+        console.error('No se pudo leer el texto escaneado:', error);
+        avisarError(error);
+    }
+}
+
+function elegirTipo(tipo) {
+    $('escanear-tipo').value = tipo;
+    // El tamaño de página solo cuenta para la foto: el texto va siempre en A4
+    $('escanear-modo').hidden = tipo === 'texto' && destino !== 'insertar';
+    try {
+        localStorage.setItem(CLAVE_TIPO, tipo);
+    } catch {
+        // Sin almacenamiento se usa el tipo por defecto la próxima vez
+    }
+}
+
+function tipoGuardado() {
+    try {
+        return localStorage.getItem(CLAVE_TIPO) === 'foto' ? 'foto' : 'texto';
+    } catch {
+        return 'texto';
+    }
+}
+
 async function terminar() {
     if (!paginas.length) {
         return;
     }
     const imagenes = paginas.map((p) => p.bytes);
     const modo = $('escanear-modo').value;
+    const tipo = $('escanear-tipo').value;
     cerrar();
     if (destino === 'insertar') {
         emitir('escanear:paginas', { imagenes, modo });
+        return;
+    }
+    if (tipo === 'texto') {
+        await crearDeTexto(imagenes);
         return;
     }
     const progreso = abrirProgreso(() => {});
@@ -211,6 +271,9 @@ async function abrir({ destino: pedido = 'nuevo' } = {}) {
     actual = null;
     pintarPaginas();
     $('escanear-terminar').textContent = t(destino === 'insertar' ? 'escanear.anadir' : 'escanear.crearPdf');
+    // Al añadir a un documento abierto las páginas son siempre fotos
+    $('escanear-tipo').hidden = destino === 'insertar';
+    elegirTipo(tipoGuardado());
     $('dialogo-escanear').showModal();
     mostrarVista('camara');
     await encenderCamara();
@@ -237,6 +300,7 @@ export function iniciarEscanear() {
     }
     $('escanear-usar').addEventListener('click', usarPagina);
     $('escanear-repetir').addEventListener('click', repetir);
+    $('escanear-tipo').addEventListener('change', (evento) => elegirTipo(evento.target.value));
     $('escanear-terminar').addEventListener('click', terminar);
     $('portada-escanear').addEventListener('click', () => abrir({ destino: 'nuevo' }));
     escuchar('escanear:abrir', abrir);

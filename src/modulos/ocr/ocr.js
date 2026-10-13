@@ -28,7 +28,8 @@ function rutaRecursos() {
     return new URL('ocr/', document.baseURI).href;
 }
 
-async function crearMotor(idiomas, alProgresar) {
+// También lo usa el escáner para su modo «solo texto»
+export async function crearMotor(idiomas, alProgresar) {
     const { createWorker } = await import('tesseract.js');
     const base = rutaRecursos();
     return createWorker(idiomas, OEM_LSTM, {

@@ -4,6 +4,9 @@ Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). V
 
 ## [0.9.3] - 2026-10-13
 
+### Añadido
+- Escáner: nuevo tipo «Solo texto» (el que viene elegido): lee el texto de las fotos y crea un PDF de texto normal, sin las fotos, respetando títulos, párrafos, sangrías y centrado. Todo en el dispositivo. «Foto» sigue creando el PDF con las imágenes.
+
 ### Corregido
 - Escanear, «Unir varios PDF» e «Imágenes a PDF» desde la portada fallaban con «No hay ningún documento abierto» al crear el PDF.
 - Escáner: las esquinas de los bordes se podían quedar fuera de la pantalla en el móvil; ahora hay margen y asas más grandes para el dedo.

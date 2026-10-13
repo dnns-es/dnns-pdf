@@ -193,11 +193,12 @@ Diálogo a pantalla completa con la cámara, el ajuste de esquinas, los filtros 
     padding: 8px 12px 14px;
 }
 
-/* En pantallas estrechas el tamaño de página baja a su propia línea y el disparador no se aplasta */
+/* En pantallas estrechas el tipo y el tamaño de página bajan a su propia línea y el disparador no se aplasta */
 @media (max-width: 600px) {
+    #escanear-tipo,
     #escanear-modo {
         order: 1;
-        flex-basis: 100%;
+        flex: 1 1 40%;
     }
 }
 

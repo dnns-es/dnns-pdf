@@ -24,7 +24,7 @@ import { crearModuloComparar } from './comparar.js';
 import { crearModuloExportar } from './exportar.js';
 import { extraerPagina } from './convertir/extraer.js';
 import * as firmaDigital from './firmaDigital.js';
-import { convertirOficina } from './oficina/oficina.js';
+import { convertirOficina, htmlAPdf } from './oficina/oficina.js';
 
 const MAX_RESULTADOS_BUSQUEDA = 2000;
 
@@ -457,6 +457,11 @@ const acciones = {
 
     // Documentos de Office a PDF (ver oficina/oficina.js)
     'oficina:convertir': (datos) => convertirOficina(datos),
+    // HTML ya montado en la interfaz (escáner «solo texto») a PDF
+    'oficina:html': ({ documentos }) => {
+        const { bytes, paginas } = htmlAPdf(documentos);
+        return { bytes, paginas, _transferir: [bytes.buffer] };
+    },
 
     // Cierra la pestaña pedida (por defecto la activa)
     cerrar({ id } = {}) {
