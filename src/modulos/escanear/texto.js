@@ -19,6 +19,11 @@ const CONFIANZA_MINIMA = 45;
 const CONFIANZA_PALABRA = 70;
 // El lector del sistema (0-1) solo da poca confianza a lo que de verdad es ruido
 const CONFIANZA_NATIVA = 0.3;
+// Tamaños de letra que se consideran el mismo (la arruga o la curva del papel cambian algo la medida);
+// un título de verdad suele ser al menos un 50 % mayor
+const TAMANO_PARECIDO = 0.4;
+// Ancho medio de un carácter de la letra de la app, en tamaños de letra (para estimar si cabe en la hoja)
+const ANCHO_CARACTER = 0.5;
 // Línea del lector del sistema que se descarta si es este número de veces más alta que lo normal y su
 // confianza no llega a CONFIANZA_NATIVA_ALTA
 const ALTO_DUDOSO = 1.6;
@@ -194,7 +199,7 @@ function igualarTamanos(lineas) {
     const tamanos = lineas.map((l) => l.tamano).sort((a, b) => a - b);
     const comun = tamanos[Math.floor(tamanos.length / 2)];
     for (const linea of lineas) {
-        const tamano = Math.abs(linea.tamano - comun) / comun < 0.22 ? comun : linea.tamano;
+        const tamano = Math.abs(linea.tamano - comun) / comun < TAMANO_PARECIDO ? comun : linea.tamano;
         linea.tamano = limitar(Math.round(tamano * 2) / 2, 6, 40);
     }
 }
@@ -301,6 +306,32 @@ function ampliarAlAncho(lineas) {
     }
 }
 
+// Una foto es una hoja: si el texto (con la letra de la app, algo más ancha que la del papel) no cabe en una
+// página, se reducen a la vez la letra y los huecos. La altura se estima por el ancho medio de un carácter
+function encajarEnPagina(grupos, margenes) {
+    const anchoUtil = A4[0] - margenes[1] - margenes[3];
+    const altoUtil = A4[1] - margenes[0] - margenes[2];
+    const arriba = grupos[0][0].y0;
+    const alturaCon = (factor) => grupos.reduce((total, grupo, i) => {
+        const tamano = grupo[0].tamano * factor;
+        const renglones = Math.ceil((unirLineas(grupo).length * tamano * ANCHO_CARACTER) / anchoUtil);
+        const hueco = i ? limitar((grupo[0].y0 - grupos[i - 1].at(-1).y1) * factor, 0, SEPARACION_MAXIMA) : 0;
+        return total + renglones * tamano * 1.3 + hueco;
+    }, 0);
+    let factor = 1;
+    while (factor > 0.5 && alturaCon(factor) > altoUtil) {
+        factor -= 0.05;
+    }
+    if (factor === 1) {
+        return;
+    }
+    for (const linea of grupos.flat()) {
+        linea.tamano = Math.max(5, Math.round(linea.tamano * factor * 2) / 2);
+        linea.y0 = arriba + (linea.y0 - arriba) * factor;
+        linea.y1 = arriba + (linea.y1 - arriba) * factor;
+    }
+}
+
 function paginaDe(datos, tamFoto) {
     const parrafos = lineasDe(datos, colocacion(tamFoto));
     const todas = parrafos.flat();
@@ -315,8 +346,10 @@ function paginaDe(datos, tamFoto) {
         MARGEN_MINIMO * 2,
         limitar(Math.min(...todas.map((l) => l.x0)), MARGEN_MINIMO, MARGEN_MAXIMO)
     ];
+    const grupos = parrafos.flatMap(partirParrafo);
+    encajarEnPagina(grupos, margenes);
     let fondo = null;
-    const cuerpo = parrafos.flatMap(partirParrafo).map((grupo) => {
+    const cuerpo = grupos.map((grupo) => {
         const p = `<p style="${estiloParrafo(grupo, margenes, fondo)}">${escapar(unirLineas(grupo))}</p>`;
         fondo = grupo.at(-1).y1;
         return p;
