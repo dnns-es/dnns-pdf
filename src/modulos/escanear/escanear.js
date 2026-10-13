@@ -10,7 +10,7 @@ import { escuchar, emitir } from '../../nucleo/eventos.js';
 import { t } from '../../nucleo/i18n.js';
 import { pedir } from '../../motor/cliente.js';
 import { mostrarAviso, abrirProgreso } from '../../ui/dialogos.js';
-import { iniciarCamara, pararCamara, capturar, fotoAImagen } from './camara.js';
+import { iniciarCamara, pararCamara, capturar, fotoAImagen, soltarLienzo } from './camara.js';
 import { detectarEsquinas, esquinasPorDefecto, enderezar, filtrar, reducir, aImageData, FILTROS } from './procesar.js';
 import { crearEditorEsquinas } from './esquinas.js';
 
@@ -48,7 +48,11 @@ function lienzoDe(imagen) {
     const lienzo = document.createElement('canvas');
     lienzo.width = imagen.ancho;
     lienzo.height = imagen.alto;
-    lienzo.getContext('2d').putImageData(aImageData(imagen), 0, 0);
+    const contexto = lienzo.getContext('2d');
+    if (!contexto) {
+        throw new Error('SINLIENZO');
+    }
+    contexto.putImageData(aImageData(imagen), 0, 0);
     return lienzo;
 }
 
@@ -56,6 +60,12 @@ function aBytes(lienzo, tipo, calidad) {
     return new Promise((resolver, rechazar) => {
         lienzo.toBlob((blob) => (blob ? blob.arrayBuffer().then((b) => resolver(new Uint8Array(b))) : rechazar(new Error('IMAGEN'))), tipo, calidad);
     });
+}
+
+// En el móvil no hay consola a mano: el aviso lleva un código corto del fallo para poder diagnosticarlo
+function avisarError(error) {
+    const codigo = String(error?.message || error?.name || error || '').slice(0, 80);
+    mostrarAviso(codigo ? `${t('escanear.error')} (${codigo})` : t('escanear.error'));
 }
 
 // Deja que la interfaz pinte antes de un cálculo largo
@@ -124,14 +134,17 @@ async function usarPagina() {
         const lienzo = lienzoDe(final);
         // El blanco y negro puro ocupa menos y queda más nítido en PNG
         const bytes = actual.filtro === 'texto' ? await aBytes(lienzo, 'image/png') : await aBytes(lienzo, 'image/jpeg', CALIDAD_JPEG);
-        const miniatura = lienzoDe(reducir(final, LADO_MINIATURA).imagen).toDataURL('image/jpeg', 0.7);
+        soltarLienzo(lienzo);
+        const lienzoMiniatura = lienzoDe(reducir(final, LADO_MINIATURA).imagen);
+        const miniatura = lienzoMiniatura.toDataURL('image/jpeg', 0.7);
+        soltarLienzo(lienzoMiniatura);
         paginas.push({ bytes, miniatura });
         pintarPaginas();
         mostrarVista('camara');
         await encenderCamara();
     } catch (error) {
         console.error('No se pudo tratar la página:', error);
-        mostrarAviso(t('escanear.error'));
+        avisarError(error);
     } finally {
         $('escanear-usar').disabled = false;
     }
@@ -144,12 +157,12 @@ async function repetir() {
 
 // ---- Vista de cámara
 
-function hacerFoto() {
+async function hacerFoto() {
     try {
-        ajustar(capturar($('escanear-video')));
+        await ajustar(capturar($('escanear-video')));
     } catch (error) {
         console.error('No se pudo hacer la foto:', error);
-        mostrarAviso(t('escanear.error'));
+        avisarError(error);
     }
 }
 
@@ -187,7 +200,7 @@ async function terminar() {
     } catch (error) {
         progreso.cerrar();
         console.error('No se pudo crear el PDF escaneado:', error);
-        mostrarAviso(t('escanear.error'));
+        avisarError(error);
     }
 }
 
