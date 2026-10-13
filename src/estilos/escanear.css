@@ -67,16 +67,18 @@ Diálogo a pantalla completa con la cámara, el ajuste de esquinas, los filtros 
 }
 
 /* El lienzo y el SVG de esquinas miden lo mismo: las coordenadas del SVG son píxeles de la foto */
+/* Margen alrededor de la foto: las asas de los bordes quedan enteras dentro de la pantalla y se pueden coger */
 .escanear__marco {
     position: relative;
-    max-width: 100%;
+    max-width: calc(100% - 56px);
     max-height: 100%;
+    margin: 28px;
 }
 
 .escanear__marco canvas {
     display: block;
     max-width: 100%;
-    max-height: calc(100dvh - 200px);
+    max-height: calc(100dvh - 256px);
 }
 
 .escanear__esquinas {
@@ -84,7 +86,14 @@ Diálogo a pantalla completa con la cámara, el ajuste de esquinas, los filtros 
     inset: 0;
     width: 100%;
     height: 100%;
+    overflow: visible;
     touch-action: none;
+}
+
+/* Zona de toque de cada asa, mayor que el círculo que se ve (pensada para el dedo) */
+.escanear__toque {
+    fill: transparent;
+    cursor: grab;
 }
 
 .escanear__poligono {
@@ -99,7 +108,7 @@ Diálogo a pantalla completa con la cámara, el ajuste de esquinas, los filtros 
     stroke: #1f6feb;
     stroke-width: 3;
     vector-effect: non-scaling-stroke;
-    cursor: grab;
+    pointer-events: none;
 }
 
 .escanear__filtros {
