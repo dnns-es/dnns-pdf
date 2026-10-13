@@ -420,7 +420,11 @@
         "quitarPagina": "Quitar esta página",
         "nombre": "escaneado.pdf",
         "error": "No se pudo tratar la página escaneada.",
-        "errorFoto": "No se pudo leer la foto."
+        "errorFoto": "No se pudo leer la foto.",
+        "tipo": "Qué quieres en el PDF",
+        "tipoTexto": "Solo texto",
+        "tipoFoto": "Foto",
+        "sinTexto": "No se ha encontrado texto en las fotos."
     },
     "recientes": {
         "titulo": "Abiertos hace poco",

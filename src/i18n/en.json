@@ -420,7 +420,11 @@
         "quitarPagina": "Remove this page",
         "nombre": "scanned.pdf",
         "error": "The scanned page could not be processed.",
-        "errorFoto": "The photo could not be read."
+        "errorFoto": "The photo could not be read.",
+        "tipo": "What goes into the PDF",
+        "tipoTexto": "Text only",
+        "tipoFoto": "Photo",
+        "sinTexto": "No text was found in the photos."
     },
     "recientes": {
         "titulo": "Recently opened",
