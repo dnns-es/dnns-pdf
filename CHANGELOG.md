@@ -2,6 +2,12 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versionado semántico.
 
+## [0.9.3] - 2026-10-13
+
+### Corregido
+- Escanear, «Unir varios PDF» e «Imágenes a PDF» desde la portada fallaban con «No hay ningún documento abierto» al crear el PDF.
+- Escáner: las imágenes se liberan en cuanto se usan (en iPhone hay un tope de memoria) y, si algo falla, el aviso dice el motivo.
+
 ## [0.9.2] - 2026-10-13
 
 ### Añadido
