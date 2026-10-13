@@ -80,6 +80,11 @@ export function archivoDe(blob, nombre, origen = {}) {
     return Object.assign(archivo, origen);
 }
 
+// Lector de texto propio del sistema (iPhone) como función bytes -> { ancho, alto, lineas }, o null si no hay
+export async function lectorDeTextoNativo() {
+    return (await app())?.reconocerTexto ?? null;
+}
+
 // Archivo con el que arrancó la app (doble clic, «Abrir con», «Compartir»), como File
 export async function archivoInicial() {
     return (await app())?.archivoInicial() ?? null;

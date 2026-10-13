@@ -14,6 +14,7 @@ import { mostrarAviso, abrirProgreso } from '../../ui/dialogos.js';
 import { iniciarCamara, pararCamara, capturar, fotoAImagen, soltarLienzo } from './camara.js';
 import { detectarEsquinas, esquinasPorDefecto, enderezar, filtrar, reducir, aImageData, FILTROS } from './procesar.js';
 import { crearEditorEsquinas } from './esquinas.js';
+import { lectorDeTextoNativo } from '../../plataforma/index.js';
 
 const $ = (id) => document.getElementById(id);
 
@@ -194,6 +195,7 @@ async function crearDeTexto(imagenes) {
         // Se carga al usarlo: trae el OCR
         const { paginasDeTexto } = await import('./texto.js');
         const documentos = await paginasDeTexto(imagenes, {
+            lectorNativo: await lectorDeTextoNativo(),
             alProgresar: (hechas, total) => progreso.actualizar(t('ocr.pagina', { actual: hechas + 1, total }), hechas / total),
             estaCancelado: () => cancelado
         });

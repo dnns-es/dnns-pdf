@@ -5,6 +5,7 @@
 // y se borran las manchas que no son letras (mesa, bordes, sombras): sin eso se perdía más de la mitad.
 // Cada foto se coloca sobre una hoja A4; sus líneas se agrupan en párrafos (por huecos y tamaño de letra) y
 // se respetan el tamaño de los títulos, el centrado, la sangría y la separación. El worker lo maqueta a PDF.
+// En iPhone se lee con el lector de texto del sistema (Texto.swift), que ya endereza y limpia por su cuenta.
 // Notas: todo en el dispositivo (Tesseract.js, el mismo motor del OCR de Herramientas). Las fotos, firmas y
 //        sellos no pasan al documento: solo el texto. No se distinguen negritas (el OCR no lo dice bien).
 
@@ -16,6 +17,8 @@ const A4 = [595.28, 841.89];
 // Con menos confianza que esto (0-100) una línea suele ser una mancha o un sello, no texto
 const CONFIANZA_MINIMA = 45;
 const CONFIANZA_PALABRA = 70;
+// El lector del sistema (0-1) solo da poca confianza a lo que de verdad es ruido
+const CONFIANZA_NATIVA = 0.3;
 // Proporción entre el alto de la caja de una línea y el tamaño de su letra
 const ALTO_POR_PUNTO = 1.25;
 // Hueco entre dos líneas (en altos de línea) a partir del cual empieza otro párrafo; lo normal ronda 0,6
@@ -319,10 +322,40 @@ function paginaDe(datos, tamFoto) {
     return { html, ancho: A4[0], alto: A4[1] };
 }
 
+// Resultado del lector del sistema (Texto.swift) -> la misma forma que da Tesseract (bloques, párrafos,
+// líneas y palabras). Las líneas que comparten altura (columnas, «Firma ... Fecha») se juntan en una.
+function datosNativos({ lineas }) {
+    const confianza = (c) => (c >= CONFIANZA_NATIVA ? 100 : 0);
+    const ordenadas = lineas.filter((l) => l.texto.trim()).sort((a, b) => a.caja.y0 - b.caja.y0 || a.caja.x0 - b.caja.x0);
+    const filas = [];
+    for (const linea of ordenadas) {
+        const fila = filas.find((f) => Math.min(f.caja.y1, linea.caja.y1) - Math.max(f.caja.y0, linea.caja.y0) > 0.5 * Math.min(f.caja.y1 - f.caja.y0, linea.caja.y1 - linea.caja.y0));
+        if (fila) {
+            fila.partes.push(linea);
+            fila.caja = { x0: Math.min(fila.caja.x0, linea.caja.x0), y0: Math.min(fila.caja.y0, linea.caja.y0), x1: Math.max(fila.caja.x1, linea.caja.x1), y1: Math.max(fila.caja.y1, linea.caja.y1) };
+        } else {
+            filas.push({ caja: { ...linea.caja }, partes: [linea] });
+        }
+    }
+    const lineasTesseract = filas.map(({ caja, partes }) => {
+        partes.sort((a, b) => a.caja.x0 - b.caja.x0);
+        const palabras = partes.flatMap((p) => (p.palabras.length ? p.palabras : [{ texto: p.texto, caja: p.caja }])
+            .map((w) => ({ text: w.texto, bbox: w.caja, confidence: confianza(p.confianza) })));
+        return {
+            bbox: caja,
+            confidence: Math.max(...partes.map((p) => confianza(p.confianza))),
+            rowAttributes: { rowHeight: Math.max(...partes.map((p) => p.altoFila || p.caja.y1 - p.caja.y0)) },
+            words: palabras
+        };
+    });
+    return { blocks: [{ paragraphs: [{ lines: lineasTesseract }] }] };
+}
+
 // Fotos escaneadas -> hojas HTML con el texto reconocido (vacío si no se ha leído nada; null si se cancela)
-// alProgresar(hechas, total); estaCancelado() para parar entre páginas
-export async function paginasDeTexto(imagenes, { idiomas = 'spa+eng', alProgresar, estaCancelado } = {}) {
-    const motor = await crearMotor(idiomas);
+// alProgresar(hechas, total); estaCancelado() para parar entre páginas.
+// lectorNativo: el del sistema si lo hay (iPhone); si no, Tesseract
+export async function paginasDeTexto(imagenes, { idiomas = 'spa+eng', alProgresar, estaCancelado, lectorNativo = null } = {}) {
+    const motor = lectorNativo ? null : await crearMotor(idiomas);
     try {
         const documentos = [];
         for (const [i, bytes] of imagenes.entries()) {
@@ -330,16 +363,25 @@ export async function paginasDeTexto(imagenes, { idiomas = 'spa+eng', alProgresa
                 return null;
             }
             alProgresar?.(i, imagenes.length);
-            // Con solo 2° de giro el OCR pierde más de la mitad del texto: se endereza antes
-            const { imagen, tam } = await prepararFoto(bytes);
-            const { data } = await motor.recognize(imagen, {}, { blocks: true, text: false });
-            const pagina = paginaDe(data, tam);
+            const pagina = lectorNativo ? await paginaNativa(lectorNativo, bytes) : await paginaTesseract(motor, bytes);
             if (pagina) {
                 documentos.push(pagina);
             }
         }
         return documentos;
     } finally {
-        await motor.terminate().catch(() => {});
+        await motor?.terminate().catch(() => {});
     }
+}
+
+async function paginaNativa(lectorNativo, bytes) {
+    const resultado = await lectorNativo(bytes);
+    return paginaDe(datosNativos(resultado), [resultado.ancho, resultado.alto]);
+}
+
+async function paginaTesseract(motor, bytes) {
+    // Con solo 2° de giro el OCR pierde más de la mitad del texto: se endereza antes
+    const { imagen, tam } = await prepararFoto(bytes);
+    const { data } = await motor.recognize(imagen, {}, { blocks: true, text: false });
+    return paginaDe(data, tam);
 }
