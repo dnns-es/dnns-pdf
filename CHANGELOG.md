@@ -2,7 +2,7 @@
 
 Formato basado en [Keep a Changelog](https://keepachangelog.com/es-ES/1.1.0/). Versionado semántico.
 
-## [Sin publicar]
+## [0.9.2] - 2026-10-13
 
 ### Añadido
 - App de Mac: `.dmg` universal (Intel y Apple Silicon) en cada versión, con actualización automática y apertura de documentos desde el Finder.
