@@ -4,6 +4,7 @@
 // PDFs recibidos de «Abrir con» y «Compartir», guardar con el selector del sistema, imprimir y actualizar
 // Notas: solo se importa desde plataforma/index.js y solo dentro de la app. Los plugins nativos son
 //        Archivos.java y Actualizador.java (android/app/src/main/java/es/dnns/pdf/).
+//        La app de iPhone (ios.js) reutiliza lo de archivos e impresión: su Archivos.swift tiene la misma interfaz.
 
 import { registerPlugin, Capacitor } from '@capacitor/core';
 

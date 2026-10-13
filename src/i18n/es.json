@@ -530,6 +530,8 @@
         "licenciaTexto": "AGPL-3.0: libre y gratuito, sin anuncios ni registro",
         "codigo": "Código fuente",
         "web": "Web",
-        "privacidad": "Tus documentos se procesan en tu dispositivo y nunca se suben a ningún servidor."
+        "privacidad": "Tus documentos se procesan en tu dispositivo y nunca se suben a ningún servidor.",
+        "mac": "app de Mac",
+        "ios": "app de iPhone"
     }
 }

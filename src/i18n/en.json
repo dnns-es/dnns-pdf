@@ -530,6 +530,8 @@
         "licenciaTexto": "AGPL-3.0: free and open, no ads or sign-up",
         "codigo": "Source code",
         "web": "Website",
-        "privacidad": "Your documents are processed on your device and are never uploaded to any server."
+        "privacidad": "Your documents are processed on your device and are never uploaded to any server.",
+        "mac": "Mac app",
+        "ios": "iPhone app"
     }
 }

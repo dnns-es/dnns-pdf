@@ -8,5 +8,9 @@
     },
     "server": {
         "androidScheme": "https"
+    },
+    "ios": {
+        "backgroundColor": "#eef0f3",
+        "contentInset": "never"
     }
 }

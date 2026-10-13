@@ -11,7 +11,7 @@ import { leer } from '../../nucleo/estado.js';
 import { t } from '../../nucleo/i18n.js';
 import { pedir } from '../../motor/cliente.js';
 import { abrirProgreso, mostrarAviso } from '../../ui/dialogos.js';
-import { esAndroid, imprimirPdf } from '../../plataforma/index.js';
+import { esMovil, imprimirPdf } from '../../plataforma/index.js';
 
 const PUNTOS_POR_PULGADA = 150;
 const ESCALA_IMPRESION = PUNTOS_POR_PULGADA / 72;
@@ -59,7 +59,7 @@ async function imprimir() {
     }
     imprimiendo = true;
     try {
-        if (esAndroid()) {
+        if (esMovil()) {
             await imprimirConSistema(documento);
         } else {
             await imprimirConImagenes(documento);

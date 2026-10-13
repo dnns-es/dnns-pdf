@@ -7,7 +7,7 @@
 
 import { escuchar, emitir } from '../../nucleo/eventos.js';
 import { t, traducirPagina } from '../../nucleo/i18n.js';
-import { esApp, comprobarActualizacion, reiniciarApp } from '../../plataforma/index.js';
+import { tieneActualizador, comprobarActualizacion, reiniciarApp } from '../../plataforma/index.js';
 import { mostrarAviso } from '../../ui/dialogos.js';
 
 const CLAVE_AVISAR = 'dnns-pdf:avisarActualizaciones';
@@ -97,7 +97,7 @@ function prepararAjustes() {
 }
 
 export function iniciarActualizador() {
-    if (!esApp()) {
+    if (!tieneActualizador()) {
         return;
     }
     prepararAjustes();
