@@ -1,6 +1,6 @@
 {
     "name": "dnns-pdf",
-    "version": "0.9.1",
+    "version": "0.9.2",
     "description": "Editor de PDF libre y gratuito. Todo se procesa en tu dispositivo.",
     "private": true,
     "type": "module",
