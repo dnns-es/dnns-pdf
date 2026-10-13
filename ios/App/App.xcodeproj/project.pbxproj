@@ -18,6 +18,7 @@
 		D0C0F00000000000000000B1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C0F00000000000000000A1 /* ViewController.swift */; };
 		D0C0F00000000000000000B2 /* Archivos.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C0F00000000000000000A2 /* Archivos.swift */; };
 		D0C0F00000000000000000B3 /* Recibidos.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C0F00000000000000000A3 /* Recibidos.swift */; };
+		D0C0F00000000000000000B4 /* Texto.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0C0F00000000000000000A4 /* Texto.swift */; };
 		9582B6832FE993A70072D4E8 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9582B6822FE993A50072D4E8 /* SceneDelegate.swift */; };
 /* End PBXBuildFile section */
 
@@ -34,6 +35,7 @@
 		D0C0F00000000000000000A1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		D0C0F00000000000000000A2 /* Archivos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Archivos.swift; sourceTree = "<group>"; };
 		D0C0F00000000000000000A3 /* Recibidos.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Recibidos.swift; sourceTree = "<group>"; };
+		D0C0F00000000000000000A4 /* Texto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Texto.swift; sourceTree = "<group>"; };
 		9582B6822FE993A50072D4E8 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
 		958DCC722DB07C7200EA8C5F /* debug.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; name = debug.xcconfig; path = ../debug.xcconfig; sourceTree = SOURCE_ROOT; };
 /* End PBXFileReference section */
@@ -74,6 +76,7 @@
 				D0C0F00000000000000000A1 /* ViewController.swift */,
 				D0C0F00000000000000000A2 /* Archivos.swift */,
 				D0C0F00000000000000000A3 /* Recibidos.swift */,
+				D0C0F00000000000000000A4 /* Texto.swift */,
 				50379B222058CBB4000EE86E /* capacitor.config.json */,
 				504EC3071FED79650016851F /* AppDelegate.swift */,
 				504EC30B1FED79650016851F /* Main.storyboard */,
@@ -172,6 +175,7 @@
 				D0C0F00000000000000000B1 /* ViewController.swift in Sources */,
 				D0C0F00000000000000000B2 /* Archivos.swift in Sources */,
 				D0C0F00000000000000000B3 /* Recibidos.swift in Sources */,
+				D0C0F00000000000000000B4 /* Texto.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
