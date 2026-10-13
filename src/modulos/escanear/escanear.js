@@ -99,8 +99,9 @@ async function ajustar(imagen) {
         esquinas: detectarEsquinas(imagen) ?? esquinasPorDefecto(imagen),
         filtro: actual?.filtro ?? FILTROS[0]
     };
-    editor.poner(actual.esquinas, imagen.ancho, imagen.alto);
+    // Primero se pinta la foto: el editor mide las asas con el tamaño que ya tiene en pantalla
     elegirFiltro(actual.filtro);
+    editor.poner(actual.esquinas, imagen.ancho, imagen.alto);
 }
 
 function pintarPaginas() {
