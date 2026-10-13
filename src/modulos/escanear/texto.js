@@ -19,6 +19,10 @@ const CONFIANZA_MINIMA = 45;
 const CONFIANZA_PALABRA = 70;
 // El lector del sistema (0-1) solo da poca confianza a lo que de verdad es ruido
 const CONFIANZA_NATIVA = 0.3;
+// Línea del lector del sistema que se descarta si es este número de veces más alta que lo normal y su
+// confianza no llega a CONFIANZA_NATIVA_ALTA
+const ALTO_DUDOSO = 1.6;
+const CONFIANZA_NATIVA_ALTA = 0.6;
 // Proporción entre el alto de la caja de una línea y el tamaño de su letra
 const ALTO_POR_PUNTO = 1.25;
 // Hueco entre dos líneas (en altos de línea) a partir del cual empieza otro párrafo; lo normal ronda 0,6
@@ -326,10 +330,20 @@ function paginaDe(datos, tamFoto) {
 // líneas y palabras). Las líneas que comparten altura (columnas, «Firma ... Fecha») se juntan en una.
 function datosNativos({ lineas }) {
     const confianza = (c) => (c >= CONFIANZA_NATIVA ? 100 : 0);
-    const ordenadas = lineas.filter((l) => l.texto.trim()).sort((a, b) => a.caja.y0 - b.caja.y0 || a.caja.x0 - b.caja.x0);
+    const altoDe = (l) => l.altoFila || l.caja.y1 - l.caja.y0;
+    const altos = lineas.map(altoDe).sort((a, b) => a - b);
+    const altoComun = altos[Math.floor(altos.length / 2)];
+    // En una arruga el lector puede devolver un trozo dudoso que abarca dos líneas: mucho más alto y con poca
+    // confianza. Un título también es alto, pero se lee con seguridad
+    const dudosa = (l) => l.confianza < CONFIANZA_NATIVA_ALTA && altoDe(l) > ALTO_DUDOSO * altoComun;
+    const ordenadas = lineas.filter((l) => l.texto.trim() && !dudosa(l)).sort((a, b) => a.caja.y0 - b.caja.y0 || a.caja.x0 - b.caja.x0);
     const filas = [];
+    const pisan = (a, b) => Math.min(a.x1, b.x1) - Math.max(a.x0, b.x0) > 0;
     for (const linea of ordenadas) {
-        const fila = filas.find((f) => Math.min(f.caja.y1, linea.caja.y1) - Math.max(f.caja.y0, linea.caja.y0) > 0.5 * Math.min(f.caja.y1 - f.caja.y0, linea.caja.y1 - linea.caja.y0));
+        // Solo se juntan trozos uno al lado del otro: en una hoja torcida, las cajas de dos líneas seguidas
+        // se solapan en altura pero se pisan en horizontal
+        const fila = filas.find((f) => !f.partes.some((p) => pisan(p.caja, linea.caja))
+            && Math.min(f.caja.y1, linea.caja.y1) - Math.max(f.caja.y0, linea.caja.y0) > 0.5 * Math.min(f.caja.y1 - f.caja.y0, linea.caja.y1 - linea.caja.y0));
         if (fila) {
             fila.partes.push(linea);
             fila.caja = { x0: Math.min(fila.caja.x0, linea.caja.x0), y0: Math.min(fila.caja.y0, linea.caja.y0), x1: Math.max(fila.caja.x1, linea.caja.x1), y1: Math.max(fila.caja.y1, linea.caja.y1) };
