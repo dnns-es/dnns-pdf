@@ -1,11 +1,11 @@
 // Fecha: 2026-10-13
 // Ruta: /src/modulos/escanear/texto.js
-// Escanear «solo texto»: reconoce las letras de las fotos (OCR) y monta una página HTML con lo leído
+// Escanear «solo texto»: reconoce las letras de las fotos (OCR) y coloca lo leído como en el papel
 // Antes de leerla, la foto se endereza (mide la inclinación de las líneas), se pasa a blanco y negro adaptativo
 // y se borran las manchas que no son letras (mesa, bordes, sombras): sin eso se perdía más de la mitad.
-// Cada foto se coloca sobre una hoja A4; sus líneas se agrupan en párrafos (por huecos y tamaño de letra) y
-// se respetan el tamaño de los títulos, el centrado, la sangría y la separación. El worker lo maqueta a PDF.
-// En iPhone se lee con el lector de texto del sistema (Texto.swift), que ya endereza y limpia por su cuenta.
+// En iPhone se lee con el lector de texto del sistema (Texto.swift), mucho mejor, y aquí se enderezan sus palabras.
+// Cada foto es una hoja A4 con cada trozo de línea en su sitio y con su tamaño; el worker escribe el PDF
+// (motor/textoColocado.js).
 // Notas: todo en el dispositivo (Tesseract.js, el mismo motor del OCR de Herramientas). Las fotos, firmas y
 //        sellos no pasan al documento: solo el texto. No se distinguen negritas (el OCR no lo dice bien).
 
@@ -22,25 +22,16 @@ const CONFIANZA_NATIVA = 0.3;
 // Tamaños de letra que se consideran el mismo (la arruga o la curva del papel cambian algo la medida);
 // un título de verdad suele ser al menos un 50 % mayor
 const TAMANO_PARECIDO = 0.4;
-// Ancho medio de un carácter de la letra de la app, en tamaños de letra (para estimar si cabe en la hoja)
-const ANCHO_CARACTER = 0.5;
+// Distancia de la línea base por debajo del centro de las letras, en tamaños de letra
+const BASE_BAJO_CENTRO = 0.3;
 // Línea del lector del sistema que se descarta si es este número de veces más alta que lo normal y su
 // confianza no llega a CONFIANZA_NATIVA_ALTA
 const ALTO_DUDOSO = 1.6;
 const CONFIANZA_NATIVA_ALTA = 0.6;
 // Proporción entre el alto de la caja de una línea y el tamaño de su letra
 const ALTO_POR_PUNTO = 1.25;
-// Hueco entre dos líneas (en altos de línea) a partir del cual empieza otro párrafo; lo normal ronda 0,6
-const HUECO_PARRAFO = 1.1;
-// Hueco entre palabras (en altos de línea) que se respeta como separación grande, como en columnas
+// Hueco entre palabras (en altos de línea) a partir del cual la línea se parte en trozos (columnas)
 const HUECO_GRANDE = 1.6;
-// Márgenes de la hoja (puntos): los del documento fotografiado, dentro de estos límites
-const MARGEN_MINIMO = 28;
-const MARGEN_MAXIMO = 110;
-const SEPARACION_MAXIMA = 48;
-// Margen de una hoja normal (2 cm) y lo más que se amplía un texto que ocupa poco ancho en la foto
-const MARGEN_NORMAL = 57;
-const AMPLIACION_MAXIMA = 1.6;
 // Búsqueda de la inclinación: hasta ±6° cada 0,2°, sobre una copia de 1400 px (más pequeña, la letra se emborrona)
 const LADO_INCLINACION = 1400;
 const GIRO_MAXIMO = 6;
@@ -50,9 +41,7 @@ const MANCHA_ALTA = 0.06;
 const MANCHA_ANCHA = 0.08;
 const MANCHA_MACIZA = 0.7;
 
-const escapar = (texto) => String(texto).replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
 const limitar = (valor, minimo, maximo) => Math.min(maximo, Math.max(minimo, valor));
-const pt = (valor) => `${valor.toFixed(1)}pt`;
 
 // Inclinación de las líneas de texto (radianes): el giro con el que la tinta, sumada por filas, forma las
 // franjas más marcadas (líneas y huecos). Se mide en una copia pequeña en blanco y negro.
@@ -176,31 +165,17 @@ function colocacion([ancho, alto]) {
     const escala = Math.min(A4[0] / ancho, A4[1] / alto);
     const dx = (A4[0] - ancho * escala) / 2;
     const dy = (A4[1] - alto * escala) / 2;
-    return (caja) => ({ x0: caja.x0 * escala + dx, y0: caja.y0 * escala + dy, x1: caja.x1 * escala + dx, y1: caja.y1 * escala + dy });
-}
-
-// Texto de la línea; los huecos muy grandes entre palabras se dejan como varios espacios
-function textoDeLinea(palabras, alto, aPagina) {
-    let texto = '';
-    let finAnterior = null;
-    for (const palabra of palabras) {
-        const caja = aPagina(palabra.bbox);
-        if (finAnterior !== null) {
-            texto += caja.x0 - finAnterior > alto * HUECO_GRANDE ? '  ' : ' ';
-        }
-        texto += palabra.text.trim();
-        finAnterior = caja.x1;
-    }
-    return texto;
+    const aPagina = (caja) => ({ x0: caja.x0 * escala + dx, y0: caja.y0 * escala + dy, x1: caja.x1 * escala + dx, y1: caja.y1 * escala + dy });
+    return { escala, aPagina };
 }
 
 // Tamaños parecidos se igualan al más común: el OCR mide cada línea con algo de ruido
-function igualarTamanos(lineas) {
-    const tamanos = lineas.map((l) => l.tamano).sort((a, b) => a - b);
+function igualarTamanos(trozos) {
+    const tamanos = trozos.map((t) => t.tamano).sort((a, b) => a - b);
     const comun = tamanos[Math.floor(tamanos.length / 2)];
-    for (const linea of lineas) {
-        const tamano = Math.abs(linea.tamano - comun) / comun < TAMANO_PARECIDO ? comun : linea.tamano;
-        linea.tamano = limitar(Math.round(tamano * 2) / 2, 6, 40);
+    for (const trozo of trozos) {
+        const tamano = Math.abs(trozo.tamano - comun) / comun < TAMANO_PARECIDO ? comun : trozo.tamano;
+        trozo.tamano = limitar(Math.round(tamano * 2) / 2, 5, 40);
     }
 }
 
@@ -213,198 +188,117 @@ function esTexto(linea, palabras) {
     return claras.length * 2 >= palabras.length;
 }
 
-function lineasDe(datos, aPagina) {
-    const parrafos = [];
+// Líneas que se quedan, con sus palabras y el alto de la fila, en píxeles de la foto
+function lineasDe(datos) {
+    const lineas = [];
     for (const bloque of datos.blocks ?? []) {
         for (const parrafo of bloque.paragraphs ?? []) {
-            const lineas = [];
             for (const linea of parrafo.lines ?? []) {
                 const palabras = (linea.words ?? []).filter((p) => p.text?.trim());
                 if (!palabras.length || !esTexto(linea, palabras)) {
                     continue;
                 }
-                const caja = aPagina(linea.bbox);
-                // La altura de la fila que mide el OCR no crece si la línea se curva (papel arrugado); la caja sí
+                // La altura de la fila que mide el OCR no crece si la línea se curva o se tuerce; la caja sí
                 const fila = linea.rowAttributes?.rowHeight;
-                const alto = fila > 0 ? aPagina({ x0: 0, y0: fila, x1: 0, y1: 0 }).y0 - aPagina({ x0: 0, y0: 0, x1: 0, y1: 0 }).y0 : caja.y1 - caja.y0;
-                lineas.push({ ...caja, alto, tamano: alto / ALTO_POR_PUNTO, texto: textoDeLinea(palabras, alto, aPagina) });
-            }
-            if (lineas.length) {
-                parrafos.push(lineas);
+                const alto = fila > 0 ? fila : linea.bbox.y1 - linea.bbox.y0;
+                lineas.push({ alto, palabras: palabras.map((p) => ({ texto: p.text.trim(), ...p.bbox })) });
             }
         }
     }
-    return parrafos;
+    return lineas;
 }
 
-// El OCR a menudo junta varios párrafos en uno: se parte donde hay un hueco vertical mayor que el normal
-// entre líneas o donde cambia el tamaño de letra (un título)
-function partirParrafo(lineas) {
-    const grupos = [];
-    lineas.forEach((linea, i) => {
-        const anterior = lineas[i - 1];
-        if (!anterior || linea.tamano !== anterior.tamano || linea.y0 - anterior.y1 > HUECO_PARRAFO * Math.min(linea.alto, anterior.alto)) {
-            grupos.push([]);
-        }
-        grupos.at(-1).push(linea);
+const centro = (p) => [(p.x0 + p.x1) / 2, (p.y0 + p.y1) / 2];
+const mediana = (valores) => [...valores].sort((a, b) => a - b)[Math.floor(valores.length / 2)];
+
+// Si la hoja estaba algo torcida (el lector del iPhone lee sin enderezar), se giran las palabras para que
+// cada línea quede recta: la inclinación es la mediana de la pendiente de las líneas largas
+function enderezarPalabras(lineas, [ancho, alto]) {
+    const pendientes = lineas.filter((l) => l.palabras.length >= 3).map(({ palabras }) => {
+        const [xa, ya] = centro(palabras[0]);
+        const [xb, yb] = centro(palabras.at(-1));
+        return Math.atan2(yb - ya, xb - xa);
     });
-    return grupos;
-}
-
-// Une las líneas de un párrafo; una palabra cortada con guion al final de línea se vuelve a juntar
-function unirLineas(lineas) {
-    return lineas.reduce((texto, linea) => {
-        if (!texto) {
-            return linea.texto;
-        }
-        return /[a-záéíóúñü]-$/i.test(texto) ? texto.slice(0, -1) + linea.texto : `${texto} ${linea.texto}`;
-    }, '');
-}
-
-function estiloParrafo(grupo, margenes, fondoAnterior) {
-    const x0 = Math.min(...grupo.map((l) => l.x0));
-    const x1 = Math.max(...grupo.map((l) => l.x1));
-    const izquierda = margenes[3];
-    const derecha = A4[0] - margenes[1];
-    const centro = (x0 + x1) / 2;
-    const centrado = Math.abs(centro - (izquierda + derecha) / 2) < 12 && x0 - izquierda > 30;
-    const estilo = [`font-size:${pt(grupo[0].tamano)}`, `margin-top:${pt(fondoAnterior === null ? 0 : limitar(grupo[0].y0 - fondoAnterior, 0, SEPARACION_MAXIMA))}`];
-    if (centrado) {
-        estilo.push('text-align:center');
-    } else {
-        const sangria = x0 - izquierda;
-        if (sangria > 6) {
-            estilo.push(`margin-left:${pt(sangria)}`);
-        }
-        // Primera línea más metida que las demás: sangría de párrafo
-        const primera = grupo[0].x0 - x0;
-        if (grupo.length > 1 && primera > 6) {
-            estilo.push(`text-indent:${pt(primera)}`);
-        }
-    }
-    return estilo.join(';');
-}
-
-// Resultado de Tesseract de una foto -> { html, ancho, alto } de una hoja A4 (o null si no hay texto)
-// Si la hoja no llenaba la foto (se ve la mesa alrededor) el texto queda pequeño: se amplía, desde la
-// esquina del texto, hasta el ancho útil de un A4, sin pasar de AMPLIACION_MAXIMA
-function ampliarAlAncho(lineas) {
-    const x0 = Math.min(...lineas.map((l) => l.x0));
-    const y0 = Math.min(...lineas.map((l) => l.y0));
-    const anchoTexto = Math.max(...lineas.map((l) => l.x1)) - x0;
-    const factor = Math.min(AMPLIACION_MAXIMA, (A4[0] - 2 * MARGEN_NORMAL) / anchoTexto);
-    if (!(factor > 1)) {
+    const angulo = pendientes.length ? mediana(pendientes) : 0;
+    if (Math.abs(angulo) < 0.002) {
         return;
     }
-    for (const linea of lineas) {
-        linea.x0 = MARGEN_NORMAL + (linea.x0 - x0) * factor;
-        linea.x1 = MARGEN_NORMAL + (linea.x1 - x0) * factor;
-        linea.y0 = MARGEN_NORMAL + (linea.y0 - y0) * factor;
-        linea.y1 = MARGEN_NORMAL + (linea.y1 - y0) * factor;
-        linea.alto *= factor;
-        linea.tamano *= factor;
+    const [cx, cy] = [ancho / 2, alto / 2];
+    const [seno, coseno] = [Math.sin(-angulo), Math.cos(-angulo)];
+    for (const palabra of lineas.flatMap((l) => l.palabras)) {
+        const [x, y] = centro(palabra);
+        const nx = cx + (x - cx) * coseno - (y - cy) * seno;
+        const ny = cy + (x - cx) * seno + (y - cy) * coseno;
+        // La caja girada de una palabra torcida es más alta de lo que es; se toma el alto de la fila
+        const [medioAncho, medioAlto] = [(palabra.x1 - palabra.x0) / 2, (palabra.y1 - palabra.y0) / 2];
+        Object.assign(palabra, { x0: nx - medioAncho, x1: nx + medioAncho, y0: ny - medioAlto, y1: ny + medioAlto });
     }
 }
 
-// Una foto es una hoja: si el texto (con la letra de la app, algo más ancha que la del papel) no cabe en una
-// página, se reducen a la vez la letra y los huecos. La altura se estima por el ancho medio de un carácter
-function encajarEnPagina(grupos, margenes) {
-    const anchoUtil = A4[0] - margenes[1] - margenes[3];
-    const altoUtil = A4[1] - margenes[0] - margenes[2];
-    const arriba = grupos[0][0].y0;
-    const alturaCon = (factor) => grupos.reduce((total, grupo, i) => {
-        const tamano = grupo[0].tamano * factor;
-        const renglones = Math.ceil((unirLineas(grupo).length * tamano * ANCHO_CARACTER) / anchoUtil);
-        const hueco = i ? limitar((grupo[0].y0 - grupos[i - 1].at(-1).y1) * factor, 0, SEPARACION_MAXIMA) : 0;
-        return total + renglones * tamano * 1.3 + hueco;
-    }, 0);
-    let factor = 1;
-    while (factor > 0.5 && alturaCon(factor) > altoUtil) {
-        factor -= 0.05;
+// Una línea en trozos: se parte donde hay un hueco grande (columnas, «Fdo.: ...      Fecha: ...»)
+function trozosDe(linea, escala, aPagina) {
+    const alto = linea.alto * escala;
+    const trozos = [];
+    for (const palabra of linea.palabras) {
+        const caja = aPagina(palabra);
+        const anterior = trozos.at(-1);
+        if (!anterior || caja.x0 - anterior.x1 > alto * HUECO_GRANDE) {
+            trozos.push({ palabras: [], centros: [], x0: caja.x0, x1: caja.x1, alto });
+        }
+        const trozo = trozos.at(-1);
+        trozo.palabras.push(palabra.texto);
+        trozo.centros.push((caja.y0 + caja.y1) / 2);
+        trozo.x1 = Math.max(trozo.x1, caja.x1);
     }
-    if (factor === 1) {
-        return;
-    }
-    for (const linea of grupos.flat()) {
-        linea.tamano = Math.max(5, Math.round(linea.tamano * factor * 2) / 2);
-        linea.y0 = arriba + (linea.y0 - arriba) * factor;
-        linea.y1 = arriba + (linea.y1 - arriba) * factor;
-    }
+    return trozos.map(({ palabras, centros, x0, x1 }) => ({
+        texto: palabras.join(' '), x0, x1, centro: mediana(centros), tamano: alto / ALTO_POR_PUNTO
+    }));
 }
 
+// Resultado del OCR de una foto -> hoja A4 con cada trozo de texto donde estaba (o null si no hay texto)
 function paginaDe(datos, tamFoto) {
-    const parrafos = lineasDe(datos, colocacion(tamFoto));
-    const todas = parrafos.flat();
-    if (!todas.length) {
+    const lineas = lineasDe(datos);
+    if (!lineas.length) {
         return null;
     }
-    ampliarAlAncho(todas);
-    igualarTamanos(todas);
-    const margenes = [
-        limitar(Math.min(...todas.map((l) => l.y0)), MARGEN_MINIMO, MARGEN_MAXIMO),
-        limitar(A4[0] - Math.max(...todas.map((l) => l.x1)), MARGEN_MINIMO, MARGEN_MAXIMO),
-        MARGEN_MINIMO * 2,
-        limitar(Math.min(...todas.map((l) => l.x0)), MARGEN_MINIMO, MARGEN_MAXIMO)
-    ];
-    const grupos = parrafos.flatMap(partirParrafo);
-    encajarEnPagina(grupos, margenes);
-    let fondo = null;
-    const cuerpo = grupos.map((grupo) => {
-        const p = `<p style="${estiloParrafo(grupo, margenes, fondo)}">${escapar(unirLineas(grupo))}</p>`;
-        fondo = grupo.at(-1).y1;
-        return p;
-    }).join('\n');
-    const css = `html,body{margin:0}body{font-family:sans-serif;line-height:1.3;padding:${margenes.map(pt).join(' ')}}p{margin:0}`;
-    const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><style>${css}</style></head><body>${cuerpo}</body></html>`;
-    return { html, ancho: A4[0], alto: A4[1] };
+    enderezarPalabras(lineas, tamFoto);
+    const { escala, aPagina } = colocacion(tamFoto);
+    const trozos = lineas.flatMap((linea) => trozosDe(linea, escala, aPagina));
+    igualarTamanos(trozos);
+    return {
+        ancho: A4[0],
+        alto: A4[1],
+        // La línea base queda por debajo del centro de las letras, más o menos un tercio del tamaño
+        trozos: trozos.map(({ texto, x0, x1, centro: medio, tamano }) => ({ texto, x0, x1, base: medio + tamano * BASE_BAJO_CENTRO, tamano }))
+    };
 }
 
 // Resultado del lector del sistema (Texto.swift) -> la misma forma que da Tesseract (bloques, párrafos,
-// líneas y palabras). Las líneas que comparten altura (columnas, «Firma ... Fecha») se juntan en una.
+// líneas y palabras)
 function datosNativos({ lineas }) {
     const confianza = (c) => (c >= CONFIANZA_NATIVA ? 100 : 0);
     const altoDe = (l) => l.altoFila || l.caja.y1 - l.caja.y0;
-    const altos = lineas.map(altoDe).sort((a, b) => a - b);
-    const altoComun = altos[Math.floor(altos.length / 2)];
+    const altoComun = mediana(lineas.map(altoDe));
     // En una arruga el lector puede devolver un trozo dudoso que abarca dos líneas: mucho más alto y con poca
     // confianza. Un título también es alto, pero se lee con seguridad
     const dudosa = (l) => l.confianza < CONFIANZA_NATIVA_ALTA && altoDe(l) > ALTO_DUDOSO * altoComun;
-    const ordenadas = lineas.filter((l) => l.texto.trim() && !dudosa(l)).sort((a, b) => a.caja.y0 - b.caja.y0 || a.caja.x0 - b.caja.x0);
-    const filas = [];
-    const pisan = (a, b) => Math.min(a.x1, b.x1) - Math.max(a.x0, b.x0) > 0;
-    for (const linea of ordenadas) {
-        // Solo se juntan trozos uno al lado del otro: en una hoja torcida, las cajas de dos líneas seguidas
-        // se solapan en altura pero se pisan en horizontal
-        const fila = filas.find((f) => !f.partes.some((p) => pisan(p.caja, linea.caja))
-            && Math.min(f.caja.y1, linea.caja.y1) - Math.max(f.caja.y0, linea.caja.y0) > 0.5 * Math.min(f.caja.y1 - f.caja.y0, linea.caja.y1 - linea.caja.y0));
-        if (fila) {
-            fila.partes.push(linea);
-            fila.caja = { x0: Math.min(fila.caja.x0, linea.caja.x0), y0: Math.min(fila.caja.y0, linea.caja.y0), x1: Math.max(fila.caja.x1, linea.caja.x1), y1: Math.max(fila.caja.y1, linea.caja.y1) };
-        } else {
-            filas.push({ caja: { ...linea.caja }, partes: [linea] });
-        }
-    }
-    const lineasTesseract = filas.map(({ caja, partes }) => {
-        partes.sort((a, b) => a.caja.x0 - b.caja.x0);
-        const palabras = partes.flatMap((p) => (p.palabras.length ? p.palabras : [{ texto: p.texto, caja: p.caja }])
-            .map((w) => ({ text: w.texto, bbox: w.caja, confidence: confianza(p.confianza) })));
-        return {
-            bbox: caja,
-            confidence: Math.max(...partes.map((p) => confianza(p.confianza))),
-            rowAttributes: { rowHeight: Math.max(...partes.map((p) => p.altoFila || p.caja.y1 - p.caja.y0)) },
-            words: palabras
-        };
-    });
+    const lineasTesseract = lineas.filter((l) => l.texto.trim() && !dudosa(l)).map((l) => ({
+        bbox: l.caja,
+        confidence: confianza(l.confianza),
+        rowAttributes: { rowHeight: altoDe(l) },
+        words: (l.palabras.length ? l.palabras : [{ texto: l.texto, caja: l.caja }])
+            .map((p) => ({ text: p.texto, bbox: p.caja, confidence: confianza(l.confianza) }))
+    }));
     return { blocks: [{ paragraphs: [{ lines: lineasTesseract }] }] };
 }
 
-// Fotos escaneadas -> hojas HTML con el texto reconocido (vacío si no se ha leído nada; null si se cancela)
+// Fotos escaneadas -> hojas con el texto reconocido colocado (vacío si no se ha leído nada; null si se cancela)
 // alProgresar(hechas, total); estaCancelado() para parar entre páginas.
 // lectorNativo: el del sistema si lo hay (iPhone); si no, Tesseract
 export async function paginasDeTexto(imagenes, { idiomas = 'spa+eng', alProgresar, estaCancelado, lectorNativo = null } = {}) {
     const motor = lectorNativo ? null : await crearMotor(idiomas);
     try {
-        const documentos = [];
+        const paginas = [];
         for (const [i, bytes] of imagenes.entries()) {
             if (estaCancelado?.()) {
                 return null;
@@ -412,10 +306,10 @@ export async function paginasDeTexto(imagenes, { idiomas = 'spa+eng', alProgresa
             alProgresar?.(i, imagenes.length);
             const pagina = lectorNativo ? await paginaNativa(lectorNativo, bytes) : await paginaTesseract(motor, bytes);
             if (pagina) {
-                documentos.push(pagina);
+                paginas.push(pagina);
             }
         }
-        return documentos;
+        return paginas;
     } finally {
         await motor?.terminate().catch(() => {});
     }
