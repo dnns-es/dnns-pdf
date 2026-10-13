@@ -60,12 +60,26 @@ public class Texto: CAPPlugin, CAPBridgedPlugin {
             return nil
         }
         let texto = candidato.string
+        // Palabras separadas por espacios, con sus signos pegados (comas, puntos, barras...)
         var palabras: [[String: Any]] = []
-        texto.enumerateSubstrings(in: texto.startIndex..<texto.endIndex, options: .byWords) { palabra, rango, _, _ in
-            guard let palabra = palabra, let cuadro = try? candidato.boundingBox(for: rango) else {
-                return
+        let anadir = { (rango: Range<String.Index>) in
+            if let cuadro = try? candidato.boundingBox(for: rango) {
+                palabras.append(["texto": String(texto[rango]), "caja": caja(cuadro.boundingBox, ancho: ancho, alto: alto)])
             }
-            palabras.append(["texto": palabra, "caja": caja(cuadro.boundingBox, ancho: ancho, alto: alto)])
+        }
+        var inicio: String.Index?
+        for indice in texto.indices {
+            if texto[indice].isWhitespace {
+                if let desde = inicio {
+                    anadir(desde..<indice)
+                    inicio = nil
+                }
+            } else if inicio == nil {
+                inicio = indice
+            }
+        }
+        if let desde = inicio {
+            anadir(desde..<texto.endIndex)
         }
         // Alto de la fila medido en el lado izquierdo: no crece si la línea está torcida
         let altoFila = hypot((observacion.topLeft.x - observacion.bottomLeft.x) * ancho, (observacion.topLeft.y - observacion.bottomLeft.y) * alto)
