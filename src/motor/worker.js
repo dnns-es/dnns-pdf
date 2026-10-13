@@ -83,6 +83,11 @@ const marcas = delActivo('marcas');
 const redactar = delActivo('redactar');
 const editar = delActivo('editar');
 
+// Unir crea un PDF nuevo desde cero (escanear, unir varios, imágenes a PDF): no necesita documento abierto
+const paginasSinDocumento = crearModuloPaginas(() => {
+    throw new Error('No hay ningún documento abierto');
+}, () => {});
+
 // Bytes del documento para guardar. Si se ha escrito con DejaVu, se recorta a las letras usadas (si no, cada
 // fuente añadiría cientos de KB); ese guardado ya no es incremental
 function exportarDocumento() {
@@ -355,7 +360,7 @@ const acciones = {
     'paginas:insertarImagenes': cambiarPaginas((datos) => paginas.insertarImagenes(datos)),
     'paginas:recortar': cambiarPaginas((datos) => paginas.recortar(datos)),
     'paginas:extraer': (datos) => paginas.extraer(datos),
-    'paginas:unir': (datos) => paginas.unir(datos),
+    'paginas:unir': (datos) => paginasSinDocumento.unir(datos),
     hayCambios: () => anotaciones.hayCambios(),
     modificado: () => anotaciones.modificado(),
     exportar: () => exportarDocumento(),
