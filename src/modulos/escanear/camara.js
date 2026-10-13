@@ -38,8 +38,19 @@ function lienzoDe(fuente, ancho, alto) {
     lienzo.width = Math.max(1, Math.round(ancho * escala));
     lienzo.height = Math.max(1, Math.round(alto * escala));
     const contexto = lienzo.getContext('2d', { willReadFrequently: true });
+    if (!contexto) {
+        throw new Error('SINLIENZO');
+    }
     contexto.drawImage(fuente, 0, 0, lienzo.width, lienzo.height);
-    return deImageData(contexto.getImageData(0, 0, lienzo.width, lienzo.height));
+    const imagen = deImageData(contexto.getImageData(0, 0, lienzo.width, lienzo.height));
+    soltarLienzo(lienzo);
+    return imagen;
+}
+
+// En iPhone la memoria de los lienzos tiene un tope y se libera tarde: se vacían en cuanto se dejan de usar
+export function soltarLienzo(lienzo) {
+    lienzo.width = 0;
+    lienzo.height = 0;
 }
 
 // Fotograma actual del vídeo como imagen
